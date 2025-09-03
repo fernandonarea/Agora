@@ -1,0 +1,21 @@
+{
+  "name": "autenticacion-roles",
+  "version": "1.0.0",
+  "description": "Proyecto enfocado a prácticar y mejorar mis conocimientos en el manejo de roles y autenticacion con jwt",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "autenticacion"
+  ],
+  "author": "Fernando Narea",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.4"
+  }
+}
