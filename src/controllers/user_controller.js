@@ -48,9 +48,9 @@ export const getUserById = async (req, res) => {
     }
 }
 
-export const getUsers = async (res) => {
+export const getUsers = async (req, res) => {
     try {
-        const [rows] = await db_pool_connection.query('SELECT name, lastname, role, email, profile_photo, phone_number from users');
+        const [rows] = await db_pool_connection.query('SELECT user_name, user_lastname, role, user_email, profile_photo, phone_number from users');
 
         if(rows.length === 0){
             return res.status(404).json(response_not_found("Usuarios no encontrados"))
@@ -65,47 +65,49 @@ export const getUsers = async (res) => {
 export const updateUser = async (req, res) => {
     try {
         
-        const [id_user] = req.params;
-        const [name, lastname, email, profile_photo, phone_number] = req.body;
+        const {user_name, user_lastname, user_email, profile_photo, phone_number} = req.body;
+        const {id_user} = req.params;
 
-        const [rows] = await db_pool_connection.query(`
-            UPDATE users SET
-                user_name = COALESCE(?, name)
-                user_lastname = COALESCE(?, lastname)
-                user_email = COALESCE(?, email)
-                profile_photo = COALESCE(?, profile_photo)
+        const [rows] = await db_pool_connection.query(
+            `UPDATE users 
+            SET
+                user_name = COALESCE(?, user_name),
+                user_lastname = COALESCE(?, user_lastname),
+                user_email = COALESCE(?, user_email),
+                profile_photo = COALESCE(?, profile_photo),
                 phone_number = COALESCE(?, phone_number)
             WHERE id_user = ?`,
-            [name, lastname, email, profile_photo, phone_number, id_user]
+
+            [user_name, user_lastname, user_email, profile_photo, phone_number, id_user]
         );
 
-         if(rows.length === 0){
-            return res.status(404).json(response_not_found("No se pudo actualizar el usuario, usuario no encontrado"))
-        }
-        res.status(200).json(response_succes(rows, "Usuarios encontrados con exito"))
+        if(rows.affectedRows === 0){
+            return res.status(403).json(response_bad_request("No se pudo actualizar el usuario, usuario no encontrado"))
+        };
+        res.status(200).json(response_succes(rows, "Usuario actualizado con exito"));
 
 
     } catch (error) {
-        return res.status(500).json(response_error(500, "Error en el servidor intente nuevamente " + error))
+        return res.status(500).json(response_error(500, "Error en el servidor intente nuevamente, " + error['sqlMessage']));
     }
 }
 
 export const deleteUser = async (req, res) => {
     try {
-        const [id_user] = req.params;
+        const {id_user} = req.params;
 
-        const [rows] = db_pool_connection.query(`DELETE FROM users WHERE id_user = ?`, id_user)
+        const [rows] = await db_pool_connection.query(`DELETE FROM users WHERE id_user = ?`, id_user);
 
-            if(rows.affectedRows === 0){
+        if(rows.affectedRows === 0){
             return res.status(404).json(response_not_found("No se pudo eliminar el usuario, usuario no encontrado o ID incorrecto"))
         }
+        
         res.status(200).json(response_succes(rows, "Usuario eliminado con exito"))
 
     } catch (error) {
-        return res.status(500).json(response_error(500, "Error en el servidor intente nuevamente " + error))
+        return res.status(500).json(response_error(500, "Error en el servidor intente nuevamente " + error['sqlMessage']))
     }
 }
-
 
 export const login = async (req, res) => {
     try {
@@ -119,7 +121,7 @@ export const login = async (req, res) => {
         const [rows] = await db_pool_connection.query('SELECT * FROM users WHERE user_email = ?', [user_email])
 
 
-        if(rows.affectedRows === 0){
+        if(rows.length === 0){
             return res.status(404).json(response_not_found("Usuario no encontrado"));
         };
 
@@ -132,7 +134,7 @@ export const login = async (req, res) => {
         };
 
         const token = jwt.sign(
-            {id_user: user.id_user, email: user.email},
+            {id_user: user.id_user, role: user.role},
             process.env.SECRET_JWT_KEY,
             {expiresIn: '1h'}
         );

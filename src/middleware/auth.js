@@ -9,7 +9,7 @@ export const verifyToken = (req, res, next) => {
     if(!token) return res.status(401).json(response_unauthorized("Sin token, acceso no autorizado"))
 
     jwt.verify(token, SECRET_KEY, (err, decoded) => {
-        if(err) return res.status(403).json({message: "Token invalido"});
+        if(err) return res.status(401).json(response_unauthorized("Falta de token"));
         req.user = decoded;
         next()
     });
@@ -18,7 +18,7 @@ export const verifyToken = (req, res, next) => {
 export const checkRole = (role) => {
     return(req, res, next) => {
         if(!role.includes(req.user.role)){
-            return res.status(403).json({ message: "No tienes permisos para acceder a esta ruta" });
+            return res.status(403).json({message:"No tienes permisos para acceder a esta ruta"});
         }
         next();
     }
