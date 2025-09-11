@@ -10,11 +10,11 @@ from "../Responses/responses.js";
 
 export const createEvent = async (req, res) => {
     try {
-        const event_owner = req.params;
+        const id_user = req.user.id_user;
         const {event_name, event_description, event_schedule, event_status} = req.body;
 
         const [rows] = await db_pool_connection.query(`INSERT INTO events (event_name, event_description, event_schedule, event_status, event_owner) 
-            VALUES (?,?,?,?,?)`,[event_name, event_description, event_schedule, event_status, event_owner]
+            VALUES (?,?,?,?,?)`,[event_name, event_description, event_schedule, event_status, id_user]
         );
         
         if(rows.affectedRows === 0){
@@ -52,7 +52,7 @@ export const getEventById = async (req, res) => {
         );
 
         if(rows.length === 0){
-            return res.status(404).json(response_not_found("No se pudo econtrar el evento"))
+            return res.status(404).json(response_not_found("Sin eventos aun...."))
         }
         res.status(200).json(response_succes(rows, "Evento encontrado con exito"))
     } catch (error) {
@@ -87,7 +87,7 @@ export const updateEvent = async (req, res) => {
 
 export const deleteEvent = async (req, res) => {
     try {
-        const id_event = req.params;
+        const {id_event} = req.params;
 
         const [rows] = await db_pool_connection.query('DELETE FROM events WHERE id_event = ?', [id_event])
 

@@ -33,7 +33,7 @@ export const createUser = async (req, res) => {
 
 export const getUserById = async (req, res) => {
     try {
-        const {id_user} = req.params;
+        const id_user = req.user.id_user;
 
         const [rows] = await db_pool_connection.query(`SELECT user_name, user_lastname, role, user_email, profile_photo, phone_number 
             FROM users WHERE id_user = ?`, id_user);
@@ -66,7 +66,7 @@ export const updateUser = async (req, res) => {
     try {
         
         const {user_name, user_lastname, user_email, profile_photo, phone_number} = req.body;
-        const {id_user} = req.params;
+        const id_user = req.user.id_user;
 
         const [rows] = await db_pool_connection.query(
             `UPDATE users 

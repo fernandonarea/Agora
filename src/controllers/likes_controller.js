@@ -9,13 +9,14 @@ from "../Responses/responses.js";
 
 export const addLike = async (req, res) => {
     
-    const {id_user, id_event} = req.body;
-    
+    const {id_event} = req.body;
+    const id_user = req.user.id_user;
+
     try {
         const [result] = await db_pool_connection.query('INSERT INTO likes(id_user, id_event) VALUES (?,?)', [id_user, id_event])
 
         if(result.affectedRows === 0){
-            return res.status(400).json(response_bad_request("No se puedo dar like al evento"));
+            return res.status(400).json(response_bad_request("No se pudo dar like al evento"));
         }
 
         res.status(201).json(response_created(201, "Haz dado like a la publicación"));
@@ -47,7 +48,8 @@ export const getEventLikes = async (req, res) => {
 }
 
 export const deleteLike = async (req, res) => {
-    const {id_event, id_user} = req.body;
+    const {id_event} = req.body;
+    const id_user = req.user.id_user;
     
     try {
         
