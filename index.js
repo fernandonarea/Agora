@@ -23,8 +23,12 @@ const io = new Server(server, {
     }
 });
 
-io.on('connection', () => {
+io.on('connection', (socket) => {
     console.log("An user has connected")
+
+    socket.on('disconnect', () => {
+        console.log("An user has disconnected")
+    })
 })
 
 app.use(cors({
@@ -38,6 +42,10 @@ app.use(user_routes);
 app.use(event_routes);
 app.use(likes_routes);
 app.use(comments_routes);
+
+app.get('/', (req, res) => {
+    res.sendFile(process.cwd() + '/client/index.html');
+})
 
 app.use((req, res, next) => {
     res.status(404).json({message: 'Ruta no válida'});
