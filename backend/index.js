@@ -20,7 +20,9 @@ const io = new Server(server, {
     cors: {
         origin: config_core.application.cors.server.origin,
         credentials: config_core.application.cors.server.credentials
-    }
+    },
+    
+    connectionStateRecovery: {}
 });
 
 io.on('connection', (socket) => {
@@ -28,6 +30,10 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log("An user has disconnected")
+    })
+
+    socket.on('chat message', (msg) => {
+        io.emit('chat message' , msg)
     })
 })
 
