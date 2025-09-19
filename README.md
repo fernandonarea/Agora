@@ -1,22 +1,41 @@
 # Propósito del proyecto
 
-Agora es una aplicación Fullstack diseñada para conectar personas a través de foros, publicaciones, comentarios y chat en tiempo real.
+Agora es una aplicación Fullstack diseñada para la gestión de inventario de productos.
 Incluye autenticación de usuarios, gestión de roles, estadísticas y un diseño escalable, pensado como un proyecto demostrativo para prácticas profesionales.
 
 # Características principales
 
--  Autenticación y roles: Registro, login seguro con JWT, roles de usuario y administrador.
+-  Gestión de usuarios (roles: administrador, vendedor).
 
--  Publicaciones y foros: Crear, editar, comentar y participar en foros.
+- Gestión de productos (crear, actualizar, eliminar, ver catálogo).
 
--  Mensajería: Chat entre usuarios (real-time con WebSockets).
+-  Control de stock mediante entradas (compras) y salidas (ventas)
 
--  Estadísticas: Likes, cantidad de amigos, posts más populares.
+-  Gestión de proveedores y clientes.
 
--  Fotos de perfil y carga de imágenes en publicaciones.
+-  Registro de ventas con detalle de productos y cantidades.
 
--  API REST estructurada con buenas prácticas (MVC + validaciones).
+-  Registro de compras a proveedores con detalle de productos y cantidades.
 
+- Movimientos de inventario: entradas, salidas y ajustes.
+
+- Reportes: productos más vendidos, ventas por período, compras por proveedor, stock actual.
+
+# Entidades Principales
+
+- Usuarios: administradores y vendedores.
+
+- Productos: información del catálogo, precios y stock.
+
+- Ventas: cabecera y detalle de ventas.
+
+- Compras: cabecera y detalle de compras.
+
+- Clientes: datos de clientes registrados.
+
+- Proveedores: datos de proveedores.
+
+- Movimientos de inventario: historial de entradas, salidas y ajustes.
 
 # Tecnologías utilizadas
 ## Frontend
@@ -28,11 +47,12 @@ Incluye autenticación de usuarios, gestión de roles, estadísticas y un diseñ
 
 ## Backend
 
-- Node.js con Express
-- WebSockets (Socket.IO)
+- Node.js
+- Express
 
 Base de datos
 - MySQL
+
 ## Infraestructura
 
 - Docker
