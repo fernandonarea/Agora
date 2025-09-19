@@ -57,5 +57,11 @@ Base de datos
 
 - Docker
 
+## Despliegue
+
+- Frontend: Vercel
+
+- Backend: Railway
+
 ## Autor
 - Fernando Narea
