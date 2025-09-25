@@ -52,7 +52,7 @@ export const getProducts = async (req, res) => {
     console.log("Error en el servidor al agregar producto ", error.message);
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al crear producto"));
+      .json(response_error(500, "Error en el servidor al obtener producto"));
   }
 };
 
@@ -61,7 +61,7 @@ export const getProductByName = async (req, res) => {
 
   try {
     const [product] = await db_pool_connection.query(
-      `SELECT product_name, product_description, product_price, stock WHERE product_name = ?`,
+      `SELECT product_name, product_description, product_price, stock FROM products WHERE product_name = ?`,
       [product_name]
     );
 
@@ -73,21 +73,21 @@ export const getProductByName = async (req, res) => {
 
     res
       .status(200)
-      .json(response_succes(products, "Producto obtenido con exito"));
+      .json(response_succes(product, "Producto obtenido con exito"));
   } catch (error) {
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al crear producto"));
+      .json(response_error(500, "Error en el servidor al obtener producto"));
   }
 };
 
 export const getProductById = async (req, res) => {
-  const { product_id } = req.params;
+  const { id_product } = req.params;
 
   try {
     const [product] = await db_pool_connection.query(
-      `SELECT product_name, product_description, product_price, stock WHERE product_id = ?`,
-      [product_id]
+      `SELECT product_name, product_description, product_price, stock, created_at FROM products WHERE id_product = ?`,
+      [id_product]
     );
 
     if (product.length === 0) {
@@ -102,45 +102,46 @@ export const getProductById = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al crear producto"));
+      .json(response_error(500, "Error en el servidor al obtener producto"));
   }
 };
 
 export const getBestSellingProducts = async (req, res) => {
   try {
-    const [bestSellingProducts] = db_pool_connection.query(`
-            SELECT
-                p.id_product,
-                p.product_name,
-                p.product_description,
-                p.stock,
-                SUM(sd.quantity) as total_sold
-            FROM sales_detail sd
-            INNER JOIN products p ON sd.id_product = p.id_product
-            INNER JOIN sales s ON sd.id_sale = s.id_sales
-            GROUP BY p.id_product, p.product_name
-            ORDER BY total_sold DESC
-            LIMIT 10`);
+    const [bestSellingProducts] = await db_pool_connection.query(`
+      SELECT
+        p.id_product,
+        p.product_name,
+        p.product_description,
+        p.stock,
+        SUM(sd.quantity) as total_sold
+      FROM sales_detail sd
+      INNER JOIN products p ON sd.id_product = p.id_product
+      INNER JOIN sales s ON sd.id_sale = s.id_sales
+      GROUP BY p.id_product, p.product_name
+      ORDER BY total_sold DESC
+      LIMIT 10`
+    );
 
     if (bestSellingProducts.length === 0) {
       return res
         .status(400)
-        .json(response_bad_request("Error al obtener el producto"));
+        .json(response_bad_request("Error al obtener al obtener los 10 mejores productos, no se han vendido productos"));
     }
 
     res
       .status(200)
-      .json(response_succes(product, "Producto obtenido con exito"));
+      .json(response_succes(bestSellingProducts, "Productos obtenido con exito"));
   } catch (error) {
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al crear producto"));
+      .json(response_error(500, "Error en el servidor al obtener los 10 mejores productos " + error.message));
   }
 };
 
 export const updateProduct = async (req, res) => {
   const { product_name, product_description, product_price, stock } = req.body;
-  const id_product = req.params;
+  const { id_product }  = req.params;
 
   try {
     const [result] = await db_pool_connection.query(
@@ -149,7 +150,7 @@ export const updateProduct = async (req, res) => {
                 product_name = COALESCE(?, product_name), 
                 product_description = COALESCE(?, product_description), 
                 product_price = COALESCE(?, product_price), 
-                stock = COALESCE(?, stock),
+                stock = COALESCE(?, stock)
             WHERE 
                 id_product = ?
         `,
@@ -168,7 +169,7 @@ export const updateProduct = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al crear producto"));
+      .json(response_error(500, "Error en el servidor al actualizar producto"));
   }
 };
 
@@ -177,7 +178,7 @@ export const deleteProduct = async (req, res) => {
   try {
     const [rows] = await db_pool_connection.query(
       `DELETE FROM products WHERE id_product = ?`,
-      id_user
+      id_product
     );
 
     if (rows.affectedRows === 0) {

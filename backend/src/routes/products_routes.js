@@ -26,7 +26,7 @@ products_routes.get(
 );
 
 products_routes.get(
-  "/api/products/getProductById/:product_id",
+  "/api/products/getProductById/:id_product",
   verifyToken,
   getProductById
 );
