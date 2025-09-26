@@ -12,12 +12,18 @@ export default function AppRoutes() {
       <Route index element={<Login />} />
       <Route path="/register" element={<Register/>}/>
       
-      <Route path="/" element={<MainLayout  />}>
-        <Route path="/home" element={<Home/>}></Route>
+      <Route path="/" element={<MainLayout/>}>
+        <Route path="/home" element={<Home/>}/>
         <Route path="/products" element={<Productos/>}/>
+        <Route path="/suppliers" element={<Home/>}/>
+        <Route path="/reports" element={<Home/>}/>
+        <Route path="/getHelp" element={<Home/>}/>
+        <Route path="/settings" element={<Home/>}/>
+        <Route path="/profile" element={<Home/>}/>
       </Route>
 
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register/>}/>
     </Routes>
   );
 }

@@ -1,5 +1,5 @@
 import { Codesandbox } from "lucide-react";
-import LoginForm  from '@/components/login-form';
+import LoginForm  from '@/components/auth/login-form';
 import  loginImage  from '@/assets/images/loginImage.png'
 
 const Login = () => {
@@ -9,7 +9,7 @@ const Login = () => {
       <div className="flex flex-col gap-4 p-6 md:p-10 drop-shadow-2xl">
         <div className="flex justify-center gap-2 md:justify-start">
           <a href="#" className="flex items-center gap-2 font-bold">
-            <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
+            <div className="bg-violet-800 text-primary-foreground flex size-8 items-center justify-center rounded-md">
               <Codesandbox className="size-5" />
             </div>
             Inventory.

@@ -19,7 +19,7 @@ export const createUser = async (req, res) => {
 
     const [rows] = await db_pool_connection.query(
       `INSERT INTO users (user_name, user_lastname, role, user_email, password) 
-            VALUES (?, ?, ?, ?, ?)`,
+      VALUES (?, ?, ?, ?, ?)`,
       [user_name, user_lastname, role, user_email, hashedPassword]
     );
 

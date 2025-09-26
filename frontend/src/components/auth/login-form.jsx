@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   const { loginUser, loading, error } = useAuth();
@@ -52,7 +53,7 @@ const LoginForm = () => {
         )}
         <Button
           type="submit"
-          className="w-full bg-violet-600 hover:bg-violet-800"
+          className="w-full bg-violet-700 hover:bg-violet-800"
           disabled={loading}
         >
           {loading ? "Loading..." : "Login"}
@@ -60,9 +61,9 @@ const LoginForm = () => {
       </div>
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
-        <a href="#" className="underline underline-offset-4">
+        <Link to={"/register"} className="underline underline-offset-4">
           Sign up
-        </a>
+        </Link>
       </div>
     </form>
   );
