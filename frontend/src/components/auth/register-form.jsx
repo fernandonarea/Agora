@@ -103,7 +103,7 @@ const RegisterForm = () => {
                     value={user_lastname}
                     onChange={(e) => setUserLastName(e.target.value)}
                     placeholder="Narea Franco"
-                    required
+                    // required
                   />
                 </div>
 

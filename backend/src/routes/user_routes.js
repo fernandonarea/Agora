@@ -18,7 +18,7 @@ user_routes.get(
   getUsers
 );
 user_routes.get(
-    "/api/users/getUserById", 
+    "/api/users/getUserById/:id_user", 
     verifyToken, 
     getUserById
 );

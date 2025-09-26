@@ -7,7 +7,7 @@ export default function MainLayout() {
       <aside>
         <SideBar/>
       </aside>
-      <main className="flex flex-col p-4 w-full">
+      <main className="flex flex-col p-4 w-full background">
         <Outlet />
       </main>
     </div>

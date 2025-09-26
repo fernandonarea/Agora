@@ -7,6 +7,7 @@ export const login = async (user_email, password) => {
       password,
     });
     localStorage.setItem("token", response.data.data.token);
+    localStorage.setItem("id_user", response.data.data.id_user)
     return response.data;
   } catch (error) {
     const message = error.response?.data?.message || "Error en login";
