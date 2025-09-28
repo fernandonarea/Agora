@@ -7,8 +7,8 @@ export const MainItems = ({ isOpen }) => {
     { icon: LayoutDashboard, text: "Inicio", link: "/home" },
     { icon: Briefcase, text: "Ventas", link: "/ventas" },
     { icon: Package, text: "Productos", link: "/products" },
-    { icon: Truck, text: "Proveedores", link: "#" },
-    { icon: FileText, text: "Reportes", link: "#" },
+    { icon: Truck, text: "Proveedores", link: "/suppliers" },
+    { icon: FileText, text: "Reportes", link: "/reports" },
   ];
 
   return (
@@ -18,12 +18,12 @@ export const MainItems = ({ isOpen }) => {
             to={item.link}
             key={index}
             href={item.href}
-            className={`flex items-center gap-3 p-2 font-semibold rounded-md hover:bg-gray-200 ${
+            className={`flex items-center gap-2 p-2 font-semibold rounded-md hover:bg-gray-200 ${
               isOpen ? "w-full" : "w-fit"
             }`}
           >
-            <item.icon />
-            {isOpen && <span>{item.text}</span>}
+            <item.icon/>
+            {isOpen && <span className="text-md text-sidebar-accent-foreground">{item.text}</span>}
           </Link>
         ))}
       <Separator />
