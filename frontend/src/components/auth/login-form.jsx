@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   const { loginUser, loading, error } = useAuth();
@@ -13,10 +14,11 @@ const LoginForm = () => {
     e.preventDefault();
     await loginUser(user_email, password);
   };
+  
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6" >
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Login to your account</h1>
+        <h1 className="text-2xl font-semibold">Login to your account</h1>
         <p className="text-muted-foreground text-sm text-balance">
           Enter your email below to login to your account
         </p>
@@ -52,7 +54,7 @@ const LoginForm = () => {
         )}
         <Button
           type="submit"
-          className="w-full bg-violet-600 hover:bg-violet-800"
+          className="w-full bg-violet-700 hover:bg-violet-800"
           disabled={loading}
         >
           {loading ? "Loading..." : "Login"}
@@ -60,9 +62,9 @@ const LoginForm = () => {
       </div>
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
-        <a href="#" className="underline underline-offset-4">
+        <Link to={"/register"} className="underline underline-offset-4">
           Sign up
-        </a>
+        </Link>
       </div>
     </form>
   );

@@ -3,7 +3,7 @@ import {
   response_bad_request,
   response_created,
   response_error,
-  response_succes,
+  response_success,
 } from "../Responses/responses.js";
 
 export const getAllSales = async (req, res) => {
@@ -23,10 +23,14 @@ export const getAllSales = async (req, res) => {
     if (result.length === 0) {
       return res
         .status(400)
-        .json(response_bad_request("Error al obtener las ventas, no se han realizado ventas aun"));
+        .json(
+          response_bad_request(
+            "Error al obtener las ventas, no se han realizado ventas aun"
+          )
+        );
     }
 
-    res.status(200).json(response_succes(result, "Ventas obtenidas con exito"));
+    res.status(200).json(response_success(result, "Ventas obtenidas con exito"));
   } catch (error) {
     console.log("Error en el servidor al obtener ventas ", error.message);
     return res
@@ -70,7 +74,7 @@ export const createSale = async (req, res) => {
   }
 
   let connection;
-  
+
   try {
     connection = await db_pool_connection.getConnection();
     await connection.beginTransaction();

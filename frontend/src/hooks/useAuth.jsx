@@ -36,7 +36,7 @@ export const useAuth = () => {
   ) => {
     setLoading(true);
     try {
-      const data = register(
+      const data = await register(
         user_name,
         user_lastname,
         role,
@@ -52,5 +52,5 @@ export const useAuth = () => {
     }
   };
 
-  return {user, loading, error, loginUser, registerUser, login};
+  return {user, loading, error, loginUser, registerUser};
 };

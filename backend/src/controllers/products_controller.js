@@ -3,7 +3,7 @@ import {
   response_bad_request,
   response_created,
   response_error,
-  response_succes,
+  response_success,
 } from "../Responses/responses.js";
 
 export const createProduct = async (req, res) => {
@@ -47,7 +47,7 @@ export const getProducts = async (req, res) => {
 
     res
       .status(200)
-      .json(response_succes(products, "Productos obtenidos con exito"));
+      .json(response_success(products, "Productos obtenidos con exito"));
   } catch (error) {
     console.log("Error en el servidor al agregar producto ", error.message);
     return res
@@ -73,7 +73,7 @@ export const getProductByName = async (req, res) => {
 
     res
       .status(200)
-      .json(response_succes(product, "Producto obtenido con exito"));
+      .json(response_success(product, "Producto obtenido con exito"));
   } catch (error) {
     return res
       .status(500)
@@ -98,7 +98,7 @@ export const getProductById = async (req, res) => {
 
     res
       .status(200)
-      .json(response_succes(product, "Producto obtenido con exito"));
+      .json(response_success(product, "Producto obtenido con exito"));
   } catch (error) {
     return res
       .status(500)
@@ -120,28 +120,39 @@ export const getBestSellingProducts = async (req, res) => {
       INNER JOIN sales s ON sd.id_sale = s.id_sales
       GROUP BY p.id_product, p.product_name
       ORDER BY total_sold DESC
-      LIMIT 10`
-    );
+      LIMIT 10`);
 
     if (bestSellingProducts.length === 0) {
       return res
         .status(400)
-        .json(response_bad_request("Error al obtener al obtener los 10 mejores productos, no se han vendido productos"));
+        .json(
+          response_bad_request(
+            "Error al obtener al obtener los 10 mejores productos, no se han vendido productos"
+          )
+        );
     }
 
     res
       .status(200)
-      .json(response_succes(bestSellingProducts, "Productos obtenido con exito"));
+      .json(
+        response_success(bestSellingProducts, "Productos obtenido con exito")
+      );
   } catch (error) {
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al obtener los 10 mejores productos " + error.message));
+      .json(
+        response_error(
+          500,
+          "Error en el servidor al obtener los 10 mejores productos " +
+            error.message
+        )
+      );
   }
 };
 
 export const updateProduct = async (req, res) => {
   const { product_name, product_description, product_price, stock } = req.body;
-  const { id_product }  = req.params;
+  const { id_product } = req.params;
 
   try {
     const [result] = await db_pool_connection.query(
@@ -165,7 +176,7 @@ export const updateProduct = async (req, res) => {
 
     res
       .status(200)
-      .json(response_succes(result, "Producto actualizado con exito"));
+      .json(response_success(result, "Producto actualizado con exito"));
   } catch (error) {
     return res
       .status(500)
@@ -191,7 +202,7 @@ export const deleteProduct = async (req, res) => {
         );
     }
 
-    res.status(200).json(response_succes(rows, "Producto eliminado con exito"));
+    res.status(200).json(response_success(rows, "Producto eliminado con exito"));
   } catch (error) {
     return res
       .status(500)

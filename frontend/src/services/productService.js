@@ -1,0 +1,109 @@
+import axios from "axios";
+
+export const Products = async (token) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3200/api/products/getProducts`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  
+  } catch (error) {
+    const message = error.response?.data?.message || "Error en el servicio de productos";
+    console.error(message);
+    throw error;
+  }
+};
+
+export const ProductById = async (token, id_product) => {
+  try {
+    const response = await axios.get(`${id_product}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message || "Error en el servicio de productos";
+    throw new Error(message);
+  }
+};
+
+export const bestSellingProducts = async (token) => {
+  try {
+    const response = await axios.get(
+      "http://localhost:3200/api/products/getBestSellingProducts",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message || "Error en el servicio de usuarios";
+    throw new Error(message);
+  }
+};
+
+export const createProduct = async (productData, token) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:3200/api/products/createProduct",
+      productData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message || "Error en el servicio de productos";
+    throw new Error(message);
+  }
+};
+
+export const updateProduct = async (id_product, productData, token) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:3200/api/products/updateProduct/${id_product}`,
+      productData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message || "Error en el servicio de productos";
+    throw new Error(message);
+  }
+};
+
+export const deleteProduct = async (id_product, token) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:3200/api/products/updateProduct/${id_product}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message || "Error en el servicio de productos";
+    throw new Error(message);
+  }
+};
