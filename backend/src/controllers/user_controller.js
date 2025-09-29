@@ -1,11 +1,11 @@
 import { db_pool_connection } from "../database/db.js";
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import {
   response_bad_request,
   response_created,
   response_error,
-  response_succes,
+  response_success,
   response_not_found,
   response_unauthorized,
 } from "../Responses/responses.js";
@@ -53,7 +53,7 @@ export const getUserById = async (req, res) => {
         .status(404)
         .json(response_not_found("Usuario no encontrado o ID incorrecto"));
     }
-    res.status(200).json(response_succes(rows, "Usuario encontrado con exito"));
+    res.status(200).json(response_success(rows, "Usuario encontrado con exito"));
   } catch (error) {
     return res
       .status(500)
@@ -76,7 +76,7 @@ export const getUsers = async (req, res) => {
     }
     res
       .status(200)
-      .json(response_succes(rows, "Usuarios encontrados con exito"));
+      .json(response_success(rows, "Usuarios encontrados con exito"));
   } catch (error) {
     return res
       .status(500)
@@ -128,7 +128,7 @@ export const updateUser = async (req, res) => {
     }
     res
       .status(200)
-      .json(response_succes(rows, "Usuario actualizado con exito"));
+      .json(response_success(rows, "Usuario actualizado con exito"));
   } catch (error) {
     return res
       .status(500)
@@ -160,7 +160,7 @@ export const deleteUser = async (req, res) => {
         );
     }
 
-    res.status(200).json(response_succes(rows, "Usuario eliminado con exito"));
+    res.status(200).json(response_success(rows, "Usuario eliminado con exito"));
   } catch (error) {
     return res
       .status(500)
@@ -203,7 +203,7 @@ export const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id_user: user.id_user, role: user.user_name},
+      { id_user: user.id_user, role: user.user_name },
       process.env.SECRET_JWT_KEY,
       { expiresIn: "1h" }
     );
@@ -211,7 +211,7 @@ export const login = async (req, res) => {
     res
       .status(200)
       .json(
-        response_succes({ token, id_user: user.id_user }),
+        response_success({ token, id_user: user.id_user }),
         "Inicio de sesion exitoso"
       );
   } catch (error) {

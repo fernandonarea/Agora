@@ -8,6 +8,7 @@ import {
   updateUser,
   deleteUser,
 } from "../controllers/user_controller.js";
+import { validateCreateUser } from "../middleware/validations.js";
 
 const user_routes = new Router();
 
@@ -29,7 +30,8 @@ user_routes.post(
 );
 
 user_routes.post(
-    "/api/users/register", 
+    "/api/users/register",
+    validateCreateUser,
     createUser
 );
 
