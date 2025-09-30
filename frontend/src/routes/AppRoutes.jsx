@@ -4,7 +4,7 @@ import MainLayout from "../layout/MainLayout";
 import Login from "../pages/auth/login";
 import Register from "../pages/auth/register";
 import { Home } from "../pages/home";
-import { Productos } from "../pages/productos";
+import { Productos } from "../pages/productos/productos";
 import { Proveedores } from "@/pages/proveedores";
 import { Reportes } from "@/pages/reportes";
 import { Ventas } from "@/pages/ventas";

@@ -4,7 +4,7 @@ import {
   response_created,
   response_error,
   response_success,
-} from "../Responses/responses.js";
+} from "../responses/responses.js";
 
 export const createProduct = async (req, res) => {
   const { product_name, product_description, product_price, stock } = req.body;
@@ -35,24 +35,48 @@ export const createProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    const [products] = await db_pool_connection.query(
-      `SELECT product_name, product_description, product_price FROM products`
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit || 10);
+    const offset = (page - 1) * limit;
+
+    const [total] = await db_pool_connection.query(
+      "SELECT COUNT(*) as total FROM products"
     );
 
-    if (products.length === 0) {
+    const [products] = await db_pool_connection.query(
+      `SELECT id_product, product_name, product_description, product_price, stock FROM products order by created_at desc LIMIT ? OFFSET ?;`,
+      [limit, offset]
+    );
+
+    if (products.length === 0 && page > 1) {
       return res
         .status(400)
-        .json(response_bad_request("Error al obtener los productos"));
+        .json(response_bad_request("Error al obtener los productos, no hay productos registrados"));
     }
 
-    res
-      .status(200)
-      .json(response_success(products, "Productos obtenidos con exito"));
+    const totalProducts = total[0].total;
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    res.status(200).json(
+      response_success(
+        {
+          products,
+          metadata: {
+            total: totalProducts,
+            page,
+            totalPages,
+            hasNextPage: page < totalPages,
+            hasPrevPage: page > 1,
+          },
+        },
+        "Productos obtenidos con éxito"
+      )
+    );
   } catch (error) {
-    console.log("Error en el servidor al agregar producto ", error.message);
+    console.log("Error en el servidor al obtener los productos ", error.message);
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al obtener producto"));
+      .json(response_error(500, "Error en el servidor al obtener los productos"));
   }
 };
 
@@ -202,7 +226,9 @@ export const deleteProduct = async (req, res) => {
         );
     }
 
-    res.status(200).json(response_success(rows, "Producto eliminado con exito"));
+    res
+      .status(200)
+      .json(response_success(rows, "Producto eliminado con exito"));
   } catch (error) {
     return res
       .status(500)

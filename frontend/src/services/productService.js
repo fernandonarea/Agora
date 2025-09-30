@@ -1,10 +1,14 @@
 import axios from "axios";
 
-export const Products = async (token) => {
+export const Products = async (token, page = 1, limit = 10) => {
   try {
     const response = await axios.get(
       `http://localhost:3200/api/products/getProducts`,
       {
+        params:{
+          page,
+          limit
+        },
         headers: {
           Authorization: `Bearer ${token}`,
         },

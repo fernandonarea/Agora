@@ -14,26 +14,45 @@ export const useProducts = () => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  const [metadata, setMetadata] = useState({
+    total: 0,
+    page: 1,
+    totalPages: 0,
+    hasNextPage: false,
+    hasPrevPage: false,
+  });
+
   const handleError = (error) => {
     const message = error.message || "Ocurrió un error inesperado";
     setError(message);
     console.error(message);
   };
 
-  const fetchProducts = async (token) => {
+  const fetchProducts = async (token, page = 1, limit = 10) => {
     try {
       setLoading(true);
       setError(null);
-      const response = await Products(token);
+      const response = await Products(token, page, limit);
 
       if (response.success === false) {
         setError(response.message);
         setProducts([]);
+        setMetadata({
+          total: 0,
+          page: 1,
+          totalPages: 0,
+          hasNextPage: false,
+          hasPrevPage: false,
+        });
         return [];
       }
 
-      const productsArray = Array.isArray(response.data) ? response.data : [];
+      const productsArray = Array.isArray(response.data.products)
+        ? response.data.products
+        : [];
+
       setProducts(productsArray);
+      setMetadata(response.data.metadata);
       return productsArray;
     } catch (error) {
       setError(error.message || "Error al cargar productos");
@@ -142,5 +161,6 @@ export const useProducts = () => {
     selectedProduct,
     error,
     loading,
+    metadata,
   };
 };

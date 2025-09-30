@@ -53,6 +53,7 @@ const loginUser = async (user_email, password) => {
         password
       );
       setUser(data.data);
+      setError(null)
       return data;
     } catch (error) {
       setError(error);

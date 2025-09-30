@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useProducts } from "@/hooks/useProducts";
+import { useProducts } from "../../hooks/useProducts";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 

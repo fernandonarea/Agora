@@ -24,7 +24,7 @@ export const checkRole = (role) => {
     if (!role.includes(req.user.role)) {
       return res
         .status(403)
-        .json({ message: "No tienes permisos para acceder a esta ruta" });
+        .json({ message: "No tienes permisos para acceder a esta ruta, ruta solo para administradores" });
     }
     next();
   };
