@@ -16,7 +16,7 @@ export const NavUser = ({ isOpen }) => {
     <button
       onClick={handleLogout}
       className={`flex items-center gap-0 p-1.5 w-full rounded-md transition-all duration-300 text-left
-      ${isOpen ? "gap-1 hover:bg-gray-200" : "justify-center bg-none"}`}
+      ${isOpen ? "gap-1 hover:bg-gray-200 dark:hover:bg-gray-600" : "justify-center bg-none "}`}
     >
       <Avatar className={`${isOpen ? "w-14 h-14 p-2" : "w-10 h-10 p-0"}`}>
         <AvatarFallback

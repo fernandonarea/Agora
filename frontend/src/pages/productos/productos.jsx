@@ -8,8 +8,7 @@ export const Productos = () => {
   const token = localStorage.getItem("token");
   const [isOpen, setIsOpen] = useState(false);
 
-
-  const handleClose = ()=> setIsOpen(false);
+  const handleClose = () => setIsOpen(false);
 
   return (
     <div>
@@ -31,10 +30,15 @@ export const Productos = () => {
       </header>
       <ProductList token={token} />
       <div
-        className={`fixed top-0 right-0 h-full w-fit p-6 bg-white shadow-2xl transform transition-transform duration-300 z-50 ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed top-0 right-0 h-full w-fit p-6 bg-white shadow-2xl transform transition-transform duration-300 z-50 dark:bg-black ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
-        <CreateProductForm token={token} isOpen={isOpen} onClose={handleClose}/>
-        
+        <CreateProductForm
+          token={token}
+          isOpen={isOpen}
+          onClose={handleClose}
+        />
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ const SideBar = () => {
         </div>
 
         <button
-          className="text-muted-foreground hover:bg-gray-300 p-1 rounded-md"
+          className="text-muted-foreground hover:bg-gray-300 p-1 rounded-md dark:hover:bg-gray-600"
           onClick={() => setIsOpen(!isOpen)}
         >
           <PanelLeft size={20} />

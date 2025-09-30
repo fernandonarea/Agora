@@ -18,7 +18,7 @@ export const MainItems = ({ isOpen }) => {
             to={item.link}
             key={index}
             href={item.href}
-            className={`flex items-center gap-2 p-2 font-semibold rounded-md hover:bg-gray-200 ${
+            className={`flex items-center gap-2 p-2 font-semibold rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 ${
               isOpen ? "w-full" : "w-fit"
             }`}
           >

@@ -8,6 +8,7 @@ import {
   Search,
   Trash2,
 } from "lucide-react";
+import { DeleteProduct } from "./crud/delete-product";
 
 const ProductList = ({ token }) => {
   const { products, loading, error, fetchProducts, metadata } = useProducts();
@@ -53,30 +54,30 @@ const ProductList = ({ token }) => {
       ) : (
         <div className="border border-gray-200 rounded-lg shadow-xs overflow-hidden dark:border-neutral-700">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-            <thead className=" bg-gray-50 dark:bg-neutral-800">
+            <thead className=" bg-gray-50 dark:bg-neutral-700">
               <tr>
-                <th className="px-6 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-500">
+                <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
                   Nombre
                 </th>
-                <th className="px-6 py-5 text-start text-xs font-medium text-gray-500  dark:text-neutral-500">
+                <th className="px-5 py-5 text-start text-xs font-medium text-gray-500  dark:text-neutral-300">
                   Descripcion
                 </th>
-                <th className="px-6 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-500">
+                <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
                   Precio
                 </th>
-                <th className="px-6 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-500">
+                <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
                   Stock
                 </th>
-                <th className="px-6 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-500">
+                <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
                   Acciones
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100 dark:divide-neutral-700">
               {products.map((p) => (
                 <tr
                   key={p.id_product}
-                  className=" hover:bg-gray-100  dark:hover:bg-neutral-700"
+                  className=" hover:bg-gray-100  dark:hover:bg-neutral-800"
                 >
                   <td className="px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
                     {p.product_name}
@@ -94,9 +95,7 @@ const ProductList = ({ token }) => {
                     <button className="p-2 rounded-md hover:bg-violet-500 hover:text-white dark:hover:bg-violet-600">
                       <Pencil size={16} />
                     </button>
-                    <button className="p-2 rounded-md hover:bg-red-400 hover:text-white dark:hover:bg-red-600">
-                      <Trash2 size={16} />
-                    </button>
+                    <DeleteProduct id_product={p.id_product} token={token} />
                   </td>
                 </tr>
               ))}

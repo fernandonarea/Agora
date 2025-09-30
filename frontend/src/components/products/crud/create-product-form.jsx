@@ -45,11 +45,11 @@ export const CreateProductForm = ({ token, isOpen, onClose}) => {
   };
 
   return (
-    <div>
+    <div className="dark:bg-black">
       {isOpen && (
         <form
           onSubmit={handleCreateProduct}
-          className="flex flex-col gap-6 w-96"
+          className="flex flex-col gap-6 w-96 dark:bg-black"
         >
           <Label className={"text-2xl"}>Crear nuevo producto</Label>
           <div className="grid gap-4">
@@ -63,6 +63,7 @@ export const CreateProductForm = ({ token, isOpen, onClose}) => {
                   value={productData.product_name}
                   placeholder="Galleta Oreo"
                   required
+                  autoComplete="off"
                 />
               </div>
 
@@ -126,7 +127,7 @@ export const CreateProductForm = ({ token, isOpen, onClose}) => {
         </form>
       )}
       {alert && (
-        <Alert className="bg-green-50 border-green-600 text-green-700 mt-5">
+        <Alert className="bg-green-50 border-green-600 text-green-700 mt-5 dark:bg-green-800 dark:border-green-400 dark:text-green-200">
           <CheckCircle2 className="h-4 w-4" />
           <AlertTitle>Producto creado exitosamente</AlertTitle>
         </Alert>
