@@ -1,13 +1,13 @@
 import ProductList from "@/components/products/products-list";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Share } from "lucide-react";
 
 export const Productos = () => {
   const token = localStorage.getItem("token");
 
   return (
     <div>
-      <header className="flex p-5 border-b-1 justify-between items-center">
+      <header className="flex p-5 border-b-1 justify-between items-center ">
         <div className="text-2xl font-semibold">
           Productos
         </div>
@@ -19,8 +19,8 @@ export const Productos = () => {
           </Button>
           </div>
           <Button className="flex flex-row bg-secondary text-primary">
-            <Plus />
-            Add Product
+            <Share />
+            Export
           </Button>
         </div>
       </header>

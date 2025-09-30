@@ -1,25 +1,34 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login, register } from "../services/authService";
+import { getUserById } from "@/services/userService";
 
 export const useAuth = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
   const navigate = useNavigate();
 
-  const loginUser = async (user_email, password) => {
+const loginUser = async (user_email, password) => {
     setLoading(true);
     try {
       const response = await login(user_email, password);
-      if(!response.succes){
-        setError(response.data.message)
-        setUser(null)
+      if (!response.success) {
+        setError(response.data.message);
+        setUser(null);
+        return;
       }
-      setUser(response.data)
-      navigate("/home")
-      console.log(response.data)
+      
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("id_user", response.data.id_user);
+      
+      // Obtener datos completos del usuario
+      const userData = await getUserById(response.data.id_user, response.data.token);
+      if (userData.success) {
+        setUser(userData.data[0]);
+      }
+      
+      navigate("/home");
     } catch (error) {
       setError(error.message);
     } finally {
@@ -52,5 +61,5 @@ export const useAuth = () => {
     }
   };
 
-  return {user, loading, error, loginUser, registerUser};
+  return { user, loading, error, loginUser, registerUser };
 };

@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { ChevronsUpDown } from "lucide-react";
 
-export const NavUser = ({ isOpen, user }) => {
+export const NavUser = ({ isOpen }) => {
   const navigate = useNavigate();
-  const { logout } = useUserContext();
+  const { logout, user } = useUserContext();
 
   const handleLogout = () => {
     logout();

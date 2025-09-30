@@ -1,8 +1,8 @@
 import { Moon, CircleQuestionMark, Settings } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { NavUser } from "./nav-user";
+// import { NavUser } from "./nav-user"
 
-export const SettingsItems = ({ isOpen, user }) => {
+export const SettingsItems = ({ isOpen }) => {
   const settingsItems = [
     { icon: Moon, text: "Modo Oscuro", href: "#" },
     { icon: CircleQuestionMark, text: "Obtener ayuda", href: "#" },
@@ -26,9 +26,9 @@ export const SettingsItems = ({ isOpen, user }) => {
           </a>
         ))}
 
-        <Separator/>
 
-        <NavUser isOpen={isOpen} user={user}/>
+
+        {/* <NavUser isOpen={isOpen}/> */}
       </div>
   );
 };
