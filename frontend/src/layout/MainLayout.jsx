@@ -3,11 +3,11 @@ import SideBar from '../components/sideBar/sideBar';
 
 export default function MainLayout() {
   return (
-    <div className='flex flex-row bg-neutral-50'>
+    <div className='flex flex-row max-h-dvh min-h-dvh'>
       <aside>
         <SideBar/>
       </aside>
-      <main className="flex flex-col w-full max-h-1 background">
+      <main className="flex flex-col w-full max-h-screen overflow-auto">
         <Outlet />
       </main>
     </div>

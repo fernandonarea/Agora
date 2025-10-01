@@ -1,10 +1,14 @@
 import axios from "axios";
 
-export const Products = async (token) => {
+export const Products = async (token, page = 1, limit = 10) => {
   try {
     const response = await axios.get(
       `http://localhost:3200/api/products/getProducts`,
       {
+        params:{
+          page,
+          limit
+        },
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -92,8 +96,8 @@ export const updateProduct = async (id_product, productData, token) => {
 
 export const deleteProduct = async (id_product, token) => {
   try {
-    const response = await axios.post(
-      `http://localhost:3200/api/products/updateProduct/${id_product}`,
+    const response = await axios.delete(
+      `http://localhost:3200/api/products/deleteProduct/${id_product}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

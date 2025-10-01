@@ -203,7 +203,7 @@ export const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id_user: user.id_user, role: user.user_name },
+      { id_user: user.id_user, role: user.role },
       process.env.SECRET_JWT_KEY,
       { expiresIn: "1h" }
     );
@@ -211,7 +211,7 @@ export const login = async (req, res) => {
     res
       .status(200)
       .json(
-        response_success({ token, id_user: user.id_user }),
+        response_success({ token, role: user.role }),
         "Inicio de sesion exitoso"
       );
   } catch (error) {

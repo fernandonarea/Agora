@@ -1,16 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-const initialState = {
+const ThemeProviderContext = createContext({
   theme: "system",
-  setTheme: () => null,
-};
-
-const ThemeProviderContext = createContext(initialState);
+  setTheme: () => {},
+});
 
 export function ThemeProvider({
   children,
   defaultTheme = "system",
   storageKey = "vite-ui-theme",
+  ...props
 }) {
   const [theme, setThemeState] = useState(() => {
     return localStorage.getItem(storageKey) || defaultTheme;
@@ -25,6 +24,7 @@ export function ThemeProvider({
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light";
+
       root.classList.add(systemTheme);
       return;
     }
@@ -38,7 +38,7 @@ export function ThemeProvider({
   };
 
   return (
-    <ThemeProviderContext.Provider value={{ theme, setTheme }}>
+    <ThemeProviderContext.Provider {...props} value={{ theme, setTheme }}>
       {children}
     </ThemeProviderContext.Provider>
   );
@@ -46,8 +46,10 @@ export function ThemeProvider({
 
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
-  if (!context) {
+
+  if (context === undefined) {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
+
   return context;
 };

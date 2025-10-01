@@ -1,16 +1,13 @@
 import { useState } from "react";
-import {
-  Codesandbox,
-  PanelLeft,
-} from "lucide-react";
-import { useUserContext } from "../../context/userContext"
+import { Codesandbox, PanelLeft } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+// import { useUserContext } from "../../context/userContext"
 import { MainItems } from "./mainItems";
 import { SettingsItems } from "./settitngsItems";
-
+import { NavUser } from "./nav-user";
 
 const SideBar = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const { user } = useUserContext()
 
   return (
     <div
@@ -26,10 +23,10 @@ const SideBar = () => {
         </div>
 
         <button
-          className="text-muted-foreground hover:bg-gray-300 p-1 rounded-md"
+          className="text-muted-foreground hover:bg-gray-300 p-1 rounded-md dark:hover:bg-gray-600"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <PanelLeft size={20}/>
+          <PanelLeft size={20} />
         </button>
       </header>
 
@@ -42,8 +39,10 @@ const SideBar = () => {
           Menu
         </p>
 
-        <MainItems isOpen={isOpen}/>
-        <SettingsItems isOpen={isOpen} user={user}/>
+        <MainItems isOpen={isOpen} />
+        <SettingsItems isOpen={isOpen} />
+        <Separator />
+        <NavUser isOpen={isOpen} />
       </div>
     </div>
   );
