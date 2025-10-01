@@ -7,7 +7,7 @@ export default function MainLayout() {
       <aside>
         <SideBar/>
       </aside>
-      <main className="flex flex-col w-full max-h-screen overflow-y-scroll">
+      <main className="flex flex-col w-full max-h-screen overflow-auto">
         <Outlet />
       </main>
     </div>

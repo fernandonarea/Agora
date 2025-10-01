@@ -1,4 +1,5 @@
 import { useProducts } from "@/hooks/useProducts";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -13,12 +14,16 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Trash2 } from "lucide-react";
 
-export const DeleteProduct = ({ id_product, token }) => {
+export const DeleteProduct = ({ id_product, token, onRefresh }) => {
   const { deleteProducts, error } = useProducts();
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleDelete = async () => {
     const result = await deleteProducts(id_product, token);
     if (result) {
+      if (onRefresh) {
+        onRefresh();
+      }
       console.log("Producto eliminado con éxito");
     } else {
       console.log("Error al eliminar el producto:", error);
@@ -26,7 +31,7 @@ export const DeleteProduct = ({ id_product, token }) => {
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={showAlert} onOpenChange={setShowAlert}>
       <AlertDialogTrigger asChild>
         <Button
           variant="outline"

@@ -1,19 +1,15 @@
 import { useProducts } from "@/hooks/useProducts";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Pencil,
-  Search,
-  Trash2,
-} from "lucide-react";
+import { Button } from "../ui/button";
+import { ChevronLeft, ChevronRight, Pencil } from "lucide-react";
 import { DeleteProduct } from "./crud/delete-product";
 
-const ProductList = ({ token }) => {
+const ProductList = ({ token, onRefresh }) => {
   const { products, loading, error, fetchProducts, metadata } = useProducts();
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
+
 
   useEffect(() => {
     if (token) {
@@ -53,7 +49,7 @@ const ProductList = ({ token }) => {
         <p>No hay Productos</p>
       ) : (
         <div className="border border-gray-200 rounded-lg shadow-xs overflow-hidden dark:border-neutral-700">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+          <table className="min-w-full divide-y divide-gray-200 overflow-hidden whitespace-nowrap dark:divide-neutral-700">
             <thead className=" bg-gray-50 dark:bg-neutral-700">
               <tr>
                 <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
@@ -89,13 +85,15 @@ const ProductList = ({ token }) => {
                     ${p.product_price}
                   </td>
                   <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                    {p.stock}
+                    {p.stock} <span className="text-muted-foreground">u</span>
                   </td>
-                  <td className="flex gap-3 px-6 py-4 text-sm font-medium">
-                    <button className="p-2 rounded-md hover:bg-violet-500 hover:text-white dark:hover:bg-violet-600">
+                  <td className="flex gap-3 px-6 py-3 text-sm font-medium">
+                    <Button 
+                      variant="outline"
+                      className="hover:bg-violet-500 hover:text-white dark:hover:bg-violet-700">
                       <Pencil size={16} />
-                    </button>
-                    <DeleteProduct id_product={p.id_product} token={token} />
+                    </Button>
+                    <DeleteProduct id_product={p.id_product} token={token} onRefresh={onRefresh} />
                   </td>
                 </tr>
               ))}

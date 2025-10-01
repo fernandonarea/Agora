@@ -8,8 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle2 } from "lucide-react";
 
-
-export const CreateProductForm = ({ token, isOpen, onClose}) => {
+export const CreateProductForm = ({ token, isOpen, onClose, onRefresh }) => {
   const { newProduct, loading, error } = useProducts();
   const [productData, setProductData] = useState({
     product_name: "",
@@ -28,8 +27,8 @@ export const CreateProductForm = ({ token, isOpen, onClose}) => {
 
   const handleCreateProduct = async (e) => {
     e.preventDefault();
-    const result = await newProduct(token, productData);
-    if (result.success) {
+    try {
+      await newProduct(productData, token);
       setProductData({
         product_name: "",
         product_description: "",
@@ -37,10 +36,16 @@ export const CreateProductForm = ({ token, isOpen, onClose}) => {
         stock: 0,
       });
       setAlert(true);
-      setTimeout(() => setAlert(false), 3000);
-      console.log("Producto creado con éxito");
-    } else {
-      console.log("Error al crear el producto:", result.message);
+      if (onRefresh) {
+        onRefresh();
+      }
+
+      setTimeout(() => {
+        setAlert(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Error creating product:", error);
+      return;
     }
   };
 

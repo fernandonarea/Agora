@@ -97,18 +97,16 @@ export const useProducts = () => {
     }
   };
 
-  const newProduct = async (token, productData) => {
+  const newProduct = async (productData, token) => {
     try {
       setLoading(true);
       const response = await createProduct(productData, token);
-      if (!response.success) {
-        setError(response.message);
-      } else {
-        setProducts((prev) => [...prev, response.data]);
-      }
-      return response;
+      const product = response.data;
+      setProducts((prev) => [...prev, product]);
+      return product;
     } catch (error) {
       handleError(error);
+      throw error;
     } finally {
       setLoading(false);
     }

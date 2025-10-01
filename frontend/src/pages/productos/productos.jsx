@@ -7,6 +7,11 @@ import { useState } from "react";
 export const Productos = () => {
   const token = localStorage.getItem("token");
   const [isOpen, setIsOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleRefresh = () => {
+    setRefreshKey((prev) => prev + 1);
+  };
 
   const handleClose = () => setIsOpen(false);
 
@@ -28,7 +33,7 @@ export const Productos = () => {
           </Button>
         </div>
       </header>
-      <ProductList token={token} />
+      <ProductList token={token} key={refreshKey} onRefresh={handleRefresh}/>
       <div
         className={`fixed top-0 right-0 h-full w-fit p-6 bg-white shadow-2xl transform transition-transform duration-300 z-50 dark:bg-black ${
           isOpen ? "translate-x-0" : "translate-x-full"
@@ -38,6 +43,7 @@ export const Productos = () => {
           token={token}
           isOpen={isOpen}
           onClose={handleClose}
+          onRefresh={handleRefresh}
         />
       </div>
     </div>

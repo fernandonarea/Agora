@@ -13,14 +13,9 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      if (!id_user || !token) {
-        setIsLoading(false);
-        return;
-      }
-
       try {
         const response = await getUserById(id_user, token);
-        if (response.success) {
+        if (response) {
           setUser(response.data[0]);
         } else {
           setError(response.message);
