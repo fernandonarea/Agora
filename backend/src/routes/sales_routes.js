@@ -14,7 +14,6 @@ sales_routes.get(
 sales_routes.post(
     "/api/sales/createSale", 
     verifyToken, 
-    checkRole(['admin']), 
     createSale
 );
 

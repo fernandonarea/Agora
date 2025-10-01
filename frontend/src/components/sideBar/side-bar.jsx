@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Codesandbox, PanelLeft } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 // import { useUserContext } from "../../context/userContext"
-import { MainItems } from "./mainItems";
-import { SettingsItems } from "./settitngsItems";
+import { MainItems } from "./main-items";
+import { SettingsItems } from "./settitngs-items";
 import { NavUser } from "./nav-user";
 
 const SideBar = () => {

@@ -6,6 +6,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  getProductByName,
 } from "@/services/productService";
 
 export const useProducts = () => {
@@ -112,6 +113,27 @@ export const useProducts = () => {
     }
   };
 
+const productByName = async (token, product_name) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await getProductByName(token, product_name);
+
+      if (response.data && response.data.length > 0) {
+        setSelectedProduct(response.data[0]);
+      } else {
+        setSelectedProduct(null);
+      }
+
+      return response;
+    } catch (error) {
+      handleError(error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const updateProducts = async (id_product, productData, token) => {
     try {
       setLoading(true);
@@ -152,6 +174,7 @@ export const useProducts = () => {
     fetchProducts,
     getProductById,
     getBestSellingProducts,
+    productByName,
     newProduct,
     updateProducts,
     deleteProducts,

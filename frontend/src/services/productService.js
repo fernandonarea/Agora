@@ -5,9 +5,9 @@ export const Products = async (token, page = 1, limit = 10) => {
     const response = await axios.get(
       `http://localhost:3200/api/products/getProducts`,
       {
-        params:{
+        params: {
           page,
-          limit
+          limit,
         },
         headers: {
           Authorization: `Bearer ${token}`,
@@ -15,9 +15,9 @@ export const Products = async (token, page = 1, limit = 10) => {
       }
     );
     return response.data;
-  
   } catch (error) {
-    const message = error.response?.data?.message || "Error en el servicio de productos";
+    const message =
+      error.response?.data?.message || "Error en el servicio de productos";
     console.error(message);
     throw error;
   }
@@ -25,15 +25,18 @@ export const Products = async (token, page = 1, limit = 10) => {
 
 export const ProductById = async (token, id_product) => {
   try {
-    const response = await axios.get(`${id_product}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(
+      `http://localhost:3200/api/products/getProductById/${id_product}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     const message =
-      error.response?.data?.message || "Error en el servicio de productos";
+      error.response?.data?.message || "Error en el servicio de productos por id";
     throw new Error(message);
   }
 };
@@ -52,6 +55,25 @@ export const bestSellingProducts = async (token) => {
   } catch (error) {
     const message =
       error.response?.data?.message || "Error en el servicio de usuarios";
+    throw new Error(message);
+  }
+};
+
+export const getProductByName = async (token, product_name) => {
+  try {
+    const response = await axios.get(
+      "http://localhost:3200/api/products/getProductByName",
+      product_name,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message || "Error en el servicio de productos por nombre";
     throw new Error(message);
   }
 };

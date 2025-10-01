@@ -6,6 +6,28 @@ import {
   response_success,
 } from "../Responses/responses.js";
 
+export const getSaleById = async (req, res) => {
+  try {
+    const id_sale = req.params.id_sale;
+    const [result] = await db_pool_connection.query(
+      `SELECT sales_date, customer_name, total FROM sales WHERE id_sale = ?`,
+      [id_sale]
+    );
+    if (result.length === 0) {
+      return res
+        .status(400)
+        .json(response_bad_request("Error al obtener las venta"));
+    }
+    res
+      .status(200)
+      .json(response_success(result, "Ventas obtenidas con exito"));
+  } catch (error) {
+    return res
+      .status(500)
+      .json(response_error(500, "Error en el servidor al obtener venta"));
+  }
+};
+
 export const getAllSales = async (req, res) => {
   try {
     const [result] = await db_pool_connection.query(
@@ -30,7 +52,9 @@ export const getAllSales = async (req, res) => {
         );
     }
 
-    res.status(200).json(response_success(result, "Ventas obtenidas con exito"));
+    res
+      .status(200)
+      .json(response_success(result, "Ventas obtenidas con exito"));
   } catch (error) {
     console.log("Error en el servidor al obtener ventas ", error.message);
     return res
@@ -80,8 +104,9 @@ export const createSale = async (req, res) => {
     await connection.beginTransaction();
 
     const product_ids = items.map((item) => item.id_product);
+    
     const [products_db] = await connection.query(
-      `SELECT id_product, product_price, stock FROM products WHERE id_product IN (?) FOR UPDATE`,
+      `SELECT id_product, product_name, product_price, stock FROM products WHERE id_product IN (?) FOR UPDATE`,
       [product_ids]
     );
 
@@ -90,6 +115,7 @@ export const createSale = async (req, res) => {
     let total = 0;
     const sales_detail_data = [];
     const stock_update_promises = [];
+    const sold_products = [];
 
     for (const item of items) {
       const product_data = products_map.get(item.id_product);
@@ -115,6 +141,14 @@ export const createSale = async (req, res) => {
         product_data.product_price,
       ]);
 
+      sold_products.push({
+        id_product: item.id_product,
+        name: product_data.product_name,
+        quantity: item.quantity,
+        unit_price: product_data.product_price,
+        subtotal: subtotal,
+      });
+
       stock_update_promises.push(
         connection.query(
           `UPDATE products SET stock = stock - ? WHERE id_product = ?`,
@@ -139,7 +173,7 @@ export const createSale = async (req, res) => {
     await Promise.all(stock_update_promises);
 
     await connection.commit();
-    res.status(201).json(response_created(id_sale, "Venta creada con éxito"));
+    res.status(201).json(response_created({id_sale, total, items: sold_products}, "Venta creada con éxito"));
   } catch (error) {
     if (connection) await connection.rollback();
     console.error("Error al crear la venta:", error.message);

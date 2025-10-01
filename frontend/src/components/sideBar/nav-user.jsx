@@ -30,7 +30,7 @@ export const NavUser = ({ isOpen }) => {
         </AvatarFallback>
       </Avatar>
       {isOpen && (
-        <div className="flex flex-row h-full items-center">
+        <div className="flex flex-row h-full items-center cursor-pointer">
           <div className="mr-4">
             <span className="font-semibold">
               {user?.user_name.split(" ", 1)}{" "}
