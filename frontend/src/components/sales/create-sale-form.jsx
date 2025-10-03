@@ -13,25 +13,28 @@ export const CreateSalesForm = ({ token }) => {
   const { productByName, selectedProduct } = useProducts();
 
   const [customerName, setCustomerName] = useState("");
-  const [product_name, setProductName] = useState("");
+  const [productname, setProductName] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [items, setItems] = useState([]);
   const [alert, setAlert] = useState(false);
 
-  const handleSearchProduct = async (e) => {
-    e.preventDefault();
-    try {
-      await productByName(token, product_name);
-    } catch (error) {
-      console.error("Error buscando producto:", error);
-    }
-  };
+const handleSearchProduct = async (e) => {
+  e.preventDefault();
+  try {
+    console.log('Iniciando búsqueda:', productname, 'token:', token);
+    await productByName(productname, token);
+    console.log('Producto encontrado:', selectedProduct.product_name, selectedProduct.product_price);
+  } catch (error) {
+    console.error("Error buscando producto:", error);
+  }
+};
 
   const handleAddItem = () => {
     if (!selectedProduct) return;
 
     const newItem = {
-      product_id: selectedProduct.id_product, // asegúrate que la API devuelve este campo
+      product_name: selectedProduct.product_name,
+      price: selectedProduct.product_price,
       quantity: quantity,
     };
 
@@ -55,7 +58,7 @@ export const CreateSalesForm = ({ token }) => {
 
   return (
     <form onSubmit={handleCreateSale} className="space-y-4">
-      <div>
+      <div className="flex flex-col gap-2">
         <Label>Cliente</Label>
         <Input
           type="text"
@@ -64,13 +67,15 @@ export const CreateSalesForm = ({ token }) => {
         />
       </div>
 
-      <div>
-        <Label>Buscar producto</Label>
-        <Input
-          type="text"
-          value={product_name}
-          onChange={(e) => setProductName(e.target.value)}
-        />
+      <div className="flex flex-row gap-2 items-end">
+        <div className="flex flex-col gap-2">
+          <Label>Buscar producto</Label>
+          <Input
+            type="text"
+            value={productname}
+            onChange={(e) => setProductName(e.target.value)}
+          />
+        </div>
         <Button type="button" onClick={handleSearchProduct}>
           Buscar
         </Button>
@@ -96,7 +101,7 @@ export const CreateSalesForm = ({ token }) => {
         <ul>
           {items.map((item, i) => (
             <li key={i}>
-              Producto ID: {item.product_id} - Cantidad: {item.quantity}
+              Producto: {item.product_name} - Cantidad: {item.quantity} - Precio: {item.price}
             </li>
           ))}
         </ul>

@@ -59,17 +59,18 @@ export const bestSellingProducts = async (token) => {
   }
 };
 
-export const getProductByName = async (token, product_name) => {
+export const getProductByName = async (productname, token) => {
   try {
     const response = await axios.get(
       "http://localhost:3200/api/products/getProductByName",
-      product_name,
       {
+        params: { productname },
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
+    console.log('Respuesta del servidor:', response.data);
     return response.data;
   } catch (error) {
     const message =
@@ -77,6 +78,7 @@ export const getProductByName = async (token, product_name) => {
     throw new Error(message);
   }
 };
+
 
 export const createProduct = async (productData, token) => {
   try {

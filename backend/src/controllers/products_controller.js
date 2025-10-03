@@ -81,18 +81,18 @@ export const getProducts = async (req, res) => {
 };
 
 export const getProductByName = async (req, res) => {
-  const { product_name } = req.body;
+  const product_name  = req.query.productname;
 
   try {
     const [product] = await db_pool_connection.query(
-      `SELECT product_name, product_description, product_price, stock FROM products WHERE product_name = ?`,
+      `SELECT id_product, product_name, product_description, product_price, stock FROM products WHERE product_name = ?`,
       [product_name]
     );
 
     if (product.length === 0) {
       return res
         .status(400)
-        .json(response_bad_request("Error al obtener el producto"));
+        .json(response_bad_request("Error al obtener el producto, producto no encontrado"));
     }
 
     res
