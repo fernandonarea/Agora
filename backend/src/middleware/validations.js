@@ -35,14 +35,6 @@ export const validateCreateProduct = [
   check("product_name")
     .notEmpty()
     .withMessage("El nombre del producto es obligatorio"),
-  check("price")
-    .notEmpty()
-    .isNumeric()
-    .withMessage("El precio debe ser un numero"),
-  check("stock")
-    .notEmpty()
-    .isNumeric()
-    .withMessage("El stock debe ser un numero"),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

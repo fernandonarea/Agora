@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export const createSale = async (customerName, items, token) => {
+export const createSale = async (customer_name, items, token) => {
   try {
     const response = await axios.post(
       `http://localhost:3200/api/sales/createSale`,
       {
-        customer_name: customerName,
+        customer_name,
         items,
       },
       {
@@ -14,8 +14,8 @@ export const createSale = async (customerName, items, token) => {
         },
       }
     );
-
-    return response.data.record_id;
+    console.log(response.data)
+    return response.data;
   } catch (error) {
     const message =
       error.response?.data?.message || "Error en el servicio de ventas";

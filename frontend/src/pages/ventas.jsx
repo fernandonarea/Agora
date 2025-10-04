@@ -23,7 +23,7 @@ export const Ventas = () => {
         </div>
       </header>
       
-      <div className="p-5">
+      <div className="p-5 overflow-auto">
         <CreateSalesForm token={token}/>
       </div>
     

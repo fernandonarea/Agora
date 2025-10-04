@@ -63,29 +63,6 @@ export const getAllSales = async (req, res) => {
   }
 };
 
-// export const getSaleById = async (req, res) => {
-//   const id_sale = req.params;
-
-//   try {
-//     const [result] = await db_pool_connection.query(
-//       `SELECT sales_date, customer_name, total FROM sales WHERE id_sale = ?`,
-//       [id_sale]
-//     );
-//     if (result.length === 0) {
-//       return res
-//         .status(400)
-//         .json(response_bad_request("Error al obtener las venta"));
-//     }
-
-//     res.status(200).json(response_succes(result, "Ventas obtenidas con exito"));
-//   } catch (error) {
-//     console.log("Error en el servidor al obtener venta ", error.message);
-//     return res
-//       .status(500)
-//       .json(response_error(500, "Error en el servidor al obtener venta"));
-//   }
-// };
-
 export const createSale = async (req, res) => {
   const { customer_name, items } = req.body;
 

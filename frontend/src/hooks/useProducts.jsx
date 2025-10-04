@@ -127,6 +127,7 @@ const productByName = async (productname, token) => {
   } catch (error) {
     console.error('Error en hook:', error);
     handleError(error);
+    setError(error)
     throw error;
   } finally {
     setLoading(false);
