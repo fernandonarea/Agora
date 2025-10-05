@@ -1,6 +1,4 @@
-import { Moon, CircleQuestionMark, Settings, Sun } from "lucide-react";
-import { Button } from "@/components/ui/button";
-
+import { CircleQuestionMark, Settings, Sun } from "lucide-react";
 
 export const SettingsItems = ({ isOpen }) => {
   const settingsItems = [
