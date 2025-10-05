@@ -30,7 +30,7 @@ export const CreateSalesForm = ({ token }) => {
       console.error("Error buscando producto:", error);
     }
   };
-
+  
   const handleAddItem = () => {
     if (!selectedProduct) return;
 
@@ -63,6 +63,8 @@ export const CreateSalesForm = ({ token }) => {
 
   //Logica de negocio
   const { subtotal, total } = useMemo(() => {
+    //Obtiene todos los items de la venta actual y en cada item multiplica
+    //el precio y su cantidad
     const calculatedSubtotal = items.reduce(
       (acc, item) => acc + item.price * item.quantity,
       0

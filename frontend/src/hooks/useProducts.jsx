@@ -53,6 +53,7 @@ export const useProducts = () => {
         : [];
 
       setProducts(productsArray);
+      console.log(products)
       setMetadata(response.data.metadata);
       return productsArray;
     } catch (error) {

@@ -1,11 +1,24 @@
 import { useUserContext } from "@/context/userContext";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { ChevronsUpDown } from "lucide-react";
+import { Button } from "../ui/button";
+import { ChevronsUpDown, Laptop, LogOutIcon, Moon, Sun } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
+  DropdownMenuSeparator,
+  DropdownMenuLabel
+} from "@/components/ui/dropdown-menu";
+import { useTheme } from "@/provider/ThemeProvider";
 
 export const NavUser = ({ isOpen }) => {
   const navigate = useNavigate();
   const { logout, user } = useUserContext();
+  const { setTheme } = useTheme();
+  
 
   const handleLogout = () => {
     logout();
@@ -13,36 +26,61 @@ export const NavUser = ({ isOpen }) => {
   };
 
   return (
-    <button
-      onClick={handleLogout}
-      className={`flex items-center gap-0 p-1.5 w-full rounded-md transition-all duration-300 text-left
-      ${isOpen ? "gap-1 hover:bg-gray-200 dark:hover:bg-gray-600" : "justify-center bg-none "}`}
-    >
-      <Avatar className={`${isOpen ? "w-14 h-14 p-2" : "w-10 h-10 p-0"}`}>
-        <AvatarFallback
-          className={`${
-            isOpen
-              ? "bg-violet-600 font-medium text-white"
-              : "bg-violet-600 font-medium text-white hover:bg-violet-800"
-          }`}
-        >
-          {user?.user_name[0] + user?.user_lastname[0]}
-        </AvatarFallback>
-      </Avatar>
-      {isOpen && (
-        <div className="flex flex-row h-full items-center cursor-pointer">
-          <div className="mr-4">
-            <span className="font-semibold">
-              {user?.user_name.split(" ", 1)}{" "}
-              {user?.user_lastname.split(" ", 1) || "Cargando.."}
-            </span>
-            <p className="text-xs text-muted-foreground font-semibold">
-              {user?.user_email || "Cargando.."}
-            </p>
+    <div className="flex flex-row w-fit p-2 gap-1.5 items-center">
+        <Avatar className={`${isOpen ? "" : "hidden"}`}>
+          <AvatarFallback
+            className={`${
+              isOpen
+                ? "bg-violet-600 font-medium text-white"
+                : "bg-violet-600 font-medium text-white hover:bg-violet-800"
+            }`}
+          >
+            {user?.user_name[0] + user?.user_lastname[0]}
+          </AvatarFallback>
+        </Avatar>
+        {isOpen && (
+          <div className="flex flex-row h-full items-center cursor-pointer">
+            <div className="mr-4">
+              <span className="font-semibold">
+                {user?.user_name.split(" ", 1)}{" "}
+                {user?.user_lastname.split(" ", 1) || "Cargando.."}
+              </span>
+              <p className="text-xs text-muted-foreground font-semibold">
+                {user?.user_email || "Cargando.."}
+              </p>
+            </div>
           </div>
-          <ChevronsUpDown size={16}/>
-        </div>
-      )}
-    </button>
+        )}
+      <DropdownMenu >
+        <DropdownMenuTrigger asChild>
+          <button className="p-2 border-none rounded-md hover:bg-gray-200 dark:hover:bg-gray-600">
+            <ChevronsUpDown size={16}/>
+          </button>
+        </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>
+              Theme
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator/>
+            <DropdownMenuItem onClick={()=>setTheme("system")}>
+              <Laptop/>
+              System
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={()=>setTheme("light")}>
+              <Sun/>
+              Light
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={()=>setTheme("dark")} >
+              <Moon/>
+              Dark
+            </DropdownMenuItem>
+            <DropdownMenuSeparator/>
+            <DropdownMenuItem onClick={handleLogout}>
+              <LogOutIcon/>
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 };

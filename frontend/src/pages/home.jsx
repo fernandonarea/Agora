@@ -6,7 +6,8 @@ export const Home = () => {
       <header className="flex p-5 border-b-1 ">
         <div className="text-2xl font-semibold">Inicio</div>
       </header>
-      <div className="grid gap-2 grid-cols-3 wrap-break-word p-5 justify-between w-full">
+      <div className="grid gap-2 grid-cols-1 wrap-break-word p-5 justify-between w-full sm:grid-cols-3">
+        
         <div className="flex flex-col gap-5 border-1 h-fit rounded-md shadow-xs p-5 dark:bg-sidebar-accent">
           <div className="bg-violet-600 p-3 rounded-4xl w-fit text-white">
             <BanknoteArrowUpIcon/>
@@ -36,6 +37,7 @@ export const Home = () => {
             <p className="text-3xl font-bold">10</p>
           </div>
         </div>
+
       </div>
 
       <div>

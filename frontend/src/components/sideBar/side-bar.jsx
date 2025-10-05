@@ -12,7 +12,7 @@ const SideBar = () => {
   return (
     <div
       className={`flex flex-col gap-6 min-h-dvh bg-sidebar-accent p-4 transition-normal duration-300 border-r-1 sidebar-border
-        ${isOpen ? "w-64" : "w-18"}`}
+        ${isOpen ? "w-64" : "w-18 items-center"}`}
     >
       <header className="flex flex-row items-center justify-between">
         <div className={`flex items-center gap-3 ${!isOpen && "hidden"}`}>
