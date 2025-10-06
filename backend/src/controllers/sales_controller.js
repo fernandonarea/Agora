@@ -81,7 +81,7 @@ export const createSale = async (req, res) => {
     await connection.beginTransaction();
 
     const product_ids = items.map((item) => item.id_product);
-    
+
     const [products_db] = await connection.query(
       `SELECT id_product, product_name, product_price, stock FROM products WHERE id_product IN (?) FOR UPDATE`,
       [product_ids]
@@ -150,7 +150,14 @@ export const createSale = async (req, res) => {
     await Promise.all(stock_update_promises);
 
     await connection.commit();
-    res.status(201).json(response_created({id_sale, total, items: sold_products}, "Venta creada con éxito"));
+    res
+      .status(201)
+      .json(
+        response_created(
+          { id_sale, total, items: sold_products },
+          "Venta creada con éxito"
+        )
+      );
   } catch (error) {
     if (connection) await connection.rollback();
     console.error("Error al crear la venta:", error.message);
@@ -159,5 +166,63 @@ export const createSale = async (req, res) => {
       .json(response_error("Error interno del servidor al procesar la venta."));
   } finally {
     if (connection) connection.release();
+  }
+};
+
+export const metrics = async (req, res) => {
+  try {
+    const [lowStockProducts] = await db_pool_connection.query(
+      "Select count(*) as lowStockProducts from products where stock <= 5;"
+    );
+
+    const [totalIncome] = await db_pool_connection.query(
+      "SELECT SUM(total) as total_sum FROM sales;"
+    );
+    const [todaySales] = await db_pool_connection.query(
+      "SELECT COUNT(*) AS total FROM sales WHERE DATE(sales_date) = CURDATE();"
+    );
+
+    res.status(200).json(
+      response_success(
+        {
+          lowStockProducts: lowStockProducts[0].lowStockProducts,
+          totalIncome: totalIncome[0].total_sum,
+          todaySales: todaySales[0].total,
+        },
+        "Datos de ventas totales obtenidos con exito"
+      )
+    );
+  } catch (error) {
+    return res
+      .status(500)
+      .json(
+        response_error(
+          500,
+          "Error en el servidor al obtener datos ventas totales"
+        )
+      );
+  }
+};
+
+export const monthPerformance = async (req, res) => {
+  try {
+    const [data] = await db_pool_connection.query(
+      `SELECT DATE(sales_date) AS dia, COUNT(*) AS total 
+      FROM sales 
+      WHERE sales_date >= CURDATE() - INTERVAL 30 DAY
+      GROUP BY dia 
+      ORDER BY dia`
+    );
+
+    res.status(200).json(response_success(data, "Performance del mes obtenido con exito"));
+  } catch (error) {
+    return res
+      .status(500)
+      .json(
+        response_error(
+          500,
+          "Error en el servidor al obtener el desempeño del mes"
+        )
+      );
   }
 };

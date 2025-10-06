@@ -36,7 +36,8 @@ export const ProductById = async (token, id_product) => {
     return response.data;
   } catch (error) {
     const message =
-      error.response?.data?.message || "Error en el servicio de productos por id";
+      error.response?.data?.message ||
+      "Error en el servicio de productos por id";
     throw new Error(message);
   }
 };
@@ -70,15 +71,15 @@ export const getProductByName = async (productname, token) => {
         },
       }
     );
-    console.log('Respuesta del servidor:', response.data);
+    console.log("Respuesta del servidor:", response.data);
     return response.data;
   } catch (error) {
     const message =
-      error.response?.data?.message || "Error en el servicio de productos por nombre";
+      error.response?.data?.message ||
+      "Error en el servicio de productos por nombre";
     throw new Error(message);
   }
 };
-
 
 export const createProduct = async (productData, token) => {
   try {

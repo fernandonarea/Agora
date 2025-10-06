@@ -126,7 +126,7 @@ export const CreateSalesForm = ({ token }) => {
         )}
       </div>
 
-      <div className="flex flex-col w-full gap-6 p-6 rounded-md border-1 border-gray-200 dark:border-gray-500">
+      <div className="flex flex-col w-full gap-6 p-6 rounded-md border-1 border-gray-200 shadow-sm dark:border-gray-500">
         <div className="flex flex-col gap-6 ">
           <h2 className="text-2xl font-semibold">Resumen de Venta</h2>
           <ul className="flex flex-col gap-1.5">

@@ -44,7 +44,7 @@ export const getProducts = async (req, res) => {
     );
 
     const [products] = await db_pool_connection.query(
-      `SELECT id_product, product_name, product_description, product_price, stock FROM products order by created_at desc LIMIT ? OFFSET ?;`,
+      `SELECT id_product, product_name, product_description, product_price, stock FROM products order by stock desc LIMIT ? OFFSET ?;`,
       [limit, offset]
     );
 

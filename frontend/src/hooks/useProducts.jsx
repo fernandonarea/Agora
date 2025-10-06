@@ -13,6 +13,7 @@ export const useProducts = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
+  const [bestProducts, setBestProducts] = useState([])
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [metadata, setMetadata] = useState({
@@ -89,7 +90,7 @@ export const useProducts = () => {
       if (!response.success) {
         setError(response.message);
       } else {
-        setProducts(response.data);
+        setBestProducts(response.data);
       }
       return response;
     } catch (error) {
@@ -182,6 +183,7 @@ const productByName = async (productname, token) => {
     updateProducts,
     deleteProducts,
     products,
+    bestProducts,
     selectedProduct,
     error,
     loading,
