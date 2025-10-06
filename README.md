@@ -1,9 +1,7 @@
 # Sistema de gestion de inventario Agora
 Un sistema web completo para la gestión de inventario, ventas, productos y proveedores, desarrollado con el stack MERN (MySQL, Express, React, Node.js) y estilizado con Shadcn/UI.
 
-<p align="center">
-  <img width='700px' src="../agora/frontend/src/assets/images/loginImage.png">
-</p>
+
 
 
 ## Descripción
