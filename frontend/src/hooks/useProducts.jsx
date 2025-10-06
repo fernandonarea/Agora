@@ -120,16 +120,16 @@ const productByName = async (productname, token) => {
     setLoading(true);
     setError(null);
     const response = await getProductByName(productname, token);
-    if (response && response.data.length > 0) {
-      setSelectedProduct(response.data[0]);
-    } else {
-      setSelectedProduct(null);
+
+    if (!response.data || response.data.length === 0) {
+      throw new Error("No se encontró el producto");
     }
+    setSelectedProduct(response.data[0]);
+
     return response;
   } catch (error) {
-    console.error('Error en hook:', error);
+    setSelectedProduct(null);
     handleError(error);
-    setError(error)
     throw error;
   } finally {
     setLoading(false);

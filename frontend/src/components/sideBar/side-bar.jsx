@@ -12,14 +12,14 @@ const SideBar = () => {
   return (
     <div
       className={`flex flex-col gap-6 min-h-dvh bg-sidebar-accent p-4 transition-normal duration-300 border-r-1 sidebar-border
-        ${isOpen ? "w-64" : "w-18 items-center"}`}
+        ${isOpen ? "w-64" : "w-18"}`}
     >
       <header className="flex flex-row items-center justify-between">
         <div className={`flex items-center gap-3 ${!isOpen && "hidden"}`}>
           <div className="bg-violet-800 p-1.5 rounded-md">
             <Codesandbox size={32} color="white" />
           </div>
-          <div className="font-bold text-2xl">Inventory</div>
+          <div className="font-semibold text-2xl">Inventory</div>
         </div>
 
         <button

@@ -1,6 +1,14 @@
 import { useEffect } from "react";
 import { useSale } from "@/hooks/useSale";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 import { ChartContainer } from "@/components/ui/chart";
 
 export const Graphics = ({ token }) => {
@@ -8,7 +16,16 @@ export const Graphics = ({ token }) => {
 
   useEffect(() => {
     getGraphicsData(token);
-  }, [getGraphicsData, token]);
+  }, [token]);
+
+  const formattedData = data.map((item) => ({
+    ...item,
+    dia: new Date(item.dia).toLocaleDateString("es-ES", {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    }),
+  }));
 
   if (error) {
     return <div className="text-red-500">Error: {error}</div>;
@@ -27,11 +44,11 @@ export const Graphics = ({ token }) => {
 
   return (
     <ChartContainer config={chartConfig} className="h-[600px] w-full">
-      <BarChart data={data} width={400} height={300}>
+      <BarChart data={formattedData} width={400} height={300}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="dia" />
+        <XAxis dataKey="dia"/>
         <YAxis />
-        <Tooltip />
+        <Tooltip labelStyle={{ color: "black" }} />
         <Legend />
         <Bar dataKey="total" fill={chartConfig.total.color} radius={4} />
       </BarChart>

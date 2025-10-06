@@ -1,71 +1,83 @@
 import { useSale } from "@/hooks/useSale";
 import { useMemo, useState } from "react";
 import { useProducts } from "@/hooks/useProducts";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertTitle } from "@/components/ui/alert";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, OctagonX, Trash2 } from "lucide-react";
 
 export const CreateSalesForm = ({ token }) => {
-  //CUSTOM HOOKS
   const { createNewSale, loading, error } = useSale();
   const { productByName, selectedProduct } = useProducts();
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [errorAlert, setErrorAlert] = useState("");
 
-  //HOOKS
-  const [customer_name, setCustomerName] = useState("");
-  const [productname, setProductName] = useState("");
-  const [quantity, setQuantity] = useState(1);
-  const [items, setItems] = useState([]);
-  const [alert, setAlert] = useState(false);
+  const [saleData, setSaleData] = useState({
+    customer_name: "",
+    productname: "",
+    quantity: 1,
+    items: [],
+  });
 
-  //Manejadores de Eventos
   const handleSearchProduct = async (e) => {
     e.preventDefault();
     try {
-      await productByName(productname, token);
+      setErrorAlert("");
+      await productByName(saleData.productname, token);
     } catch (error) {
-      setAlert(error);
-      console.error("Error buscando producto:", error);
+      setErrorAlert(error?.message || "Error buscando producto");
+      console.error("Error buscando producto: ", error);
     }
   };
-  
+
+  error
+
   const handleAddItem = () => {
     if (!selectedProduct) return;
 
     const newItem = {
-      id_product : selectedProduct.id_product,
+      id_product: selectedProduct.id_product,
       product_name: selectedProduct.product_name,
       price: selectedProduct.product_price,
-      quantity: quantity,
+      quantity: saleData.quantity,
     };
 
-    setItems([...items, newItem]);
-    setProductName("");
-    setQuantity(1);
+    setSaleData((prev) => ({
+      ...prev,
+      items: [...prev.items, newItem],
+      productname: "",
+      quantity: 1,
+    }));
+  };
+
+  const deleteItem = (index) => {
+    setSaleData((prev) => ({
+      ...prev,
+      items: prev.items.filter((_, i) => i !== index),
+    }));
   };
 
   const handleCreateSale = async (e) => {
     e.preventDefault();
     try {
-      await createNewSale(customer_name, items, token);
-      setCustomerName("");
-      setAlert(true);
-      setCustomerName("")
-      setItems([])
-      setQuantity(0)
-      setTimeout(() => setAlert(false), 2000);
+      await createNewSale(saleData.customer_name, saleData.items, token);
+      setSaleData({
+        customer_name: "",
+        productname: "",
+        quantity: 1,
+        items: [],
+      });
+      setSuccessAlert(true);
+      setTimeout(() => setSuccessAlert(false), 2000);
     } catch (error) {
-      console.error("Error creando la venta:", error);
+      setErrorAlert(error?.message || "Error creando la venta");
+      setTimeout(() => setErrorAlert(""), 2000);
     }
   };
 
-  //Logica de negocio
   const { subtotal, total } = useMemo(() => {
-    //Obtiene todos los items de la venta actual y en cada item multiplica
-    //el precio y su cantidad
-    const calculatedSubtotal = items.reduce(
+    const calculatedSubtotal = saleData.items.reduce(
       (acc, item) => acc + item.price * item.quantity,
       0
     );
@@ -73,7 +85,8 @@ export const CreateSalesForm = ({ token }) => {
       subtotal: calculatedSubtotal,
       total: calculatedSubtotal,
     };
-  }, [items]); 
+  }, [saleData.items]);
+
 
   return (
     <form onSubmit={handleCreateSale} className="flex justify-between gap-6">
@@ -83,17 +96,26 @@ export const CreateSalesForm = ({ token }) => {
             <Label>Buscar producto</Label>
             <Input
               type="text"
-              value={productname}
-              onChange={(e) => setProductName(e.target.value)}
+              value={saleData.productname}
+              onChange={(e) =>
+                setSaleData((prev) => ({
+                  ...prev,
+                  productname: e.target.value,
+                }))
+              }
               placeholder="Ej: Teclado Mecánico"
             />
           </div>
 
-          <Button type="button" onClick={handleSearchProduct}>
+          <Button
+            type="button"
+            onClick={handleSearchProduct}
+            disabled={!saleData.productname.trim()}
+          >
             Buscar
           </Button>
         </div>
-
+        
         {selectedProduct && (
           <div className="flex flex-col gap-4 rounded-md border p-4">
             <div className="flex items-center justify-between">
@@ -102,22 +124,26 @@ export const CreateSalesForm = ({ token }) => {
                   {selectedProduct.product_name}
                 </span>
                 <span className="text-muted-foreground">
-                  {selectedProduct.product_price}
+                  ${selectedProduct.product_price}
                 </span>
               </div>
             </div>
-
             <div className="flex items-center gap-2">
               <Input
                 type="number"
                 min="1"
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
+                value={saleData.quantity}
+                onChange={(e) =>
+                  setSaleData((prev) => ({
+                    ...prev,
+                    quantity: Number(e.target.value),
+                  }))
+                }
               />
               <Button
                 type="button"
                 onClick={handleAddItem}
-                disabled={quantity < 1}
+                disabled={saleData.quantity < 1}
               >
                 Añadir
               </Button>
@@ -133,11 +159,12 @@ export const CreateSalesForm = ({ token }) => {
             <div className="flex justify-between text-xs font-semibold text-muted-foreground">
               <span>PRODUCTO</span>
               <span>CANT.</span>
+              <span>ACCIONES</span>
             </div>
 
             <hr className="my-2" />
 
-            {items.map((item, i) => (
+            {saleData.items.map((item, i) => (
               <li key={i} className="flex justify-between">
                 <div className="flex flex-col">
                   {item.product_name}
@@ -146,6 +173,12 @@ export const CreateSalesForm = ({ token }) => {
                   </span>
                 </div>
                 <span>{item.quantity}</span>
+                <button
+                  onClick={() => deleteItem(i)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  <Trash2 size={16} />
+                </button>
               </li>
             ))}
           </ul>
@@ -156,38 +189,51 @@ export const CreateSalesForm = ({ token }) => {
             <Label>Cliente</Label>
             <Input
               type="text"
-              value={customer_name}
-              onChange={(e) => setCustomerName(e.target.value)}
+              value={saleData.customer_name}
+              onChange={(e) =>
+                setSaleData((prev) => ({
+                  ...prev,
+                  customer_name: e.target.value,
+                }))
+              }
               required
             />
           </div>
         </div>
 
         <div className="space-y-2 border-t pt-4">
-            <div className="flex justify-between text-muted-foreground">
-                <p>Subtotal</p>
-                <p>${subtotal.toFixed(2)}</p>
-            </div>
-            <div className="flex justify-between text-2xl font-bold">
-                <p>Total</p>
-                <p>${total.toFixed(2)}</p>
-            </div>
+          <div className="flex justify-between text-muted-foreground">
+            <p>Subtotal</p>
+            <p>${subtotal.toFixed(2)}</p>
+          </div>
+          <div className="flex justify-between text-2xl font-bold">
+            <p>Total</p>
+            <p>${total.toFixed(2)}</p>
+          </div>
         </div>
 
-        <Button type="submit" disabled={loading}>
+        <Button
+          type="submit"
+          disabled={
+            loading ||
+            saleData.items.length === 0 ||
+            !saleData.customer_name.trim()
+          }
+        >
           {loading ? "Creando..." : "Crear venta"}
         </Button>
 
-        {alert && (
-          <Alert>
-            <CheckCircle2 className="h-4 w-4" />
-            <AlertTitle>Venta creada correctamente</AlertTitle>
+        {errorAlert && (
+          <Alert className={"bg-red-100 border-red-400 text-red-700 dark:bg-red-900 dark:border-red-600 dark:text-red-300"}>
+            <OctagonX className="h-4 w-4"/>
+            <AlertTitle>{errorAlert}</AlertTitle>
           </Alert>
         )}
 
-        {error && (
-          <Alert variant="destructive">
-            <AlertTitle>{error}</AlertTitle>
+        {successAlert && (
+          <Alert className="bg-green-100 border-green-400 text-green-700 dark:bg-green-900 dark:border-green-600 dark:text-green-300">
+            <CheckCircle2 className="h-4 w-4" />
+            <AlertTitle>Venta creada correctamente</AlertTitle>
           </Alert>
         )}
       </div>

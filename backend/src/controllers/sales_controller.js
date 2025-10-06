@@ -97,15 +97,9 @@ export const createSale = async (req, res) => {
     for (const item of items) {
       const product_data = products_map.get(item.id_product);
 
-      if (!product_data) {
-        throw new Error(
-          `El producto con ID ${item.id_product} no fue encontrado.`
-        );
-      }
-
       if (product_data.stock < item.quantity) {
         throw new Error(
-          `Stock insuficiente para el producto con ID ${item.id_product}.`
+          `Stock insuficiente para el producto con nombre ${product_data.product_name}.`
         );
       }
 
@@ -161,9 +155,14 @@ export const createSale = async (req, res) => {
   } catch (error) {
     if (connection) await connection.rollback();
     console.error("Error al crear la venta:", error.message);
-    res
-      .status(500)
-      .json(response_error("Error interno del servidor al procesar la venta."));
+    if (error.message.includes('Stock insuficiente')) {
+      return res.status(400).json(
+        response_bad_request(error.message)
+      );
+    }
+    res.status(500).json(
+      response_error("Error interno del servidor al procesar la venta.")
+    );
   } finally {
     if (connection) connection.release();
   }
