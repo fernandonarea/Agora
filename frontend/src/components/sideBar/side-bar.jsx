@@ -17,7 +17,7 @@ const SideBar = () => {
       <header className="flex flex-row items-center justify-between">
         <div className={`flex items-center gap-3 ${!isOpen && "hidden"}`}>
           <div className="bg-violet-800 p-1.5 rounded-md">
-            <Codesandbox size={32} color="white" />
+            <Codesandbox size={24}  color="white"/>
           </div>
           <div className="font-semibold text-2xl">Inventory</div>
         </div>
@@ -32,7 +32,7 @@ const SideBar = () => {
 
       <div className="flex flex-col gap-2 flex-1" id="sbMainItems">
         <p
-          className={`text-muted-foreground text-xs font-bold ${
+          className={`text-muted-foreground text-xs font-medium ${
             !isOpen && "hidden"
           }`}
         >

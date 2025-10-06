@@ -7,20 +7,20 @@ export const SettingsItems = ({ isOpen }) => {
   ];
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col items-center gap-2">
       {settingsItems.map((items, index) => (
         <a
           key={index}
           href={items.href}
           className={`${
             isOpen
-              ? "flex items-center gap-2 p-2 font-semibold w-full hover:bg-gray-200 rounded-md dark:hover:bg-gray-600"
-              : "flex items-center gap-2 p-2 font-semibold w-fit hover:bg-gray-200 rounded-md dark:hover:bg-gray-600"
+              ? "flex  gap-2 p-2 font-semibold w-full hover:bg-gray-200 rounded-md dark:hover:bg-gray-600"
+              : "flex  gap-2 p-2 font-semibold w-fit hover:bg-gray-200 rounded-md dark:hover:bg-gray-600"
           }`}
         >
-          <items.icon />
+          <items.icon size={20}/>
           {isOpen && (
-            <span className="text-md text-sidebar-accent-foreground">
+            <span className="text-sm text-sidebar-accent-foreground">
               {items.text}
             </span>
           )}
