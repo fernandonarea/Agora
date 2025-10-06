@@ -26,7 +26,7 @@ const Login = () => {
         <img
           src={loginImage}
           alt="Image"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover dark:brightness-80"
         />
       </div>
     

@@ -6,6 +6,28 @@ import {
   response_success,
 } from "../Responses/responses.js";
 
+export const getSaleById = async (req, res) => {
+  try {
+    const id_sale = req.params.id_sale;
+    const [result] = await db_pool_connection.query(
+      `SELECT sales_date, customer_name, total FROM sales WHERE id_sale = ?`,
+      [id_sale]
+    );
+    if (result.length === 0) {
+      return res
+        .status(400)
+        .json(response_bad_request("Error al obtener las venta"));
+    }
+    res
+      .status(200)
+      .json(response_success(result, "Ventas obtenidas con exito"));
+  } catch (error) {
+    return res
+      .status(500)
+      .json(response_error(500, "Error en el servidor al obtener venta"));
+  }
+};
+
 export const getAllSales = async (req, res) => {
   try {
     const [result] = await db_pool_connection.query(
@@ -30,7 +52,9 @@ export const getAllSales = async (req, res) => {
         );
     }
 
-    res.status(200).json(response_success(result, "Ventas obtenidas con exito"));
+    res
+      .status(200)
+      .json(response_success(result, "Ventas obtenidas con exito"));
   } catch (error) {
     console.log("Error en el servidor al obtener ventas ", error.message);
     return res
@@ -38,29 +62,6 @@ export const getAllSales = async (req, res) => {
       .json(response_error(500, "Error en el servidor al obtener ventas"));
   }
 };
-
-// export const getSaleById = async (req, res) => {
-//   const id_sale = req.params;
-
-//   try {
-//     const [result] = await db_pool_connection.query(
-//       `SELECT sales_date, customer_name, total FROM sales WHERE id_sale = ?`,
-//       [id_sale]
-//     );
-//     if (result.length === 0) {
-//       return res
-//         .status(400)
-//         .json(response_bad_request("Error al obtener las venta"));
-//     }
-
-//     res.status(200).json(response_succes(result, "Ventas obtenidas con exito"));
-//   } catch (error) {
-//     console.log("Error en el servidor al obtener venta ", error.message);
-//     return res
-//       .status(500)
-//       .json(response_error(500, "Error en el servidor al obtener venta"));
-//   }
-// };
 
 export const createSale = async (req, res) => {
   const { customer_name, items } = req.body;
@@ -80,8 +81,9 @@ export const createSale = async (req, res) => {
     await connection.beginTransaction();
 
     const product_ids = items.map((item) => item.id_product);
+
     const [products_db] = await connection.query(
-      `SELECT id_product, product_price, stock FROM products WHERE id_product IN (?) FOR UPDATE`,
+      `SELECT id_product, product_name, product_price, stock FROM products WHERE id_product IN (?) FOR UPDATE`,
       [product_ids]
     );
 
@@ -90,19 +92,14 @@ export const createSale = async (req, res) => {
     let total = 0;
     const sales_detail_data = [];
     const stock_update_promises = [];
+    const sold_products = [];
 
     for (const item of items) {
       const product_data = products_map.get(item.id_product);
 
-      if (!product_data) {
-        throw new Error(
-          `El producto con ID ${item.id_product} no fue encontrado.`
-        );
-      }
-
       if (product_data.stock < item.quantity) {
         throw new Error(
-          `Stock insuficiente para el producto con ID ${item.id_product}.`
+          `Stock insuficiente para el producto con nombre ${product_data.product_name}.`
         );
       }
 
@@ -114,6 +111,14 @@ export const createSale = async (req, res) => {
         item.quantity,
         product_data.product_price,
       ]);
+
+      sold_products.push({
+        id_product: item.id_product,
+        name: product_data.product_name,
+        quantity: item.quantity,
+        unit_price: product_data.product_price,
+        subtotal: subtotal,
+      });
 
       stock_update_promises.push(
         connection.query(
@@ -139,14 +144,84 @@ export const createSale = async (req, res) => {
     await Promise.all(stock_update_promises);
 
     await connection.commit();
-    res.status(201).json(response_created(id_sale, "Venta creada con éxito"));
+    res
+      .status(201)
+      .json(
+        response_created(
+          { id_sale, total, items: sold_products },
+          "Venta creada con éxito"
+        )
+      );
   } catch (error) {
     if (connection) await connection.rollback();
     console.error("Error al crear la venta:", error.message);
-    res
-      .status(500)
-      .json(response_error("Error interno del servidor al procesar la venta."));
+    if (error.message.includes('Stock insuficiente')) {
+      return res.status(400).json(
+        response_bad_request(error.message)
+      );
+    }
+    res.status(500).json(
+      response_error("Error interno del servidor al procesar la venta.")
+    );
   } finally {
     if (connection) connection.release();
+  }
+};
+
+export const metrics = async (req, res) => {
+  try {
+    const [lowStockProducts] = await db_pool_connection.query(
+      "Select count(*) as lowStockProducts from products where stock <= 5;"
+    );
+
+    const [totalIncome] = await db_pool_connection.query(
+      "SELECT SUM(total) as total_sum FROM sales;"
+    );
+    const [todaySales] = await db_pool_connection.query(
+      "SELECT COUNT(*) AS total FROM sales WHERE DATE(sales_date) = CURDATE();"
+    );
+
+    res.status(200).json(
+      response_success(
+        {
+          lowStockProducts: lowStockProducts[0].lowStockProducts,
+          totalIncome: totalIncome[0].total_sum,
+          todaySales: todaySales[0].total,
+        },
+        "Datos de ventas totales obtenidos con exito"
+      )
+    );
+  } catch (error) {
+    return res
+      .status(500)
+      .json(
+        response_error(
+          500,
+          "Error en el servidor al obtener datos ventas totales"
+        )
+      );
+  }
+};
+
+export const monthPerformance = async (req, res) => {
+  try {
+    const [data] = await db_pool_connection.query(
+      `SELECT DATE(sales_date) AS dia, COUNT(*) AS total 
+      FROM sales 
+      WHERE sales_date >= CURDATE() - INTERVAL 30 DAY
+      GROUP BY dia 
+      ORDER BY dia`
+    );
+
+    res.status(200).json(response_success(data, "Performance del mes obtenido con exito"));
+  } catch (error) {
+    return res
+      .status(500)
+      .json(
+        response_error(
+          500,
+          "Error en el servidor al obtener el desempeño del mes"
+        )
+      );
   }
 };

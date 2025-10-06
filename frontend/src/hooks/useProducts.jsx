@@ -6,12 +6,14 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  getProductByName,
 } from "@/services/productService";
 
 export const useProducts = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
+  const [bestProducts, setBestProducts] = useState([])
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [metadata, setMetadata] = useState({
@@ -52,6 +54,7 @@ export const useProducts = () => {
         : [];
 
       setProducts(productsArray);
+      console.log(products)
       setMetadata(response.data.metadata);
       return productsArray;
     } catch (error) {
@@ -87,7 +90,7 @@ export const useProducts = () => {
       if (!response.success) {
         setError(response.message);
       } else {
-        setProducts(response.data);
+        setBestProducts(response.data);
       }
       return response;
     } catch (error) {
@@ -111,6 +114,29 @@ export const useProducts = () => {
       setLoading(false);
     }
   };
+
+const productByName = async (productname, token) => {
+  try {
+    setLoading(true);
+    setError(null);
+    const response = await getProductByName(productname, token);
+
+    if (!response.data || response.data.length === 0) {
+      throw new Error("No se encontró el producto");
+    }
+    setSelectedProduct(response.data[0]);
+
+    return response;
+  } catch (error) {
+    setSelectedProduct(null);
+    handleError(error);
+    throw error;
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   const updateProducts = async (id_product, productData, token) => {
     try {
@@ -152,10 +178,12 @@ export const useProducts = () => {
     fetchProducts,
     getProductById,
     getBestSellingProducts,
+    productByName,
     newProduct,
     updateProducts,
     deleteProducts,
     products,
+    bestProducts,
     selectedProduct,
     error,
     loading,

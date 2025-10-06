@@ -9,6 +9,7 @@ import {
   updateProduct,
 } from "../controllers/products_controller.js";
 import { checkRole, verifyToken } from "../middleware/auth.js";
+import { validateCreateProduct } from "../middleware/validations.js";
 
 const products_routes = new Router();
 
@@ -42,6 +43,7 @@ products_routes.post(
     "/api/products/createProduct", 
     verifyToken, 
     checkRole(['admin']), 
+    validateCreateProduct,
     createProduct
 );
 

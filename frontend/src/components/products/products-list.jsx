@@ -1,15 +1,15 @@
 import { useProducts } from "@/hooks/useProducts";
 import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { ChevronLeft, ChevronRight, Pencil } from "lucide-react";
 import { DeleteProduct } from "./crud/delete-product";
+import { Input } from "../ui/input";
 
 const ProductList = ({ token, onRefresh }) => {
   const { products, loading, error, fetchProducts, metadata } = useProducts();
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
-
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     if (token) {
@@ -17,6 +17,7 @@ const ProductList = ({ token, onRefresh }) => {
     }
   }, [token, currentPage]);
 
+  // Manejo de Paginación
   const handlePrevPage = () => {
     if (metadata.hasPrevPage) {
       setCurrentPage((prev) => prev - 1);
@@ -37,13 +38,28 @@ const ProductList = ({ token, onRefresh }) => {
     return <div className="text-red-500">Error: {error}</div>;
   }
 
+  //Capturar lo que el usuario ingresa en el input
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  //Busqueda de productos con metodo filter
+  const filterProducts = !search
+    ? products
+    : products.filter(
+        (product) =>
+          product.product_name
+            .toLowerCase()
+            .includes(search.toLocaleLowerCase()) ||
+          product.product_price.toLowerCase().includes(search.toLowerCase())
+      );
+
   return (
     <div className="flex flex-col gap-5 w-full p-4">
       <Input
-        id="search"
-        type="text"
-        className={"w-1/2 p-5"}
-        placeholder="Buscar producto..."
+        value={search}
+        onChange={handleSearch}
+        placeholder="Buscar producto por nombre"
       />
       {products.length === 0 ? (
         <p>No hay Productos</p>
@@ -70,7 +86,7 @@ const ProductList = ({ token, onRefresh }) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-neutral-700">
-              {products.map((p) => (
+              {filterProducts.map((p) => (
                 <tr
                   key={p.id_product}
                   className=" hover:bg-gray-100  dark:hover:bg-neutral-800"
@@ -88,12 +104,17 @@ const ProductList = ({ token, onRefresh }) => {
                     {p.stock} <span className="text-muted-foreground">u</span>
                   </td>
                   <td className="flex gap-3 px-6 py-3 text-sm font-medium">
-                    <Button 
+                    <Button
                       variant="outline"
-                      className="hover:bg-violet-500 hover:text-white dark:hover:bg-violet-700">
+                      className="hover:bg-violet-500 hover:text-white dark:hover:bg-violet-700"
+                    >
                       <Pencil size={16} />
                     </Button>
-                    <DeleteProduct id_product={p.id_product} token={token} onRefresh={onRefresh} />
+                    <DeleteProduct
+                      id_product={p.id_product}
+                      token={token}
+                      onRefresh={onRefresh}
+                    />
                   </td>
                 </tr>
               ))}
