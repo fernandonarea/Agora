@@ -59,7 +59,7 @@ export const Home = () => {
       </div>
 
       {/* Graficos */}
-      <div className="p-5">
+      <div className="p-2">
         <Graphics token={token}/>
       </div>
 

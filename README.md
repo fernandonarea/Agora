@@ -1,77 +1,80 @@
-# Sistema de gestion de inventario Agora
-Un sistema web completo para la gestión de inventario, ventas, productos y proveedores, desarrollado con el stack MERN (MySQL, Express, React, Node.js) y estilizado con Shadcn/UI.
+# Agora Inventory Management System
+A complete web system for managing inventory, sales, products, and suppliers, developed with the MERN stack (MySQL, Express, React, Node.js) and styled with Shadcn/UI.
 
 
 
+## Description
+This project is a web application designed to simplify and streamline inventory management. It allows users to monitor key business operations through an interactive dashboard, manage sales, organize the product catalog, and maintain detailed supplier records.
 
-## Descripción
-Este proyecto es una aplicación web diseñada para facilitar la administración y el control de inventarios de manera eficiente. Permite a los usuarios monitorear las operaciones clave del negocio a través de un dashboard interactivo, gestionar ventas, organizar el catálogo de productos y mantener un registro detallado de los proveedores.
-
-## Módulos Principales
+## Main Modules
 
 #### Dashboard
-- Visualización de Estadísticas Clave: Gráficos y tarjetas que muestran métricas importantes como ventas totales del día, productos más vendidos, y niveles de stock, ganancias del día.
+- Key Metrics Visualization: Displays essential business insights such as total daily sales, top-selling products, stock levels, and daily earnings using charts and summary cards.
 
-#### Módulo de Ventas
-- Registro de Ventas: Permite crear, ver, y gestionar las transacciones de venta.
+#### Sales Module
+- Sales Management: Enables users to create, view, and manage sales transactions efficiently.
 
-#### Gestión de Productos
-- CRUD de Productos: Funcionalidades para Crear, Leer, Actualizar y Eliminar (CRUD) productos en el inventario.
+#### Product Management
+- Product CRUD: Includes full Create, Read, Update, and Delete (CRUD) functionality for managing products in the inventory.
 
-- Control de Stock: Actualización automática del stock con cada venta y compra.
+- Stock Control: Automatically updates stock levels with each sale or purchase.
 
-#### Gestion de Proveedores
-- CRUD de Proveedores: Administra la información de contacto y los detalles de los proveedores.
+#### Supplier Management
+- Supplier CRUD: Manages supplier information, including contact details and business data..
 
-## Tecnologías Utilizadas
-Este proyecto fue construido utilizando las siguientes tecnologías:
+## Technologies Used
+This project was built using the following technologies:
 - Backend:
-  - Node.js: Entorno de ejecución para JavaScript del lado del servidor.
-  - Express: Framework para la construcción de la API REST.
-- Base de Datos:
-  - MySQL: Sistema de gestión de bases de datos relacional.
+  - Node.js: JavaScript runtime environment for server-side development.
+  - Express: Framework for building RESTful APIs.
+- Database:
+  - MySQL
 - Frontend:
-  - React: Biblioteca para la construcción de interfaces de usuario.
-  - Shadcn/UI: Colección de componentes de interfaz de usuario reutilizables y accesibles.
+  - ReactJS
+  - Shadcn/UI
 
-## Instalación y Puesta en Marcha
-Para poder probar el proyecto en un entorno local:
-### Requisitos previos
-- Tener instalado Node.js 18.x o superior
-- Tener un gestor de paquetes instalado
-- Tener una instancia de MySql en ejecución
-### Pasos para la instalación
-1. Clonar Repositorio
+## Installation and Setup
+To run the project locally:
+### Prerequisites
+- Node.js version 18.x or higher
+- A package manager (npm or yarn)
+- A running MySQL instance
+### Installation Steps
+1. Clone the Repository
 ```bash
 git clone https://github.com/tu-usuario/tu-repositorio.git
 cd tu-repositorio
   ```
-2. Configurar Backend
+2. Set Up the Backend
 ```bash
 cd backend
 npm install
 ```
- - Crear archivo .env
+ - Create a .env file with the following content:
 ```
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=tu_contraseña
-DB_NAME=nombre_de_tu_bd
-PORT=3001
+PORT = your_port
+HOST_DB = localhost
+USER_DB = root
+PASSWORD = your_password
+DATABASE = your_database_name
+PORT_DB = 3306
+
+SECRET_JWT_KEY = your_seecret_key
+
 ```
-3. Configurar Frontend
+3. Set Up Frontend
 ```bash
 cd ../frontend
 npm install
 ```
 
 ### Ejecución de la Aplicación
-1. Inicia el Backend
+1. Start backend
 ```
 cd backend
 npm start
 ```
-2. Inicia la app del Frontend
+2. Start Frontend
 ```
 cd ../frontend
 npm start
