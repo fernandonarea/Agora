@@ -6,7 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertTitle } from "@/components/ui/alert";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 import { CheckCircle2 } from "lucide-react";
 
 export const CreateProductForm = ({ token, isOpen, onClose, onRefresh }) => {
@@ -56,7 +62,8 @@ export const CreateProductForm = ({ token, isOpen, onClose, onRefresh }) => {
         <SheetHeader>
           <SheetTitle>Crear Producto</SheetTitle>
           <SheetDescription className={"mb-5"}>
-            Completa los detalles a continuación para agregar un nuevo producto al inventario.
+            Completa los detalles a continuación para agregar un nuevo producto
+            al inventario.
           </SheetDescription>
           {isOpen && (
             <form

@@ -1,16 +1,16 @@
-import { db_pool_connection } from "../database/db";
+import { db_pool_connection } from "../database/db.js";
 import {
   response_bad_request,
   response_created,
   response_error,
   response_not_found,
   response_success,
-} from "../Responses/responses";
+} from "../Responses/responses.js";
 
 export const getAllSuppliers = async (req, res) => {
   try {
     const [rows] = await db_pool_connection.query(
-      "SELECT supplier_name, supplier_phone, supplier_email, date_added FROM suppliers"
+      "SELECT id_supplier, supplier_name, supplier_phone, supplier_email, date_added FROM suppliers"
     );
 
     if (rows.length === 0)
@@ -27,12 +27,12 @@ export const getAllSuppliers = async (req, res) => {
   }
 };
 
-export const createSupplier = async (res, req) => {
-  const { supplier_name, supplier_phone, supplier_email } = req.body;
-
+export const createSupplier = async (req, res) => {
   try {
+    const { supplier_name, supplier_phone, supplier_email } = req.body;
+
     const [rows] = await db_pool_connection.query(
-      "INSERT INTO suppliers (supplier_name, supplier_phone, supplier_email) VALUES (?, ?, ?)",
+      "INSERT INTO suppliers ( supplier_name, supplier_phone, supplier_email) VALUES (?, ?, ?)",
       [supplier_name, supplier_phone, supplier_email]
     );
 
@@ -50,13 +50,13 @@ export const createSupplier = async (res, req) => {
   }
 };
 
-export const deleteSupplier = async (res, req) => {
-  const { id } = req.params;
+export const deleteSupplier = async (req, res) => {
+  const { id_supplier } = req.params;
 
   try {
     const [rows] = await db_pool_connection.query(
       "DELETE FROM suppliers WHERE id_supplier = ?",
-      [id]
+      [id_supplier]
     );
     if (rows.affectedRows === 0)
       return res

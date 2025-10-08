@@ -110,6 +110,7 @@ const ProductList = ({ token, onRefresh }) => {
                     >
                       <Pencil size={16} />
                     </Button>
+                    
                     <DeleteProduct
                       id_product={p.id_product}
                       token={token}
