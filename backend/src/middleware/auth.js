@@ -1,5 +1,5 @@
 import { SECRET_KEY } from "../config/config.js";
-import { response_unauthorized } from "../Responses/responses.js";
+import { response_unauthorized } from "../responses/responses.js";
 import jwt from "jsonwebtoken";
 
 export const verifyToken = (req, res, next) => {
@@ -9,11 +9,11 @@ export const verifyToken = (req, res, next) => {
   if (!token)
     return res
       .status(401)
-      .json(response_unauthorized("Sin token, acceso no autorizado"));
+      .json(response_unauthorized("Unauthorized: No token provided"));
 
   jwt.verify(token, SECRET_KEY, (err, decoded) => {
     if (err)
-      return res.status(401).json(response_unauthorized("Falta de token"));
+      return res.status(401).json(response_unauthorized("Unauthorized: Invalid token"));
     req.user = decoded;
     next();
   });
@@ -24,7 +24,7 @@ export const checkRole = (role) => {
     if (!role.includes(req.user.role)) {
       return res
         .status(403)
-        .json({ message: "No tienes permisos para acceder a esta ruta, ruta solo para administradores" });
+        .json({ message: "Forbidden: You don't have permission to access this resource" });
     }
     next();
   };

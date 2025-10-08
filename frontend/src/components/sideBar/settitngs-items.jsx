@@ -2,8 +2,8 @@ import { CircleQuestionMark, Settings, Sun } from "lucide-react";
 
 export const SettingsItems = ({ isOpen }) => {
   const settingsItems = [
-    { icon: CircleQuestionMark, text: "Obtener ayuda", href: "#" },
-    { icon: Settings, text: "Ajustes", href: "#" },
+    { icon: CircleQuestionMark, text: "Get Help", href: "#" },
+    { icon: Settings, text: "Settings", href: "#" },
   ];
 
   return (

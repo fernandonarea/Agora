@@ -32,12 +32,12 @@ export const Graphics = ({ token }) => {
   }
 
   if (loading) {
-    return <div>Cargando metricas...</div>;
+    return <div>Loading metrics...</div>;
   }
 
   const chartConfig = {
     total: {
-      label: "Ventas",
+      label: "Sales",
       color: "#9827F5",
     },
   };

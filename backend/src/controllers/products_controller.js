@@ -4,6 +4,7 @@ import {
   response_created,
   response_error,
   response_success,
+  response_not_found,
 } from "../responses/responses.js";
 
 export const createProduct = async (req, res) => {
@@ -19,17 +20,17 @@ export const createProduct = async (req, res) => {
     if (product.length === 0) {
       return res
         .status(400)
-        .json(response_bad_request("No se pudo insertar el producto"));
+        .json(response_bad_request("Could not insert the product"));
     }
 
     res
       .status(201)
-      .json(response_created(product, "Producto agregado con exito"));
+      .json(response_created(product, "Product added successfully"));
   } catch (error) {
-    console.log("Error en el servidor al agregar producto ", error.message);
+    console.log("Server error while adding product", error.message);
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al crear producto"));
+      .json(response_error(500, "Server error while creating product"));
   }
 };
 
@@ -51,7 +52,7 @@ export const getProducts = async (req, res) => {
     if (products.length === 0 && page > 1) {
       return res
         .status(400)
-        .json(response_bad_request("Error al obtener los productos, no hay productos registrados"));
+        .json(response_bad_request("Error fetching products: no products found"));
     }
 
     const totalProducts = total[0].total;
@@ -69,14 +70,14 @@ export const getProducts = async (req, res) => {
             hasPrevPage: page > 1,
           },
         },
-        "Productos obtenidos con éxito"
+        "Products retrieved successfully"
       )
     );
   } catch (error) {
-    console.log("Error en el servidor al obtener los productos ", error.message);
+    console.log("Server error while fetching products", error.message);
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al obtener los productos"));
+      .json(response_error(500, "Server error while fetching products"));
   }
 };
 
@@ -92,16 +93,16 @@ export const getProductByName = async (req, res) => {
     if (product.length === 0) {
       return res
         .status(400)
-        .json(response_bad_request("Error al obtener el producto, producto no encontrado"));
+        .json(response_bad_request("Error fetching product: product not found"));
     }
 
     res
       .status(200)
-      .json(response_success(product, "Producto obtenido con exito"));
+      .json(response_success(product, "Product retrieved successfully"));
   } catch (error) {
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al obtener producto"));
+      .json(response_error(500, "Server error while fetching product"));
   }
 };
 
@@ -117,16 +118,16 @@ export const getProductById = async (req, res) => {
     if (product.length === 0) {
       return res
         .status(400)
-        .json(response_bad_request("Error al obtener el producto"));
+        .json(response_bad_request("Error fetching product"));
     }
 
     res
       .status(200)
-      .json(response_success(product, "Producto obtenido con exito"));
+      .json(response_success(product, "Product retrieved successfully"));
   } catch (error) {
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al obtener producto"));
+      .json(response_error(500, "Server error while fetching product"));
   }
 };
 
@@ -151,7 +152,7 @@ export const getBestSellingProducts = async (req, res) => {
         .status(400)
         .json(
           response_bad_request(
-            "Error al obtener al obtener los 10 mejores productos, no se han vendido productos"
+            "Error fetching top 10 products: no products have been sold"
           )
         );
     }
@@ -159,7 +160,7 @@ export const getBestSellingProducts = async (req, res) => {
     res
       .status(200)
       .json(
-        response_success(bestSellingProducts, "Productos obtenido con exito")
+        response_success(bestSellingProducts, "Products retrieved successfully")
       );
   } catch (error) {
     return res
@@ -167,8 +168,7 @@ export const getBestSellingProducts = async (req, res) => {
       .json(
         response_error(
           500,
-          "Error en el servidor al obtener los 10 mejores productos " +
-            error.message
+          "Server error while fetching top 10 products: " + error.message
         )
       );
   }
@@ -195,16 +195,16 @@ export const updateProduct = async (req, res) => {
     if (result.affectedRows === 0) {
       return res
         .status(400)
-        .json(response_bad_request("Error al actualizar datos de producto"));
+        .json(response_bad_request("Error updating product data"));
     }
 
     res
       .status(200)
-      .json(response_success(result, "Producto actualizado con exito"));
+      .json(response_success(result, "Product updated successfully"));
   } catch (error) {
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al actualizar producto"));
+      .json(response_error(500, "Server error while updating product"));
   }
 };
 
@@ -221,21 +221,21 @@ export const deleteProduct = async (req, res) => {
         .status(404)
         .json(
           response_not_found(
-            "No se pudo eliminar el producto, producto no encontrado o ID incorrecto"
+            "Could not delete product: product not found or incorrect ID"
           )
         );
     }
 
     res
       .status(200)
-      .json(response_success(rows, "Producto eliminado con exito"));
+      .json(response_success(rows, "Product deleted successfully"));
   } catch (error) {
     return res
       .status(500)
       .json(
         response_error(
           500,
-          "Error en el servidor intente nuevamente " + error["sqlMessage"]
+          "Server error, please try again: " + error["sqlMessage"]
         )
       );
   }

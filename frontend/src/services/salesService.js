@@ -18,7 +18,7 @@ export const createSale = async (customer_name, items, token) => {
     return response.data;
   } catch (error) {
     const message =
-      error.response?.data?.message || "Error en el servicio de ventas";
+      error.response?.data?.message || "Sale creation service error";
     throw new Error(message);
   }
 };
@@ -33,7 +33,7 @@ export const getSales = async (token) => {
     return response.data;
   } catch (error) {
     const message =
-      error.response?.data?.message || "Error en el servicio de ventas";
+      error.response?.data?.message || "Sales fetch service error";
     throw new Error(message);
   }
 };
@@ -51,7 +51,7 @@ export const Metrics = async (token) => {
     return response.data;
   } catch (error) {
     const message =
-      error.response?.data?.message || "Error en el servicio de ventas";
+      error.response?.data?.message || "Sales fetch service error";
     throw new Error(message);
   }
 };
@@ -70,7 +70,7 @@ export const Performance = async (token) => {
     return response.data;
   } catch (error) {
     const message =
-      error.response?.data?.message || "Error en el servicio de ventas al obtener el performance";
+      error.response?.data?.message || "Sales performance fetch service error";
     throw new Error(message);
   }
 };

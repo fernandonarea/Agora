@@ -1,4 +1,4 @@
-import { useProducts } from "@/hooks/useProducts";
+import useSupplier from "@/hooks/useSupplier";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,19 +14,19 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Trash2 } from "lucide-react";
 
-export const DeleteProduct = ({ id_product, token, onRefresh }) => {
-  const { deleteProducts, error } = useProducts();
+export const DeleteSupplier = ({ id_supplier, token, onRefresh }) => {
+  const { DeleteSupplier, error } = useSupplier();
   const [showAlert, setShowAlert] = useState(false);
 
   const handleDelete = async () => {
-    const result = await deleteProducts(id_product, token);
+    const result = await DeleteSupplier(id_supplier, token);
     if (result) {
       if (onRefresh) {
         onRefresh();
       }
-      console.log("Delete successful");
+      console.log("Proveedor eliminado con éxito");
     } else {
-      console.log("Error deleting product:", error);
+      console.log("Error al eliminar el proveedor:", error);
     }
   };
 
@@ -44,7 +44,7 @@ export const DeleteProduct = ({ id_product, token, onRefresh }) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. Your product will be permanently deleted.
+            This action cannot be undone. Your supplier will be permanently deleted.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

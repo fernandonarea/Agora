@@ -10,7 +10,7 @@ export const useSale = () => {
   const [metrics, setMetrics] = useState([]);
 
   const handleError = (error) => {
-    setError(error.message || "Error desconocido");
+    setError(error.message || "Unexpected error occurred");
   };
 
   const createNewSale = async (customer_name, items, token) => {

@@ -12,7 +12,7 @@ export const getUserById = async (id_user, token) => {
     );
     return response.data;
   } catch (error) {
-    const message =error.response?.data?.message || "Error en el servicio de usuarios";
+    const message =error.response?.data?.message || "User fetch service error";
     throw new Error(message);
   }
 };
@@ -32,7 +32,7 @@ export const updateUser = async (userData, id_user, token) => {
     return response.data;
   } catch (error) {
     const message =
-      error.response?.data?.message || "Error en el servicio de usuarios";
+      error.response?.data?.message || "User update service error";
     throw new Error(message);
   }
 };
@@ -51,7 +51,7 @@ export const deleteUser = async (id_user, token) => {
     return response.data;
   } catch (error) {
     const message =
-      error.response?.data?.message || "Error en el servicio de usuarios";
+      error.response?.data?.message || "User delete service error";
     throw new Error(message);
   }
 };

@@ -17,7 +17,7 @@ export const Products = async (token, page = 1, limit = 10) => {
     return response.data;
   } catch (error) {
     const message =
-      error.response?.data?.message || "Error en el servicio de productos";
+      error.response?.data?.message || "Product fetch service error";
     console.error(message);
     throw error;
   }
@@ -37,7 +37,7 @@ export const ProductById = async (token, id_product) => {
   } catch (error) {
     const message =
       error.response?.data?.message ||
-      "Error en el servicio de productos por id";
+      "Product fetch by id service error";
     throw new Error(message);
   }
 };
@@ -55,7 +55,7 @@ export const bestSellingProducts = async (token) => {
     return response.data;
   } catch (error) {
     const message =
-      error.response?.data?.message || "Error en el servicio de usuarios";
+      error.response?.data?.message || "Products fetch service error";
     throw new Error(message);
   }
 };
@@ -71,12 +71,11 @@ export const getProductByName = async (productname, token) => {
         },
       }
     );
-    console.log("Respuesta del servidor:", response.data);
     return response.data;
   } catch (error) {
     const message =
       error.response?.data?.message ||
-      "Error en el servicio de productos por nombre";
+      "Product fetch by name service error";
     throw new Error(message);
   }
 };
@@ -95,7 +94,7 @@ export const createProduct = async (productData, token) => {
     return response.data;
   } catch (error) {
     const message =
-      error.response?.data?.message || "Error en el servicio de productos";
+      error.response?.data?.message || "Product creation service error";
     throw new Error(message);
   }
 };

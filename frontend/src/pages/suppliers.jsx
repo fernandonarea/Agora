@@ -1,13 +1,13 @@
-import { CreateProductForm } from "@/components/products/crud/create-product-form";
-import ProductList from "@/components/products/products-list";
+import CreateSupplierForm from "@/components/suppliers/create-form";
+import SuppliersList from "@/components/suppliers/suppliers-list";
 import { Button } from "@/components/ui/button";
 import { Plus, Share } from "lucide-react";
 import { useState } from "react";
 
-export const Productos = () => {
-  const token = localStorage.getItem("token");
+const SuppliersPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const token = localStorage.getItem("token");
 
   const handleRefresh = () => {
     setRefreshKey((prev) => prev + 1);
@@ -16,32 +16,29 @@ export const Productos = () => {
   const handleClose = () => setIsOpen(false);
 
   return (
-    <div>
+    <div className="overflow-auto flex flex-col h-dvh">
       <header className="flex p-5 border-b-1 justify-between items-center ">
-        <div className="text-2xl font-semibold">Products</div>
+        <div className="text-2xl font-semibold">Suppliers</div>
         <div className="flex flex-row justify-between gap-2">
-          <Button className="bg-[var(--secondary)] text-secondary-foreground">
-            <Share />
-            Export
-          </Button>
           <Button
-            onClick={setIsOpen}
             className="bg-[var(--primary)] text-primary-foreground"
+            onClick={() => setIsOpen(true)}
           >
             <Plus strokeWidth={3} />
-            Add Product
+            Add Supplier
           </Button>
         </div>
       </header>
-      <ProductList token={token} key={refreshKey} onRefresh={handleRefresh}/>
-      <div>
-        <CreateProductForm
+      <div className="p-4 flex-1">
+        <SuppliersList
           token={token}
-          isOpen={isOpen}
-          onClose={handleClose}
+          key={refreshKey}
           onRefresh={handleRefresh}
         />
       </div>
+      <CreateSupplierForm token={token} isOpen={isOpen} onClose={handleClose} onRefresh={handleRefresh}/>
     </div>
   );
 };
+
+export default SuppliersPage;
