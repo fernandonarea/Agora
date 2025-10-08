@@ -23,7 +23,7 @@ export const Home = () => {
   return (
     <div className="overflow-auto flex flex-col h-dvh">
       <header className="flex p-5 border-b-1 ">
-        <div className="text-2xl font-semibold">Inicio</div>
+        <div className="text-2xl font-semibold">Home</div>
       </header>
       {/* METRIC CARDS */}
       <div className="grid gap-2 grid-cols-1 wrap-break-word p-5 justify-between w-full sm:grid-cols-3">
@@ -32,7 +32,7 @@ export const Home = () => {
             <BanknoteArrowUpIcon />
           </div>
           <div className="flex flex-col gap-2 ">
-            <h1 className="text-muted-foreground">Ganancias del Día</h1>
+            <h1 className="text-muted-foreground">Earnings of the day</h1>
             <p className="text-3xl font-bold">${metrics.totalIncome}</p>
           </div>
         </div>
@@ -42,7 +42,7 @@ export const Home = () => {
             <Activity />
           </div>
           <div className="flex flex-col gap-2">
-            <h1 className="text-muted-foreground">Ventas del Día</h1>
+            <h1 className="text-muted-foreground">Sales of the Day</h1>
             <p className="text-3xl font-bold">{metrics.todaySales}</p>
           </div>
         </div>
@@ -52,7 +52,7 @@ export const Home = () => {
             <PackageMinus />
           </div>
           <div className="flex flex-col gap-2">
-            <h1 className="text-muted-foreground">Productos con bajo Stock</h1>
+            <h1 className="text-muted-foreground">Low Stock Products</h1>
             <p className="text-3xl font-bold">{metrics.lowStockProducts}</p>
           </div>
         </div>

@@ -84,7 +84,7 @@ const RegisterForm = () => {
                 </div>
 
                 <div className="grid gap-3">
-                  <Label htmlFor="user_name">Nombre</Label>
+                  <Label htmlFor="user_name">Name</Label>
                   <Input
                     id="user_name"
                     type="text"
@@ -96,14 +96,14 @@ const RegisterForm = () => {
                 </div>
 
                 <div className="grid gap-3">
-                  <Label htmlFor="user_lastname">Apellido</Label>
+                  <Label htmlFor="user_lastname">Last Name</Label>
                   <Input
                     id="user_lastname"
                     type="text"
                     value={user_lastname}
                     onChange={(e) => setUserLastName(e.target.value)}
                     placeholder="Narea Franco"
-                    // required
+                    required
                   />
                 </div>
 
@@ -134,9 +134,9 @@ const RegisterForm = () => {
       {alert && (
         <Alert className="bg-green-50 border-green-600 text-green-700">
           <CheckCircle2 className="h-4 w-4" />
-          <AlertTitle>Registro exitoso</AlertTitle>
+          <AlertTitle>Successful Registration</AlertTitle>
           <AlertDescription>
-            Tu cuenta ha sido creada correctamente 🎉
+            Your account has been created successfully. You can now log in.
           </AlertDescription>
         </Alert>
       )}

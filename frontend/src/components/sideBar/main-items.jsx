@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 export const MainItems = ({ isOpen }) => {
   
   const mainItems = [
-    { icon: HomeIcon, text: "Inicio", link: "/home" },
-    { icon: Briefcase, text: "Ventas", link: "/ventas" },
-    { icon: Package, text: "Productos", link: "/products" },
-    { icon: Truck, text: "Proveedores", link: "/suppliers" },
-    { icon: FileText, text: "Reportes", link: "/reports" },
+    { icon: HomeIcon, text: "Home", link: "/home" },
+    { icon: Briefcase, text: "Sales", link: "/ventas" },
+    { icon: Package, text: "Products", link: "/products" },
+    { icon: Truck, text: "Suppliers", link: "/suppliers" },
+    { icon: FileText, text: "Reports", link: "/reports" },
   ];
 
 

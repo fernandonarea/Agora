@@ -4,17 +4,17 @@ import { response_bad_request } from "../responses/responses.js";
 export const validateCreateUser = [
   check("user_name")
     .notEmpty()
-    .withMessage("El nombre de usuario es obligatorio"),
-  check("user_lastname").notEmpty().withMessage("El apellido es obligatorio"),
+    .withMessage("User name is required"),
+  check("user_lastname").notEmpty().withMessage("User lastname is required"),
   check("user_email")
     .isEmail()
-    .withMessage("El correo electrónico no es válido"),
+    .withMessage("User email is not valid"),
   check("role")
     .isIn(["admin", "user"])
-    .withMessage("El rol debe ser admin o user"),
+    .withMessage("Role must be admin or user"),
   check("password")
     .isLength({ min: 6 })
-    .withMessage("La contraseña debe tener al menos 6 caracteres"),
+    .withMessage("Password must be at least 6 characters long"),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -34,7 +34,7 @@ export const validateCreateUser = [
 export const validateCreateProduct = [
   check("product_name")
     .notEmpty()
-    .withMessage("El nombre del producto es obligatorio"),
+    .withMessage("Product name is required"),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

@@ -4,7 +4,7 @@ import {
   response_created,
   response_error,
   response_success,
-} from "../Responses/responses.js";
+} from "../responses/responses.js";
 
 export const getSaleById = async (req, res) => {
   try {
@@ -16,15 +16,16 @@ export const getSaleById = async (req, res) => {
     if (result.length === 0) {
       return res
         .status(400)
-        .json(response_bad_request("Error al obtener las venta"));
+        .json(response_bad_request("Error fetching the sale"));
     }
     res
       .status(200)
-      .json(response_success(result, "Ventas obtenidas con exito"));
+      .json(response_success(result, "Sale retrieved successfully"));
   } catch (error) {
+    console.error("Server error while fetching sale:", error);
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al obtener venta"));
+      .json(response_error(500, "Server error while fetching sale"));
   }
 };
 
@@ -47,19 +48,19 @@ export const getAllSales = async (req, res) => {
         .status(400)
         .json(
           response_bad_request(
-            "Error al obtener las ventas, no se han realizado ventas aun"
+            "Error fetching sales: no sales have been made yet"
           )
         );
     }
 
     res
       .status(200)
-      .json(response_success(result, "Ventas obtenidas con exito"));
+      .json(response_success(result, "Sales retrieved successfully"));
   } catch (error) {
-    console.log("Error en el servidor al obtener ventas ", error.message);
+    console.error("Server error while fetching sales:", error.message);
     return res
       .status(500)
-      .json(response_error(500, "Error en el servidor al obtener ventas"));
+      .json(response_error(500, "Server error while fetching sales"));
   }
 };
 
@@ -70,7 +71,7 @@ export const createSale = async (req, res) => {
     return res
       .status(400)
       .json(
-        response_bad_request("No se proporcionaron productos para la venta.")
+        response_bad_request("No products provided for the sale.")
       );
   }
 
@@ -99,7 +100,7 @@ export const createSale = async (req, res) => {
 
       if (product_data.stock < item.quantity) {
         throw new Error(
-          `Stock insuficiente para el producto con nombre ${product_data.product_name}.`
+          `Insufficient stock for product "${product_data.product_name}".`
         );
       }
 
@@ -149,19 +150,19 @@ export const createSale = async (req, res) => {
       .json(
         response_created(
           { id_sale, total, items: sold_products },
-          "Venta creada con éxito"
+          "Sale created successfully"
         )
       );
   } catch (error) {
     if (connection) await connection.rollback();
-    console.error("Error al crear la venta:", error.message);
-    if (error.message.includes('Stock insuficiente')) {
+    console.error("Error creating sale:", error.message);
+    if (error.message.includes('Insufficient stock')) {
       return res.status(400).json(
         response_bad_request(error.message)
       );
     }
     res.status(500).json(
-      response_error("Error interno del servidor al procesar la venta.")
+      response_error(500, "Internal server error while processing the sale.")
     );
   } finally {
     if (connection) connection.release();
@@ -188,16 +189,17 @@ export const metrics = async (req, res) => {
           totalIncome: totalIncome[0].total_sum,
           todaySales: todaySales[0].total,
         },
-        "Datos de ventas totales obtenidos con exito"
+        "Total sales data retrieved successfully"
       )
     );
   } catch (error) {
+    console.error("Server error while fetching sales metrics:", error);
     return res
       .status(500)
       .json(
         response_error(
           500,
-          "Error en el servidor al obtener datos ventas totales"
+          "Server error while fetching total sales data"
         )
       );
   }
@@ -213,14 +215,15 @@ export const monthPerformance = async (req, res) => {
       ORDER BY dia`
     );
 
-    res.status(200).json(response_success(data, "Performance del mes obtenido con exito"));
+    res.status(200).json(response_success(data, "Monthly performance retrieved successfully"));
   } catch (error) {
+    console.error("Server error while fetching monthly performance:", error);
     return res
       .status(500)
       .json(
         response_error(
           500,
-          "Error en el servidor al obtener el desempeño del mes"
+          "Server error while fetching monthly performance"
         )
       );
   }

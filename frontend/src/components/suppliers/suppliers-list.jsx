@@ -31,7 +31,7 @@ const SuppliersList = ({ token, onRefresh }) => {
           supplier.supplier_email.toLowerCase().includes(search.toLowerCase())
       );
 
-  if (loading) return <p>Cargando...</p>;
+  if (loading) return <p>Loading...</p>;
 
   if (error) return <p>Error: {error}</p>;
 
@@ -50,19 +50,19 @@ const SuppliersList = ({ token, onRefresh }) => {
                 Id
               </th>
               <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
-                Nombre
+                Name
               </th>
               <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
-                Telefono
+                Phone
               </th>
               <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
-                Correo
+                Email
               </th>
               <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
-                Fecha de Creacion
+                Creation Date
               </th>
               <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
-                Acciones
+                Actions
               </th>
             </tr>
           </thead>

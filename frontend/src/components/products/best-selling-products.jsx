@@ -10,7 +10,7 @@ const BestSellingProducts = ({ token }) => {
   }, [token]);
 
   if (loading) {
-    return <div>Cargando productos...</div>;
+    return <div>Loading products...</div>;
   }
 
   if (error) {
@@ -26,13 +26,13 @@ const BestSellingProducts = ({ token }) => {
               Id
             </th>
             <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
-              Nombre
+              Name
             </th>
             <th className="px-5 py-5 text-start text-xs font-medium text-gray-500  dark:text-neutral-300">
-              Descripcion
+              Description
             </th>
             <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
-              Ventas Totales
+              Total Sales
             </th>
             <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
               Stock

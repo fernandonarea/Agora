@@ -8,7 +8,7 @@ import {
   response_success,
   response_not_found,
   response_unauthorized,
-} from "../Responses/responses.js";
+} from "../responses/responses.js";
 
 export const createUser = async (req, res) => {
   try {
@@ -26,14 +26,15 @@ export const createUser = async (req, res) => {
     if (rows.affectedRows === 0) {
       return res
         .status(400)
-        .json(response_bad_request("No se pudo crear el usuario"));
+        .json(response_bad_request("Could not create the user"));
     }
-    res.status(201).json(response_created(rows, "Usuario creado con exito"));
+    res.status(201).json(response_created(rows, "User created successfully"));
   } catch (error) {
+    console.error("Server error while creating user:", error);
     return res
       .status(500)
       .json(
-        response_error(500, "Error en el servidor intente nuevamente " + error)
+        response_error(500, "Server error, please try again: " + error)
       );
   }
 };
@@ -51,14 +52,15 @@ export const getUserById = async (req, res) => {
     if (rows.length === 0) {
       return res
         .status(404)
-        .json(response_not_found("Usuario no encontrado o ID incorrecto"));
+        .json(response_not_found("User not found or incorrect ID"));
     }
-    res.status(200).json(response_success(rows, "Usuario encontrado con exito"));
+    res.status(200).json(response_success(rows, "User retrieved successfully"));
   } catch (error) {
+    console.error("Server error while fetching user by id:", error);
     return res
       .status(500)
       .json(
-        response_error(500, "Error en el servidor intente nuevamente " + error)
+        response_error(500, "Server error, please try again: " + error)
       );
   }
 };
@@ -72,16 +74,17 @@ export const getUsers = async (req, res) => {
     if (rows.length === 0) {
       return res
         .status(404)
-        .json(response_not_found("Usuarios no encontrados"));
+        .json(response_not_found("No users found"));
     }
     res
       .status(200)
-      .json(response_success(rows, "Usuarios encontrados con exito"));
+      .json(response_success(rows, "Users retrieved successfully"));
   } catch (error) {
+    console.error("Server error while fetching users:", error);
     return res
       .status(500)
       .json(
-        response_error(500, "Error en el servidor intente nuevamente " + error)
+        response_error(500, "Server error, please try again: " + error)
       );
   }
 };
@@ -122,20 +125,21 @@ export const updateUser = async (req, res) => {
         .status(403)
         .json(
           response_bad_request(
-            "No se pudo actualizar el usuario, usuario no encontrado"
+            "Could not update user: user not found"
           )
         );
     }
     res
       .status(200)
-      .json(response_success(rows, "Usuario actualizado con exito"));
+      .json(response_success(rows, "User updated successfully"));
   } catch (error) {
+    console.error("Server error while updating user:", error);
     return res
       .status(500)
       .json(
         response_error(
           500,
-          "Error en el servidor intente nuevamente, " + error["sqlMessage"]
+          "Server error, please try again: " + (error["sqlMessage"] || error)
         )
       );
   }
@@ -155,19 +159,20 @@ export const deleteUser = async (req, res) => {
         .status(404)
         .json(
           response_not_found(
-            "No se pudo eliminar el usuario, usuario no encontrado o ID incorrecto"
+            "Could not delete user: user not found or incorrect ID"
           )
         );
     }
 
-    res.status(200).json(response_success(rows, "Usuario eliminado con exito"));
+    res.status(200).json(response_success(rows, "User deleted successfully"));
   } catch (error) {
+    console.error("Server error while deleting user:", error);
     return res
       .status(500)
       .json(
         response_error(
           500,
-          "Error en el servidor intente nuevamente " + error["sqlMessage"]
+          "Server error, please try again: " + (error["sqlMessage"] || error)
         )
       );
   }
@@ -180,7 +185,7 @@ export const login = async (req, res) => {
     if (!user_email || !password) {
       return res
         .status(400)
-        .json(response_bad_request("Complete todos los campos"));
+        .json(response_bad_request("Please complete all fields"));
     }
 
     const [rows] = await db_pool_connection.query(
@@ -189,7 +194,7 @@ export const login = async (req, res) => {
     );
 
     if (rows.length === 0) {
-      return res.status(404).json(response_not_found("Usuario no encontrado"));
+      return res.status(404).json(response_not_found("User not found"));
     }
 
     const user = rows[0];
@@ -199,7 +204,7 @@ export const login = async (req, res) => {
     if (!isMatch) {
       return res
         .status(401)
-        .json(response_unauthorized("Contraseña incorrecta"));
+        .json(response_unauthorized("Incorrect password"));
     }
 
     const token = jwt.sign(
@@ -211,14 +216,14 @@ export const login = async (req, res) => {
     res
       .status(200)
       .json(
-        response_success({ token, role: user.role }),
-        "Inicio de sesion exitoso"
+        response_success({ token, role: user.role }, "Login successful")
       );
   } catch (error) {
+    console.error("Server error during login:", error);
     return res
       .status(500)
       .json(
-        response_error(500, "Error en el servidor intente nuevamente " + error)
+        response_error(500, "Server error, please try again: " + error)
       );
   }
 };

@@ -18,14 +18,14 @@ const SuppliersPage = () => {
   return (
     <div className="overflow-auto flex flex-col h-dvh">
       <header className="flex p-5 border-b-1 justify-between items-center ">
-        <div className="text-2xl font-semibold">Proveedores</div>
+        <div className="text-2xl font-semibold">Suppliers</div>
         <div className="flex flex-row justify-between gap-2">
           <Button
             className="bg-[var(--primary)] text-primary-foreground"
             onClick={() => setIsOpen(true)}
           >
             <Plus strokeWidth={3} />
-            Agregar Proveedor
+            Add Supplier
           </Button>
         </div>
       </header>
@@ -36,7 +36,7 @@ const SuppliersPage = () => {
           onRefresh={handleRefresh}
         />
       </div>
-      <CreateSupplierForm token={token} isOpen={isOpen} onClose={handleClose} />
+      <CreateSupplierForm token={token} isOpen={isOpen} onClose={handleClose} onRefresh={handleRefresh}/>
     </div>
   );
 };

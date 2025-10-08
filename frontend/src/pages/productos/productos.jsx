@@ -18,7 +18,7 @@ export const Productos = () => {
   return (
     <div>
       <header className="flex p-5 border-b-1 justify-between items-center ">
-        <div className="text-2xl font-semibold">Productos</div>
+        <div className="text-2xl font-semibold">Products</div>
         <div className="flex flex-row justify-between gap-2">
           <Button className="bg-[var(--secondary)] text-secondary-foreground">
             <Share />
@@ -34,11 +34,7 @@ export const Productos = () => {
         </div>
       </header>
       <ProductList token={token} key={refreshKey} onRefresh={handleRefresh}/>
-      <div
-        className={`fixed top-0 right-0 h-full w-fit p-6 bg-white shadow-2xl transform transition-transform duration-300 z-50 dark:bg-black ${
-          isOpen ? "translate-x-0  "  : "translate-x-full"
-        }`}
-      >
+      <div>
         <CreateProductForm
           token={token}
           isOpen={isOpen}

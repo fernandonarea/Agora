@@ -26,8 +26,8 @@ export const CreateSalesForm = ({ token }) => {
       setErrorAlert("");
       await productByName(saleData.productname, token);
     } catch (error) {
-      setErrorAlert(error?.message || "Error buscando producto");
-      console.error("Error buscando producto: ", error);
+      setErrorAlert(error?.message || "Error fetching product");
+      console.error("Error fetching product: ", error);
     }
   };
 
@@ -71,7 +71,7 @@ export const CreateSalesForm = ({ token }) => {
       setSuccessAlert(true);
       setTimeout(() => setSuccessAlert(false), 2000);
     } catch (error) {
-      setErrorAlert(error?.message || "Error creando la venta");
+      setErrorAlert(error?.message || "Error creating sale");
       setTimeout(() => setErrorAlert(""), 2000);
     }
   };
@@ -93,7 +93,7 @@ export const CreateSalesForm = ({ token }) => {
       <div className="flex flex-col gap-5 w-full">
         <div className="flex items-end justify-between gap-2">
           <div className="flex flex-col gap-2 w-full">
-            <Label>Buscar producto</Label>
+            <Label>Search Product</Label>
             <Input
               type="text"
               value={saleData.productname}
@@ -112,7 +112,7 @@ export const CreateSalesForm = ({ token }) => {
             onClick={handleSearchProduct}
             disabled={!saleData.productname.trim()}
           >
-            Buscar
+            Search
           </Button>
         </div>
         
@@ -145,7 +145,7 @@ export const CreateSalesForm = ({ token }) => {
                 onClick={handleAddItem}
                 disabled={saleData.quantity < 1}
               >
-                Añadir
+                Add
               </Button>
             </div>
           </div>
@@ -154,12 +154,12 @@ export const CreateSalesForm = ({ token }) => {
 
       <div className="flex flex-col w-full gap-6 p-6 rounded-md border-1 border-gray-200 shadow-sm dark:border-gray-500">
         <div className="flex flex-col gap-6 ">
-          <h2 className="text-2xl font-semibold">Resumen de Venta</h2>
+          <h2 className="text-2xl font-semibold">Sale Summary</h2>
           <ul className="flex flex-col gap-1.5">
             <div className="flex justify-between text-xs font-semibold text-muted-foreground">
-              <span>PRODUCTO</span>
-              <span>CANT.</span>
-              <span>ACCIONES</span>
+              <span>PRODUCT</span>
+              <span>QUANTITY</span>
+              <span>ACTIONS</span>
             </div>
 
             <hr className="my-2" />
@@ -186,7 +186,7 @@ export const CreateSalesForm = ({ token }) => {
 
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-2">
-            <Label>Cliente</Label>
+            <Label>Client</Label>
             <Input
               type="text"
               value={saleData.customer_name}
@@ -233,7 +233,7 @@ export const CreateSalesForm = ({ token }) => {
         {successAlert && (
           <Alert className="bg-green-100 border-green-400 text-green-700 dark:bg-green-900 dark:border-green-600 dark:text-green-300">
             <CheckCircle2 className="h-4 w-4" />
-            <AlertTitle>Venta creada correctamente</AlertTitle>
+            <AlertTitle>Sale created successfully</AlertTitle>
           </Alert>
         )}
       </div>

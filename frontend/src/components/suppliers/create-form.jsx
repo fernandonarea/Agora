@@ -13,7 +13,7 @@ import { Input } from "../ui/input";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "../ui/button";
 
-const CreateSupplierForm = ({ token, isOpen, onClose }) => {
+const CreateSupplierForm = ({ token, isOpen, onClose, onRefresh }) => {
   const [supplierData, setSupplierData] = useState({
     supplier_name: "",
     supplier_phone: "",
@@ -39,6 +39,7 @@ const CreateSupplierForm = ({ token, isOpen, onClose }) => {
         supplier_phone: "",
         supplier_email: "",
       });
+      if (onRefresh) onRefresh();
       setAlert(true);
       setTimeout(() => {
         setAlert(false);
@@ -52,19 +53,21 @@ const CreateSupplierForm = ({ token, isOpen, onClose }) => {
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Crea Supplier</SheetTitle>
+          <SheetTitle>Create Supplier</SheetTitle>
+          <SheetDescription>
+            Complete the form below to add a new supplier.
+          </SheetDescription>
         </SheetHeader>
-        <SheetDescription>
-          Completa los detalles a continuación para agregar un nuevo proveedor
-          al sistema.
-        </SheetDescription>
 
         {isOpen && (
-          <form onSubmit={handleSubmit} className="space-y-4 p-4">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col p-5 gap-6 dark:bg-black"
+          >
             <div className="grid gap-4">
-              <div className="grid gap-2">
+              <div className="grid gap-6">
                 <div className="grid gap-3">
-                  <Label>Nombre del Proveedor</Label>
+                  <Label>Supplier Name</Label>
                   <Input
                     name="supplier_name"
                     type="text"
@@ -76,7 +79,7 @@ const CreateSupplierForm = ({ token, isOpen, onClose }) => {
                 </div>
 
                 <div className="grid gap-3">
-                  <Label>Teléfono del Proveedor</Label>
+                  <Label>Supplier Phone</Label>
                   <Input
                     name="supplier_phone"
                     type="text"
@@ -86,7 +89,7 @@ const CreateSupplierForm = ({ token, isOpen, onClose }) => {
                 </div>
 
                 <div className="grid gap-3">
-                  <Label>Email del Proveedor</Label>
+                  <Label>Supplier Email</Label>
                   <Input
                     name="supplier_email"
                     type="email"
@@ -99,7 +102,7 @@ const CreateSupplierForm = ({ token, isOpen, onClose }) => {
                   <Alert className="flex items-center text-green-600">
                     <CheckCircle2 className="mr-2" />
                     <AlertDescription className="text-sm font-medium">
-                      Proveedor creado con exito!
+                      Supplier created successfully!
                     </AlertDescription>
                   </Alert>
                 )}
@@ -111,7 +114,7 @@ const CreateSupplierForm = ({ token, isOpen, onClose }) => {
               </div>
             </div>
             <Button type="submit" disabled={loading} className="w-full">
-              {loading ? "Creando..." : "Crear Proveedor"}
+              {loading ? "Creating..." : "Create Supplier"}
             </Button>
           </form>
         )}

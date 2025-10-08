@@ -31,7 +31,7 @@ const ProductList = ({ token, onRefresh }) => {
   };
 
   if (loading) {
-    return <div>Cargando productos...</div>;
+    return <div>Loading products...</div>;
   }
 
   if (error) {
@@ -62,26 +62,26 @@ const ProductList = ({ token, onRefresh }) => {
         placeholder="Buscar producto por nombre"
       />
       {products.length === 0 ? (
-        <p>No hay Productos</p>
+        <p>No Products Found</p>
       ) : (
         <div className="border border-gray-200 rounded-lg shadow-xs overflow-hidden dark:border-neutral-700">
           <table className="min-w-full divide-y divide-gray-200 overflow-hidden whitespace-nowrap dark:divide-neutral-700">
             <thead className=" bg-gray-50 dark:bg-neutral-700">
               <tr>
                 <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
-                  Nombre
+                  Name
                 </th>
                 <th className="px-5 py-5 text-start text-xs font-medium text-gray-500  dark:text-neutral-300">
-                  Descripcion
+                  Description
                 </th>
                 <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
-                  Precio
+                  Price
                 </th>
                 <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
                   Stock
                 </th>
                 <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
-                  Acciones
+                  Actions
                 </th>
               </tr>
             </thead>
@@ -147,7 +147,7 @@ const ProductList = ({ token, onRefresh }) => {
                     </div>
 
                     <p className="text-sm text-gray-500">
-                      Total: {metadata.total} productos
+                      Total: {metadata.total} products
                     </p>
                   </div>
                 </td>

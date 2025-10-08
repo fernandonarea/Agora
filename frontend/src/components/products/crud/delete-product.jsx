@@ -24,9 +24,9 @@ export const DeleteProduct = ({ id_product, token, onRefresh }) => {
       if (onRefresh) {
         onRefresh();
       }
-      console.log("Producto eliminado con éxito");
+      console.log("Delete successful");
     } else {
-      console.log("Error al eliminar el producto:", error);
+      console.log("Error deleting product:", error);
     }
   };
 
@@ -42,15 +42,14 @@ export const DeleteProduct = ({ id_product, token, onRefresh }) => {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Esta completamente seguro?</AlertDialogTitle>
+          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            Esta acción no se puede deshacer. Su producto será eliminado
-            permanentemente.
+            This action cannot be undone. Your product will be permanently deleted.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}>Eliminar</AlertDialogAction>
+          <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

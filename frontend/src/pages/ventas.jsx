@@ -8,7 +8,7 @@ export const Ventas = () => {
   return (
     <div className="overflow-hidden flex flex-col h-dvh">
       <header className="flex p-5 border-b-1 justify-between items-center ">
-        <div className="text-2xl font-semibold">Ventas</div>
+        <div className="text-2xl font-semibold">Sales</div>
       </header>
       
       <div className="p-5 overflow-auto">

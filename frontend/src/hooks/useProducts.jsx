@@ -25,7 +25,7 @@ export const useProducts = () => {
   });
 
   const handleError = (error) => {
-    const message = error.message || "Ocurrió un error inesperado";
+    const message = error.message || "Unexpected error occurred";
     setError(message);
     console.error(message);
   };
@@ -58,7 +58,7 @@ export const useProducts = () => {
       setMetadata(response.data.metadata);
       return productsArray;
     } catch (error) {
-      setError(error.message || "Error al cargar productos");
+      setError(error.message || "Error loading products");
       setProducts([]);
       return [];
     } finally {
@@ -122,7 +122,7 @@ const productByName = async (productname, token) => {
     const response = await getProductByName(productname, token);
 
     if (!response.data || response.data.length === 0) {
-      throw new Error("No se encontró el producto");
+      throw new Error("Product not found");
     }
     setSelectedProduct(response.data[0]);
 
