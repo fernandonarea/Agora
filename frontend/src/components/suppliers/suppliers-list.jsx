@@ -42,8 +42,8 @@ const SuppliersList = ({ token, onRefresh }) => {
         onChange={handleSearch}
         placeholder="Buscar proveedor"
       />
-      <div className="border border-gray-200 rounded-lg shadow-xs overflow-hidden dark:border-neutral-700">
-        <table className="min-w-full divide-y divide-gray-200 overflow-hidden whitespace-nowrap dark:divide-neutral-700">
+      <div className="border border-gray-200 rounded-lg shadow-xs overflow-auto dark:border-neutral-700">
+        <table className="min-w-full divide-y divide-gray-200 overflow-auto whitespace-nowrap dark:divide-neutral-700">
           <thead className=" bg-gray-50 dark:bg-neutral-700">
             <tr>
               <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
@@ -81,11 +81,12 @@ const SuppliersList = ({ token, onRefresh }) => {
                 <td className="px-6 py-3 whitespace-nowrap text-sm font-regular text-gray-800 dark:text-neutral-200">
                   {supplier.supplier_phone}
                 </td>
-                <td className="px-6 py-3 whitespace-nowrap text-sm font-regular text-gray-800 dark:text-neutral-200">
-                  {supplier.supplier_email}
+                <td className="px-6 py-3 whitespace-nowrap text-sm font-regular text-gray-800 dark:text-neutral-200
+                hover:underline hover:text-blue-600">
+                  <a href={`mailto:${supplier.supplier_email}`}> {supplier.supplier_email}</a>
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-sm font-regular text-gray-800 dark:text-neutral-200">
-                  {supplier.date_added}
+                  {new Date(supplier.date_added).toLocaleDateString()}
                 </td>
                 <td className="flex gap-3 px-6 py-3 text-sm font-medium">
                   <Button

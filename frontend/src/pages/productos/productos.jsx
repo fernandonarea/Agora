@@ -1,6 +1,7 @@
 import { CreateProductForm } from "@/components/products/crud/create-product-form";
 import ProductList from "@/components/products/products-list";
 import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/sonner";
 import { Plus, Share } from "lucide-react";
 import { useState } from "react";
 
@@ -42,6 +43,7 @@ export const Productos = () => {
           onRefresh={handleRefresh}
         />
       </div>
+      <Toaster position="top-right" richColors />
     </div>
   );
 };

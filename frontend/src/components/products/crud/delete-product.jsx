@@ -15,8 +15,9 @@ import {
 import { Trash2 } from "lucide-react";
 
 export const DeleteProduct = ({ id_product, token, onRefresh }) => {
-  const { deleteProducts, error } = useProducts();
+  const { deleteProducts } = useProducts();
   const [showAlert, setShowAlert] = useState(false);
+
 
   const handleDelete = async () => {
     const result = await deleteProducts(id_product, token);
@@ -24,11 +25,11 @@ export const DeleteProduct = ({ id_product, token, onRefresh }) => {
       if (onRefresh) {
         onRefresh();
       }
-      console.log("Delete successful");
-    } else {
-      console.log("Error deleting product:", error);
+      setShowAlert(true);
     }
   };
+
+  
 
   return (
     <AlertDialog open={showAlert} onOpenChange={setShowAlert}>

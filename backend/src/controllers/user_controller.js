@@ -14,6 +14,12 @@ export const createUser = async (req, res) => {
   try {
     const { user_name, user_lastname, role, user_email, password } = req.body;
 
+    const existingUser = await db_pool_connection.query("SELECT * FROM users WHERE user_email = ?", [user_email]);
+
+    if(existingUser[0].length > 0) {
+      return res.status(400).json(response_bad_request("Email already in use"));
+    }
+    
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 

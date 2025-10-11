@@ -59,7 +59,7 @@ PASSWORD = your_password
 DATABASE = your_database_name
 PORT_DB = 3306
 
-SECRET_JWT_KEY = your_seecret_key
+
 
 ```
 3. Set Up Frontend

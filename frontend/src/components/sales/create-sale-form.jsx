@@ -8,7 +8,7 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle2, OctagonX, Trash2 } from "lucide-react";
 
 export const CreateSalesForm = ({ token }) => {
-  const { createNewSale, loading, error } = useSale();
+  const { createNewSale, loading} = useSale();
   const { productByName, selectedProduct } = useProducts();
   const [successAlert, setSuccessAlert] = useState(false);
   const [errorAlert, setErrorAlert] = useState("");
@@ -30,8 +30,6 @@ export const CreateSalesForm = ({ token }) => {
       console.error("Error fetching product: ", error);
     }
   };
-
-  error
 
   const handleAddItem = () => {
     if (!selectedProduct) return;
@@ -152,7 +150,7 @@ export const CreateSalesForm = ({ token }) => {
         )}
       </div>
 
-      <div className="flex flex-col w-full gap-6 p-6 rounded-md border-1 border-gray-200 shadow-sm dark:border-gray-500">
+      <div className="flex flex-col w-full gap-6 p-6 rounded-sm border-1 border-muted-foreground/30">
         <div className="flex flex-col gap-6 ">
           <h2 className="text-2xl font-semibold">Sale Summary</h2>
           <ul className="flex flex-col gap-1.5">
@@ -220,7 +218,7 @@ export const CreateSalesForm = ({ token }) => {
             !saleData.customer_name.trim()
           }
         >
-          {loading ? "Creando..." : "Crear venta"}
+          {loading ? "Creating..." : "Create Sale"}
         </Button>
 
         {errorAlert && (

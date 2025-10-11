@@ -62,7 +62,7 @@ const CreateSupplierForm = ({ token, isOpen, onClose, onRefresh }) => {
         {isOpen && (
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col p-5 gap-6 dark:bg-black"
+            className="flex flex-col p-4 gap-6 dark:bg-black"
           >
             <div className="grid gap-4">
               <div className="grid gap-6">
@@ -98,14 +98,6 @@ const CreateSupplierForm = ({ token, isOpen, onClose, onRefresh }) => {
                     required
                   />
                 </div>
-                {alert && (
-                  <Alert className="flex items-center text-green-600">
-                    <CheckCircle2 className="mr-2" />
-                    <AlertDescription className="text-sm font-medium">
-                      Supplier created successfully!
-                    </AlertDescription>
-                  </Alert>
-                )}
                 {error && (
                   <p className="text-red-500 text-sm font-medium text-center">
                     {error}
@@ -117,6 +109,14 @@ const CreateSupplierForm = ({ token, isOpen, onClose, onRefresh }) => {
               {loading ? "Creating..." : "Create Supplier"}
             </Button>
           </form>
+        )}
+        {alert && (
+          <Alert className="bg-green-50 border-green-600 text-green-700 mt-5 dark:bg-green-800 dark:border-green-400 dark:text-green-200">
+            <CheckCircle2 />
+            <AlertDescription className="text-sm font-medium">
+              Supplier created successfully!
+            </AlertDescription>
+          </Alert>
         )}
       </SheetContent>
     </Sheet>

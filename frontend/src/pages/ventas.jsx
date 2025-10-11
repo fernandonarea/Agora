@@ -6,7 +6,7 @@ export const Ventas = () => {
   const token = localStorage.getItem("token");
 
   return (
-    <div className="overflow-hidden flex flex-col h-dvh">
+    <div className="overflow-hidden flex flex-col h-dvh sm: grid-cols-3">
       <header className="flex p-5 border-b-1 justify-between items-center ">
         <div className="text-2xl font-semibold">Sales</div>
       </header>
