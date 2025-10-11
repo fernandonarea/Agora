@@ -1,67 +1,81 @@
-# Propósito del proyecto
+# Agora Inventory Management System
+A complete web system for managing inventory, sales, products, and suppliers, developed with the MERN stack (MySQL, Express, React, Node.js) and styled with Shadcn/UI.
 
-Agora es una aplicación Fullstack diseñada para la gestión de inventario de productos.
-Incluye autenticación de usuarios, gestión de roles, estadísticas y un diseño escalable, pensado como un proyecto demostrativo para prácticas profesionales.
 
-# Características principales
 
--  Gestión de usuarios (roles: administrador, vendedor).
+## Description
+This project is a web application designed to simplify and streamline inventory management. It allows users to monitor key business operations through an interactive dashboard, manage sales, organize the product catalog, and maintain detailed supplier records.
 
-- Gestión de productos (crear, actualizar, eliminar, ver catálogo).
+## Main Modules
 
--  Control de stock mediante entradas (compras) y salidas (ventas)
+#### Dashboard
+- Key Metrics Visualization: Displays essential business insights such as total daily sales, top-selling products, stock levels, and daily earnings using charts and summary cards.
 
--  Gestión de proveedores y clientes.
+#### Sales Module
+- Sales Management: Enables users to create, view, and manage sales transactions efficiently.
 
--  Registro de ventas con detalle de productos y cantidades.
+#### Product Management
+- Product CRUD: Includes full Create, Read, Update, and Delete (CRUD) functionality for managing products in the inventory.
 
--  Registro de compras a proveedores con detalle de productos y cantidades.
+- Stock Control: Automatically updates stock levels with each sale or purchase.
 
-- Movimientos de inventario: entradas, salidas y ajustes.
+#### Supplier Management
+- Supplier CRUD: Manages supplier information, including contact details and business data..
 
-- Reportes: productos más vendidos, ventas por período, compras por proveedor, stock actual.
+## Technologies Used
+This project was built using the following technologies:
+- Backend:
+  - Node.js: JavaScript runtime environment for server-side development.
+  - Express: Framework for building RESTful APIs.
+- Database:
+  - MySQL
+- Frontend:
+  - ReactJS
+  - Shadcn/UI
 
-# Entidades Principales
+## Installation and Setup
+To run the project locally:
+### Prerequisites
+- Node.js version 18.x or higher
+- A package manager (npm or yarn)
+- A running MySQL instance
+### Installation Steps
+1. Clone the Repository
+```bash
+git clone https://github.com/tu-usuario/tu-repositorio.git
+cd tu-repositorio
+  ```
+2. Set Up the Backend
+```bash
+cd backend
+npm install
+```
+ - Create a .env file with the following content:
+```
+PORT = your_port
+HOST_DB = localhost
+USER_DB = root
+PASSWORD = your_password
+DATABASE = your_database_name
+PORT_DB = 3306
 
-- Usuarios: administradores y vendedores.
+SECRET_JWT_KEY = your_seecret_key
 
-- Productos: información del catálogo, precios y stock.
+```
+3. Set Up Frontend
+```bash
+cd ../frontend
+npm install
+```
 
-- Ventas: cabecera y detalle de ventas.
-
-- Compras: cabecera y detalle de compras.
-
-- Clientes: datos de clientes registrados.
-
-- Proveedores: datos de proveedores.
-
-- Movimientos de inventario: historial de entradas, salidas y ajustes.
-
-# Tecnologías utilizadas
-## Frontend
-
-- React.js
-- React Router
-- Shadcn
-- axios
-
-## Backend
-
-- Node.js
-- Express
-
-Base de datos
-- MySQL
-
-## Infraestructura
-
-- Docker
-
-## Despliegue
-
-- Frontend: Vercel
-
-- Backend: Railway
-
-## Autor
-- Fernando Narea
+### Ejecución de la Aplicación
+1. Start backend
+```
+cd backend
+npm start
+```
+2. Start Frontend
+```
+cd ../frontend
+npm start
+```
