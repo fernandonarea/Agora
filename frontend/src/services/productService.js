@@ -101,7 +101,7 @@ export const createProduct = async (productData, token) => {
 
 export const updateProduct = async (id_product, productData, token) => {
   try {
-    const response = await axios.post(
+    const response = await axios.put(
       `http://localhost:3200/api/products/updateProduct/${id_product}`,
       productData,
       {

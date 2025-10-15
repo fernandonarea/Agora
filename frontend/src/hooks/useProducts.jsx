@@ -13,7 +13,7 @@ export const useProducts = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
-  const [bestProducts, setBestProducts] = useState([])
+  const [bestProducts, setBestProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [metadata, setMetadata] = useState({
@@ -54,7 +54,7 @@ export const useProducts = () => {
         : [];
 
       setProducts(productsArray);
-      console.log(products)
+      console.log(products);
       setMetadata(response.data.metadata);
       return productsArray;
     } catch (error) {
@@ -115,28 +115,26 @@ export const useProducts = () => {
     }
   };
 
-const productByName = async (productname, token) => {
-  try {
-    setLoading(true);
-    setError(null);
-    const response = await getProductByName(productname, token);
+  const productByName = async (productname, token) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await getProductByName(productname, token);
 
-    if (!response.data || response.data.length === 0) {
-      throw new Error("Product not found");
+      if (!response.data || response.data.length === 0) {
+        throw new Error("Product not found");
+      }
+      setSelectedProduct(response.data[0]);
+
+      return response;
+    } catch (error) {
+      setSelectedProduct(null);
+      handleError(error);
+      throw error;
+    } finally {
+      setLoading(false);
     }
-    setSelectedProduct(response.data[0]);
-
-    return response;
-  } catch (error) {
-    setSelectedProduct(null);
-    handleError(error);
-    throw error;
-  } finally {
-    setLoading(false);
-  }
-};
-
-
+  };
 
   const updateProducts = async (id_product, productData, token) => {
     try {

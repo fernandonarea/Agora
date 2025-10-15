@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProducts } from "@/hooks/useProducts";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,66 +8,76 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
 } from "@/components/ui/sheet";
 import { CheckCircle2 } from "lucide-react";
 
-export const CreateProductForm = ({ token, isOpen, onClose, onRefresh }) => {
-  const { newProduct, loading, error } = useProducts();
+export const UpdateProductForm = ({
+  token,
+  product,
+  isOpen,
+  onClose,
+  onUpdated,
+}) => {
+  const { updateProducts, error, loading } = useProducts();
+  const [alert, setAlert] = useState(false);
   const [productData, setProductData] = useState({
     product_name: "",
     product_description: "",
     product_price: 0,
     stock: 0,
   });
-  const [alert, setAlert] = useState(false);
 
-  const handleChange = (e) => {
-    setProductData({
-      ...productData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleCreateProduct = async (e) => {
-    e.preventDefault();
-    try {
-      await newProduct(productData, token);
+  useEffect(() => {
+    if (product) {
       setProductData({
-        product_name: "",
-        product_description: "",
-        product_price: 0,
-        stock: 0,
+        product_name: product.product_name || "",
+        product_description: product.product_description || "",
+        product_price: product.product_price || 0,
+        stock: product.stock || 0,
       });
-      setAlert(true);
-      if (onRefresh) {
-        onRefresh();
-      }
+    }
+  }, [product]);
 
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const response = await updateProducts(
+      product.id_product,
+      productData,
+      token
+    );
+    if (response) {
+      setAlert(true);
+      onUpdated?.();
       setTimeout(() => {
+        error;
         setAlert(false);
-      }, 2000);
-    } catch (error) {
-      console.error("Error creating product:", error);
-      return;
+        onClose();
+      }, 1500);
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProductData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
-    <Sheet open={isOpen} onOpenChange={onClose} >
-      <SheetContent>
+    <Sheet open={isOpen} onOpenChange={onClose}>
+      <SheetContent side="left">
         <SheetHeader>
-          <SheetTitle>Create Product</SheetTitle>
-          <SheetDescription className={"mb-5"}>
-            Complete the details below to add a new product to the inventory.
+          <SheetTitle>Update Product</SheetTitle>
+          <SheetDescription className={"mb-4"}>
+            Edit the information below to update the product.
           </SheetDescription>
-          {isOpen && (
-            <form
-              onSubmit={handleCreateProduct}
-              className="flex flex-col gap-6"
-            >
+
+          {product && (
+            <form onSubmit={handleUpdate} className="flex flex-col gap-4">
               <div className="grid gap-4">
                 <div className="grid gap-2">
                   <div className="grid gap-3">
@@ -78,19 +87,17 @@ export const CreateProductForm = ({ token, isOpen, onClose, onRefresh }) => {
                       type="text"
                       onChange={handleChange}
                       value={productData.product_name}
-                      placeholder="Galleta Oreo"
                       required
-                      autoComplete="off"
                     />
                   </div>
 
                   <div className="grid gap-3">
-                    <Label>Brief Description</Label>
+                    <Label>Product Description</Label>
                     <Textarea
                       name="product_description"
-                      type="text"
                       onChange={handleChange}
                       value={productData.product_description}
+                      required
                     />
                   </div>
 
@@ -101,8 +108,6 @@ export const CreateProductForm = ({ token, isOpen, onClose, onRefresh }) => {
                       type="number"
                       onChange={handleChange}
                       value={productData.product_price}
-                      placeholder="$5"
-                      min="0"
                       required
                     />
                   </div>
@@ -114,33 +119,28 @@ export const CreateProductForm = ({ token, isOpen, onClose, onRefresh }) => {
                       type="number"
                       onChange={handleChange}
                       value={productData.stock}
-                      placeholder="40"
-                      min="1"
                       required
                     />
                   </div>
-
-                  {error && (
-                    <p className="text-red-500 text-sm font-medium text-center">
-                      {error}
-                    </p>
-                  )}
                 </div>
               </div>
 
-              <Button
-                type="submit"
-                className=" bg-violet-700 hover:bg-violet-800"
-                disabled={loading}
-              >
-                {loading ? "Loading..." : "Create Product"}
+              {error && (
+                <p className="text-red-500 text-sm font-medium text-center">
+                  {error}
+                </p>
+              )}
+
+              <Button type="submit" disabled={loading}>
+                {loading ? "Updating..." : "Update Product"}
               </Button>
             </form>
           )}
+
           {alert && (
             <Alert className="bg-green-50 border-green-600 text-green-700 mt-5 dark:bg-green-800 dark:border-green-400 dark:text-green-200">
               <CheckCircle2 className="h-4 w-4" />
-              <AlertTitle>Product created successfully</AlertTitle>
+              <AlertTitle>Product updated successfully</AlertTitle>
             </Alert>
           )}
         </SheetHeader>

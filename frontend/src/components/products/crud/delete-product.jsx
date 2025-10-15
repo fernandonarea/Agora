@@ -18,7 +18,6 @@ export const DeleteProduct = ({ id_product, token, onRefresh }) => {
   const { deleteProducts } = useProducts();
   const [showAlert, setShowAlert] = useState(false);
 
-
   const handleDelete = async () => {
     const result = await deleteProducts(id_product, token);
     if (result) {
@@ -28,8 +27,6 @@ export const DeleteProduct = ({ id_product, token, onRefresh }) => {
       setShowAlert(true);
     }
   };
-
-  
 
   return (
     <AlertDialog open={showAlert} onOpenChange={setShowAlert}>

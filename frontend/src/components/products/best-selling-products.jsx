@@ -32,7 +32,7 @@ const BestSellingProducts = ({ token }) => {
               Description
             </th>
             <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
-              Total Sales
+              Total Units Sold
             </th>
             <th className="px-5 py-5 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
               Stock

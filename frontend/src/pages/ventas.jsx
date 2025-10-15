@@ -1,6 +1,4 @@
 import { CreateSalesForm } from "@/components/sales/create-sale-form";
-import { Button } from "@/components/ui/button";
-import { Plus, Share } from "lucide-react";
 
 export const Ventas = () => {
   const token = localStorage.getItem("token");

@@ -15,15 +15,23 @@ const SideBar = () => {
         ${isOpen ? "w-64" : "w-18"}`}
     >
       <header className="flex flex-row items-center justify-between">
-        <div className={`flex items-center gap-3 ${!isOpen && "hidden"}`}>
-          <div className="bg-violet-800 p-1.5 rounded-md">
-            <Codesandbox size={24}  color="white"/>
+        <div className={`flex items-center gap-3`}>
+          <div className={`bg-violet-800 p-1.5 rounded-md ${!isOpen && "hover:bg-accent-foreground"}`} >
+            <Codesandbox
+              size={24}
+              color="white"
+              onClick={() => setIsOpen(!isOpen)}
+            />
           </div>
-          <div className="font-semibold text-2xl">Inventory</div>
+          <div className={`font-semibold text-2xl ${!isOpen && "hidden"}`}>
+            Inventory
+          </div>
         </div>
 
         <button
-          className="text-muted-foreground hover:bg-gray-300 p-1 rounded-md dark:hover:bg-gray-600"
+          className={`text-muted-foreground hover:bg-gray-300 p-1 rounded-md ${
+            !isOpen && "hidden"
+          } dark:hover:bg-gray-600`}
           onClick={() => setIsOpen(!isOpen)}
         >
           <PanelLeft size={20} />
