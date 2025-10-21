@@ -74,3 +74,19 @@ export const Performance = async (token) => {
     throw new Error(message);
   }
 };
+
+export const Statics = async (token) => {
+  try {
+    const response = await axios.get("http://localhost:3200/api/sales/kpi", {
+      headers : {
+        Authorization : `Bearer ${token}`
+      },
+    });
+    console.log(response.data)
+    return response.data
+  } catch (error) {
+    const message =
+      error.response?.data?.message || "Sales performance fetch service error";
+    throw new Error(message);
+  }
+}

@@ -70,9 +70,7 @@ export const createSale = async (req, res) => {
   if (!items || items.length === 0) {
     return res
       .status(400)
-      .json(
-        response_bad_request("No products provided for the sale.")
-      );
+      .json(response_bad_request("No products provided for the sale."));
   }
 
   let connection;
@@ -156,14 +154,14 @@ export const createSale = async (req, res) => {
   } catch (error) {
     if (connection) await connection.rollback();
     console.error("Error creating sale:", error.message);
-    if (error.message.includes('Insufficient stock')) {
-      return res.status(400).json(
-        response_bad_request(error.message)
-      );
+    if (error.message.includes("Insufficient stock")) {
+      return res.status(400).json(response_bad_request(error.message));
     }
-    res.status(500).json(
-      response_error(500, "Internal server error while processing the sale.")
-    );
+    res
+      .status(500)
+      .json(
+        response_error(500, "Internal server error while processing the sale.")
+      );
   } finally {
     if (connection) connection.release();
   }
@@ -197,10 +195,7 @@ export const metrics = async (req, res) => {
     return res
       .status(500)
       .json(
-        response_error(
-          500,
-          "Server error while fetching total sales data"
-        )
+        response_error(500, "Server error while fetching total sales data")
       );
   }
 };
@@ -215,16 +210,56 @@ export const monthPerformance = async (req, res) => {
       ORDER BY dia`
     );
 
-    res.status(200).json(response_success(data, "Monthly performance retrieved successfully"));
+    res
+      .status(200)
+      .json(
+        response_success(data, "Monthly performance retrieved successfully")
+      );
   } catch (error) {
     console.error("Server error while fetching monthly performance:", error);
     return res
       .status(500)
       .json(
-        response_error(
-          500,
-          "Server error while fetching monthly performance"
-        )
+        response_error(500, "Server error while fetching monthly performance")
+      );
+  }
+};
+
+export const statics = async (req, res) => {
+  try {
+    const [todayResult] = await db_pool_connection.query(
+      "SELECT SUM(total) AS total_ventas FROM sales WHERE DATE(sales_date) = CURRENT_DATE;"
+    );
+
+    const [yesterdayResult] = await db_pool_connection.query(
+      "SELECT SUM(total) AS total_ventas FROM sales WHERE DATE(sales_date) = CURDATE() - INTERVAL 1 DAY;"
+    );
+
+    const todaySales = parseFloat(todayResult[0].total_ventas || 0);
+    const yesterdaySale = parseFloat(yesterdayResult[0].total_ventas || 0);
+
+    let change = 0;
+
+    if (yesterdaySale > 0) {
+      change = ((todaySales - yesterdaySale) / yesterdaySale) * 100;
+    } else if (todaySales > 0) {
+      change = 100;
+    }
+
+    res.status(200).json(
+      response_success({
+        ventasDeHoy: todaySales.toFixed(2),
+        ventasDeAyer: yesterdaySale.toFixed(2),
+        cambioPorcentual: change.toFixed(2),
+      }),
+      "KPI data"
+    );
+  } catch (error) {
+    console.error("Server error while getting KPI data:", error);
+    return res
+      .status(500)
+      .json(
+        response_error(500, "Server error while getting KPI data: " + error)
       );
   }
 };

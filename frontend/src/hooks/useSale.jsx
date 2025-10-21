@@ -1,4 +1,4 @@
-import { createSale, Metrics, Performance } from "@/services/salesService";
+import { createSale, Metrics, Performance, Statics } from "@/services/salesService";
 import { useState } from "react";
 
 export const useSale = () => {
@@ -8,6 +8,7 @@ export const useSale = () => {
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
   const [metrics, setMetrics] = useState([]);
+  const [statics, setStatics] = useState([])
 
   const handleError = (error) => {
     setError(error.message || "Unexpected error occurred");
@@ -57,12 +58,24 @@ export const useSale = () => {
     }
   };
 
+  const getStatics = async (token) => {
+    try {
+      const response = await Statics(token);
+      setStatics(response.data)
+    } catch (error) {
+      handleError(error)
+      throw error
+    }
+  }
+
   return {
     createNewSale,
     getMetrics,
     getGraphicsData,
+    getStatics,
     data,
     metrics,
+    statics,
     sale,
     saleId,
     loading,

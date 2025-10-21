@@ -5,6 +5,7 @@ import {
   getAllSales,
   metrics,
   monthPerformance,
+  statics,
 } from "../controllers/sales_controller.js";
 
 const sales_routes = new Router();
@@ -21,5 +22,7 @@ sales_routes.get("/api/sales/getMetrics", verifyToken, metrics);
 sales_routes.post("/api/sales/createSale", verifyToken, createSale);
 
 sales_routes.get("/api/sales/monthPerformance", verifyToken, monthPerformance);
+
+sales_routes.get("/api/sales/kpi", verifyToken, statics)
 
 export default sales_routes;
