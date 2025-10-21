@@ -5,20 +5,29 @@ import { ChevronLeft, ChevronRight, Pencil } from "lucide-react";
 import { DeleteProduct } from "./crud/delete-product";
 import { UpdateProductForm } from "./crud/update-product";
 import { Input } from "../ui/input";
+import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 
 const ProductList = ({ token }) => {
-  const { products, loading, fetchProducts, metadata } = useProducts();
+  const { products, loading, fetchProducts, metadata} = useProducts();
   const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [deleteError, setDeleteError] = useState(null);
   const [search, setSearch] = useState("");
   const limit = 10;
 
   useEffect(() => {
-    if (token) {
-      fetchProducts(token, currentPage, limit);
-    }
+    if (token) fetchProducts(token, currentPage, limit);
   }, [token, currentPage]);
+
+  useEffect(() => {
+    if (deleteError) {
+      const timer = setTimeout(() => setDeleteError(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [deleteError]);
+
+  // if (error) return <div>{error}</div>;
 
   const handlePrevPage = () =>
     metadata.hasPrevPage && setCurrentPage((p) => p - 1);
@@ -26,7 +35,6 @@ const ProductList = ({ token }) => {
     metadata.hasNextPage && setCurrentPage((p) => p + 1);
 
   const handleSearch = (e) => setSearch(e.target.value);
-
   const filterProducts = !search
     ? products
     : products.filter((product) =>
@@ -50,29 +58,36 @@ const ProductList = ({ token }) => {
         placeholder="Buscar producto por nombre"
       />
 
+      {/* {deleteError && (
+        <Alert className="bg-red-200 text-red-500 border-red-700">
+          <AlertTitle>Error al eliminar</AlertTitle>
+          <AlertDescription  className={"text-red-500"}>{deleteError}</AlertDescription>
+        </Alert>
+      )} */}
+
       {loading ? (
-        <div>Loading products...</div>
+        <div>Cargando productos...</div>
       ) : products.length === 0 ? (
-        <p>No Products Found</p>
+        <p>No se encontraron productos</p>
       ) : (
         <div className="border border-gray-200 rounded-lg shadow-xs overflow-auto dark:border-neutral-700">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
             <thead className="bg-gray-50 dark:bg-neutral-700">
               <tr>
                 <th className="px-5 py-3 text-start text-xs font-medium">
-                  Name
+                  Nombre
                 </th>
                 <th className="px-5 py-3 text-start text-xs font-medium">
-                  Description
+                  Descripción
                 </th>
                 <th className="px-5 py-3 text-start text-xs font-medium">
-                  Price
+                  Precio
                 </th>
                 <th className="px-5 py-3 text-start text-xs font-medium">
                   Stock
                 </th>
                 <th className="px-5 py-3 text-start text-xs font-medium">
-                  Actions
+                  Acciones
                 </th>
               </tr>
             </thead>
@@ -99,6 +114,7 @@ const ProductList = ({ token }) => {
                       id_product={p.id_product}
                       token={token}
                       onRefresh={handleRefresh}
+                      showError={setDeleteError}
                     />
                   </td>
                 </tr>
@@ -107,26 +123,26 @@ const ProductList = ({ token }) => {
           </table>
 
           <div className="flex flex-row gap-10 items-center justify-center p-2">
-              <Button
-                onClick={handlePrevPage}
-                disabled={!metadata.hasPrevPage}
-                variant={"outline"}
-              >
-                <ChevronLeft size={20} />
-              </Button>
-              <p>
-                Page {metadata.page} of {metadata.totalPages}
-              </p>
-              <Button
-                onClick={handleNextPage}
-                disabled={!metadata.hasNextPage}
-                variant={"outline"}
-              >
-                <ChevronRight size={20} />
-              </Button>
-              <p className="text-sm text-muted-foreground">
-                Total Products: {metadata.total}
-              </p>
+            <Button
+              onClick={handlePrevPage}
+              disabled={!metadata.hasPrevPage}
+              variant="outline"
+            >
+              <ChevronLeft size={20} />
+            </Button>
+            <p>
+              Página {metadata.page} de {metadata.totalPages}
+            </p>
+            <Button
+              onClick={handleNextPage}
+              disabled={!metadata.hasNextPage}
+              variant="outline"
+            >
+              <ChevronRight size={20} />
+            </Button>
+            <p className="text-sm text-muted-foreground">
+              Total de productos: {metadata.total}
+            </p>
           </div>
         </div>
       )}

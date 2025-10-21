@@ -1,6 +1,7 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import SideBar from "../components/sideBar/side-bar";
 import { UserProvider } from "@/context/userContext";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function MainLayout() {
   return (
@@ -13,6 +14,7 @@ export default function MainLayout() {
           <Outlet />
         </main>
       </div>
+      <Toaster richColors position="top-center"/>
     </UserProvider>
   );
 }

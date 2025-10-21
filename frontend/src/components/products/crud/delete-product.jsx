@@ -12,24 +12,38 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
 
-export const DeleteProduct = ({ id_product, token, onRefresh }) => {
+export const DeleteProduct = ({ id_product, token, onRefresh, showError }) => {
   const { deleteProducts } = useProducts();
   const [showAlert, setShowAlert] = useState(false);
 
   const handleDelete = async () => {
-    const result = await deleteProducts(id_product, token);
-    if (result) {
-      if (onRefresh) {
+    try {
+      const response = await deleteProducts(id_product, token);
+      if (response) {
         onRefresh();
+        toast.success("Producto eliminado")
+        setShowAlert(false);
       }
-      setShowAlert(true);
+    } catch (err) {
+      console.error("Error al eliminar:", err.message);
+      showError(err.message || "Error al eliminar el producto");
+      toast.error(err.message || "Ocurrió un error eliminando el producto",);
+      setShowAlert(false);
     }
   };
 
+  const handleOpenChange = (open) => {
+    if (open) {
+      showError(null);
+    }
+    setShowAlert(open);
+  };
+
   return (
-    <AlertDialog open={showAlert} onOpenChange={setShowAlert}>
+    <AlertDialog open={showAlert} onOpenChange={handleOpenChange}>
       <AlertDialogTrigger asChild>
         <Button
           variant="outline"
@@ -42,7 +56,8 @@ export const DeleteProduct = ({ id_product, token, onRefresh }) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. Your product will be permanently deleted.
+            This action cannot be undone. Your product will be permanently
+            deleted.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

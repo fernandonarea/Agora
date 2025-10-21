@@ -24,7 +24,7 @@ export const checkRole = (role) => {
     if (!role.includes(req.user.role)) {
       return res
         .status(403)
-        .json({ message: "Forbidden: You don't have permission to access this resource" });
+        .json({ message: "You don't have permission to access this resource or this action" });
     }
     next();
   };

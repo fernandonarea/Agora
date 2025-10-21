@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Alert, AlertTitle } from "@/components/ui/alert";
+import { toast } from "sonner";
 import {
   Sheet,
   SheetContent,
@@ -13,7 +13,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-import { CheckCircle2 } from "lucide-react";
+
 
 export const CreateProductForm = ({ token, isOpen, onClose, onRefresh }) => {
   const { newProduct, loading, error } = useProducts();
@@ -23,7 +23,6 @@ export const CreateProductForm = ({ token, isOpen, onClose, onRefresh }) => {
     product_price: 0,
     stock: 0,
   });
-  const [alert, setAlert] = useState(false);
 
   const handleChange = (e) => {
     setProductData({
@@ -42,14 +41,9 @@ export const CreateProductForm = ({ token, isOpen, onClose, onRefresh }) => {
         product_price: 0,
         stock: 0,
       });
-      setAlert(true);
-      if (onRefresh) {
-        onRefresh();
-      }
+      onRefresh();
+      toast.success("Producto creado Correctamente")
 
-      setTimeout(() => {
-        setAlert(false);
-      }, 2000);
     } catch (error) {
       console.error("Error creating product:", error);
       return;
@@ -57,7 +51,7 @@ export const CreateProductForm = ({ token, isOpen, onClose, onRefresh }) => {
   };
 
   return (
-    <Sheet open={isOpen} onOpenChange={onClose} >
+    <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Create Product</SheetTitle>
@@ -136,12 +130,6 @@ export const CreateProductForm = ({ token, isOpen, onClose, onRefresh }) => {
                 {loading ? "Loading..." : "Create Product"}
               </Button>
             </form>
-          )}
-          {alert && (
-            <Alert className="bg-green-50 border-green-600 text-green-700 mt-5 dark:bg-green-800 dark:border-green-400 dark:text-green-200">
-              <CheckCircle2 className="h-4 w-4" />
-              <AlertTitle>Product created successfully</AlertTitle>
-            </Alert>
           )}
         </SheetHeader>
       </SheetContent>

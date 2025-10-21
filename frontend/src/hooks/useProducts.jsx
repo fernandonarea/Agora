@@ -167,6 +167,7 @@ export const useProducts = () => {
       return response;
     } catch (error) {
       handleError(error);
+      throw error
     } finally {
       setLoading(false);
     }

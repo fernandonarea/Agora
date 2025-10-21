@@ -12,7 +12,7 @@ import SuppliersPage from "@/pages/suppliers";
 
 export default function AppRoutes() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider storageKey="vite-ui-theme">
       <Routes>
         <Route index element={<Login />} />
         <Route path="/register" element={<Register />} />
