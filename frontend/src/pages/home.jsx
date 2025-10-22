@@ -66,7 +66,7 @@ export const Home = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Today Sales</CardTitle>
+            <CardTitle>Total Earnings</CardTitle>
             <CardDescription className={"flex flex-row justify-between items-center text-xl"}>
               {metrics.todaySales}
               <Badge className={getBadgeVariant(statics.cambioPorcentual)}>

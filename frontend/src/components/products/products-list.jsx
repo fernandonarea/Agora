@@ -57,18 +57,8 @@ const ProductList = ({ token }) => {
         onChange={handleSearch}
         placeholder="Buscar producto por nombre"
       />
-
-      {/* {deleteError && (
-        <Alert className="bg-red-200 text-red-500 border-red-700">
-          <AlertTitle>Error al eliminar</AlertTitle>
-          <AlertDescription  className={"text-red-500"}>{deleteError}</AlertDescription>
-        </Alert>
-      )} */}
-
       {loading ? (
         <div>Cargando productos...</div>
-      ) : products.length === 0 ? (
-        <p>No se encontraron productos</p>
       ) : (
         <div className="border border-gray-200 rounded-lg shadow-xs overflow-auto dark:border-neutral-700">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">

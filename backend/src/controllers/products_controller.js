@@ -40,22 +40,31 @@ export const getProducts = async (req, res) => {
     const limit = parseInt(req.query.limit || 10);
     const offset = (page - 1) * limit;
 
+    //Se calcula el total de productos con stock mayor a 0
     const [total] = await db_pool_connection.query(
-      "SELECT COUNT(*) as total FROM products"
+      "SELECT COUNT(*) as total FROM products WHERE stock > 0"
     );
 
     const [products] = await db_pool_connection.query(
-      `SELECT id_product, product_name, product_description, product_price, stock FROM products order by stock desc LIMIT ? OFFSET ?;`,
+      `SELECT id_product, product_name, product_description, product_price, stock FROM products 
+       WHERE stock > 0 
+       ORDER BY stock DESC 
+       LIMIT ? OFFSET ?;`,
       [limit, offset]
     );
 
     if (products.length === 0 && page > 1) {
       return res
         .status(400)
-        .json(response_bad_request("Error fetching products: no products found"));
+        .json(
+          response_bad_request("Error fetching products: no products found")
+        );
     }
 
     const totalProducts = total[0].total;
+
+    //Se calcula el total de paginas
+    //El redondeo siempre es para arriba
     const totalPages = Math.ceil(totalProducts / limit);
 
     res.status(200).json(
@@ -82,7 +91,7 @@ export const getProducts = async (req, res) => {
 };
 
 export const getProductByName = async (req, res) => {
-  const product_name  = req.query.productname;
+  const product_name = req.query.productname;
 
   try {
     const [product] = await db_pool_connection.query(
@@ -93,7 +102,9 @@ export const getProductByName = async (req, res) => {
     if (product.length === 0) {
       return res
         .status(400)
-        .json(response_bad_request("Error fetching product: product not found"));
+        .json(
+          response_bad_request("Error fetching product: product not found")
+        );
     }
 
     res
@@ -212,7 +223,7 @@ export const deleteProduct = async (req, res) => {
   const { id_product } = req.params;
   try {
     const [rows] = await db_pool_connection.query(
-      `DELETE FROM products WHERE id_product = ?`,
+      `UPDATE products SET stock = 0 WHERE id_product = ?;`,
       id_product
     );
 
