@@ -18,10 +18,10 @@ export const useSale = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await createSale(customer_name, items, token);
-      setSaleId(response);
-      setSale(response.data);
-      return response;
+      const data = await createSale(customer_name, items, token);
+      setSaleId(data.record_id?.id_sale);
+      setSale(data.record_id);
+      return data;
     } catch (error) {
       handleError(error);
       throw error;

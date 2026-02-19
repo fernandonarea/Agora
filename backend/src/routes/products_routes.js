@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-    createProduct,
+  createProduct,
   deleteProduct,
   getBestSellingProducts,
   getProductById,
@@ -15,9 +15,9 @@ const products_routes = new Router();
 
 //GET
 products_routes.get(
-    "/api/products/getProducts", 
-    verifyToken, 
-    getProducts
+  "/api/products/getProducts",
+  verifyToken,
+  getProducts
 );
 
 products_routes.get(
@@ -40,27 +40,27 @@ products_routes.get(
 
 //POST
 products_routes.post(
-    "/api/products/createProduct", 
-    verifyToken, 
-    checkRole(['admin']), 
-    validateCreateProduct,
-    createProduct
+  "/api/products/createProduct",
+  verifyToken,
+  checkRole(['admin']),
+  validateCreateProduct,
+  createProduct
 );
 
 //PUT
 products_routes.put(
-    "/api/products/updateProduct/:id_product", 
-    verifyToken, 
-    checkRole(['admin']),
-    updateProduct
+  "/api/products/updateProduct/:id_product",
+  verifyToken,
+  checkRole(['admin']),
+  updateProduct
 );
 
 //DELETE
 products_routes.delete(
-    "/api/products/deleteProduct/:id_product",
-    verifyToken,
-    checkRole(['admin']),
-    deleteProduct
+  "/api/products/deleteProduct/:id_product",
+  verifyToken,
+  checkRole(['admin']),
+  deleteProduct
 );
 
 export default products_routes;

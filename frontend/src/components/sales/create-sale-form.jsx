@@ -1,5 +1,6 @@
 import { useSale } from "@/hooks/useSale";
 import { useMemo, useState } from "react";
+import { useReport } from "@/hooks/useReport";
 import { useProducts } from "@/hooks/useProducts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +9,8 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle2, OctagonX, Trash2 } from "lucide-react";
 
 export const CreateSalesForm = ({ token }) => {
-  const { createNewSale, loading} = useSale();
+  const { createNewSale, loading: saleLoading } = useSale();
+  const { generateInvoice, loading: pdfLoading } = useReport();
   const { productByName, selectedProduct } = useProducts();
   const [successAlert, setSuccessAlert] = useState(false);
   const [errorAlert, setErrorAlert] = useState("");
@@ -59,7 +61,14 @@ export const CreateSalesForm = ({ token }) => {
   const handleCreateSale = async (e) => {
     e.preventDefault();
     try {
-      await createNewSale(saleData.customer_name, saleData.items, token);
+      const result = await createNewSale(saleData.customer_name, saleData.items, token);
+
+      console.log("¿Qué es result?:", result);
+      const idGenerado = result?.record_id?.id_sale
+
+      if (idGenerado) {
+        await generateInvoice(idGenerado, token);
+      }
       setSaleData({
         customer_name: "",
         productname: "",
@@ -77,14 +86,13 @@ export const CreateSalesForm = ({ token }) => {
   const { subtotal, total } = useMemo(() => {
     const calculatedSubtotal = saleData.items.reduce(
       (acc, item) => acc + item.price * item.quantity,
-      0
+      0,
     );
     return {
       subtotal: calculatedSubtotal,
       total: calculatedSubtotal,
     };
   }, [saleData.items]);
-
 
   return (
     <form onSubmit={handleCreateSale} className="flex justify-between gap-6">
@@ -113,7 +121,7 @@ export const CreateSalesForm = ({ token }) => {
             Search
           </Button>
         </div>
-        
+
         {selectedProduct && (
           <div className="flex flex-col gap-4 rounded-md border p-4">
             <div className="flex items-center justify-between">
@@ -213,17 +221,26 @@ export const CreateSalesForm = ({ token }) => {
         <Button
           type="submit"
           disabled={
-            loading ||
+            saleLoading ||
+            pdfLoading || // Bloquear si se está generando el PDF
             saleData.items.length === 0 ||
             !saleData.customer_name.trim()
           }
         >
-          {loading ? "Creating..." : "Create Sale"}
+          {saleLoading
+            ? "Creating Sale..."
+            : pdfLoading
+              ? "Downloading Invoice..."
+              : "Create Sale"}
         </Button>
 
         {errorAlert && (
-          <Alert className={"bg-red-100 border-red-400 text-red-700 dark:bg-red-900 dark:border-red-600 dark:text-red-300"}>
-            <OctagonX className="h-4 w-4"/>
+          <Alert
+            className={
+              "bg-red-100 border-red-400 text-red-700 dark:bg-red-900 dark:border-red-600 dark:text-red-300"
+            }
+          >
+            <OctagonX className="h-4 w-4" />
             <AlertTitle>{errorAlert}</AlertTitle>
           </Alert>
         )}
