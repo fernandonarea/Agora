@@ -3,6 +3,7 @@ import ProductList from "@/components/products/products-list";
 import { Button } from "@/components/ui/button";
 import { Plus, Share } from "lucide-react";
 import { useState } from "react";
+import { InventoryButton } from "@/components/reports/inventory_button";
 
 export const Productos = () => {
   const token = localStorage.getItem("token");
@@ -20,13 +21,13 @@ export const Productos = () => {
       <header className="flex p-5 border-b-1 justify-between items-center ">
         <div className="text-2xl font-semibold">Products</div>
         <div className="flex flex-row justify-between gap-2">
-          <Button className="bg-[var(--secondary)] text-secondary-foreground">
+          <Button className="bg-[var(--secondary)] text-accent-foreground hover:bg-gray-300 dark:hover:bg-gray-900">
             <Share />
-            Export
+            <InventoryButton/>
           </Button>
           <Button
             onClick={setIsOpen}
-            className="bg-[var(--primary)] text-primary-foreground"
+            className="bg-[var(--primary)] text-primary-foreground hover:bg-violet-800"
           >
             <Plus strokeWidth={3} />
             Add Product

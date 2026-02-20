@@ -9,7 +9,6 @@ export const MainItems = ({ isOpen }) => {
     { icon: Briefcase, text: "Sales", link: "/ventas" },
     { icon: Package, text: "Products", link: "/products" },
     { icon: Truck, text: "Suppliers", link: "/suppliers" },
-    { icon: FileText, text: "Reports", link: "/reports" },
   ];
 
 

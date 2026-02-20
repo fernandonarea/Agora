@@ -63,7 +63,6 @@ export const CreateSalesForm = ({ token }) => {
     try {
       const result = await createNewSale(saleData.customer_name, saleData.items, token);
 
-      console.log("¿Qué es result?:", result);
       const idGenerado = result?.record_id?.id_sale
 
       if (idGenerado) {
@@ -222,7 +221,7 @@ export const CreateSalesForm = ({ token }) => {
           type="submit"
           disabled={
             saleLoading ||
-            pdfLoading || // Bloquear si se está generando el PDF
+            pdfLoading ||
             saleData.items.length === 0 ||
             !saleData.customer_name.trim()
           }

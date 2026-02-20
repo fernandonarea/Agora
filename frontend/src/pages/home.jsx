@@ -66,7 +66,7 @@ export const Home = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Total Earnings</CardTitle>
+            <CardTitle>Today Sales</CardTitle>
             <CardDescription className={"flex flex-row justify-between items-center text-xl"}>
               {metrics.todaySales}
               <Badge className={getBadgeVariant(statics.cambioPorcentual)}>
@@ -116,34 +116,3 @@ export const Home = () => {
     </div>
   );
 };
-
-
-        {/* <div className="flex flex-col gap-5 border-1 h-fit rounded-md shadow-xs p-5 dark:bg-sidebar-accent">
-          <div className="bg-violet-600 p-3 rounded-4xl w-fit text-white">
-            <BanknoteArrowUpIcon />
-          </div>
-          <div className="flex flex-col gap-2 ">
-            <h1 className="text-muted-foreground">Earnings of the day</h1>
-            <p className="text-3xl font-bold">${metrics.totalIncome}</p>
-          </div>
-        </div> */}
-
-        {/* <div className="flex flex-col gap-5 border-1 h-fit rounded-md shadow-xs p-5 dark:bg-sidebar-accent">
-          <div className="bg-amber-600 p-3 rounded-4xl w-fit text-white justify-end-safe">
-            <Activity />
-          </div>
-          <div className="flex flex-col gap-2">
-            <h1 className="text-muted-foreground">Sales of the Day</h1>
-            <p className="text-3xl font-bold">{metrics.todaySales}</p>
-          </div>
-        </div> */}
-
-        {/* <div className="flex flex-col gap-5 border-1 h-fit rounded-md shadow-xs p-5 dark:bg-sidebar-accent">
-          <div className="bg-red-700 p-3 rounded-4xl w-fit text-white">
-            <PackageMinus />
-          </div>
-          <div className="flex flex-col gap-2">
-            <h1 className="text-muted-foreground">Low Stock Products</h1>
-            <p className="text-3xl font-bold">{metrics.lowStockProducts}</p>
-          </div>
-        </div> */}

@@ -13,3 +13,17 @@ export const generateSalesInvoice = async (id_sales, token) => {
     throw new Error(`Error al generar el pdf: ${error}`);
   }
 };
+
+export const allProductsReportService = async (token) => {
+  try {
+    const response = await axios.get("http://localhost:3200/sales/inventory/pdf", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      responseType: "blob"
+    })
+    return response.data
+  } catch (error) {
+    throw new Error(`Error al generar el pdf: ${error}`);
+  }
+}

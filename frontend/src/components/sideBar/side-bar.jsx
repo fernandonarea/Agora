@@ -16,7 +16,7 @@ const SideBar = () => {
     >
       <header className="flex flex-row items-center justify-between">
         <div className={`flex items-center gap-3`}>
-          <div className={`bg-violet-800 p-1.5 rounded-md ${!isOpen && "hover:bg-accent-foreground"}`} >
+          <div className={`bg-violet-800 p-1.5 rounded-md ${!isOpen && "hover:bg-violet-700"}`} >
             <Codesandbox
               size={24}
               color="white"

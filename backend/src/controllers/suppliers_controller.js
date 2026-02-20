@@ -5,12 +5,13 @@ import {
   response_error,
   response_not_found,
   response_success,
-} from "../Responses/responses.js";
+} from "../responses/responses.js";
 
 export const getAllSuppliers = async (req, res) => {
   try {
     const [rows] = await db_pool_connection.query(
-      "SELECT id_supplier, supplier_name, supplier_phone, supplier_email, date_added FROM suppliers"
+      "SELECT id_supplier, supplier_name, supplier_phone, supplier_email, date_added FROM suppliers WHERE id_store = ?",
+      [req.id_store]
     );
 
     if (rows.length === 0)

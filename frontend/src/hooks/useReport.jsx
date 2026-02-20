@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { generateSalesInvoice } from "../services/reportsService";
+import { generateSalesInvoice, allProductsReportService } from "../services/reportsService";
 
 export const useReport = () => {
   const [loading, setLoading] = useState(false);
@@ -24,6 +24,29 @@ export const useReport = () => {
       setLoading(false);
     }
   };
+  
+  const allProductsReport = async (token) => {
+    setLoading(true);
+    const day = new Date()
+    try {
+      const blob = await allProductsReportService(token);
 
-  return { generateInvoice, loading, error };
+      const url = window.URL.createObjectURL(new Blob([blob]))
+      const link = document.createElement("a")
+      link.href = url;
+      link.setAttribute("download", `inventario_${day.toISOString()}.pdf`)
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+      setError(error.message)
+    }  finally{
+      setLoading(false)
+    }
+  }
+  return { generateInvoice, allProductsReport, loading, error };
 };
+

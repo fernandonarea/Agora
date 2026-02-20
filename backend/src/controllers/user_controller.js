@@ -170,7 +170,6 @@ export const deleteUser = async (req, res) => {
         );
     }
 
-    res.status(200).json(response_success(rows, "User deleted successfully"));
   } catch (error) {
     console.error("Server error while deleting user:", error);
     return res
@@ -214,7 +213,7 @@ export const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id_user: user.id_user, role: user.role },
+      { id_user: user.id_user, role: user.role, id_store: user.id_store },
       process.env.SECRET_JWT_KEY,
       { expiresIn: "1h" }
     );

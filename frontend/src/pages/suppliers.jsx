@@ -21,7 +21,7 @@ const SuppliersPage = () => {
         <div className="text-2xl font-semibold">Suppliers</div>
         <div className="flex flex-row justify-between gap-2">
           <Button
-            className="bg-[var(--primary)] text-primary-foreground"
+            className="bg-[var(--primary)] text-primary-foreground hover:bg-violet-800"
             onClick={() => setIsOpen(true)}
           >
             <Plus strokeWidth={3} />
