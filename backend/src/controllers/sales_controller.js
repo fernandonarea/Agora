@@ -210,7 +210,7 @@ export const monthPerformance = async (req, res) => {
     const [data] = await db_pool_connection.query(
       `SELECT DATE(sales_date) AS dia, COUNT(*) AS total 
       FROM sales 
-      WHERE sales_date >= CURDATE() - INTERVAL 30 DAY AND id_store = ?
+      WHERE sales_date >= CURDATE() - INTERVAL 30 DAY
       GROUP BY dia 
       ORDER BY dia`,
       [req.id_store],
