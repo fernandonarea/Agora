@@ -16,8 +16,7 @@ export const Products = async (token, page = 1, limit = 10) => {
     );
     return response.data;
   } catch (error) {
-    const message =
-      error.response?.data?.message || "Product fetch service error";
+    const message = error.response?.data?.message || "Product fetch service error";
     console.error(message);
     throw error;
   }

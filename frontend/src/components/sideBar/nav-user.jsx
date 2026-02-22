@@ -26,7 +26,7 @@ export const NavUser = ({ isOpen }) => {
   };
 
   return (
-    <div className="flex flex-row w-fit p-2 gap-1.5 items-center">
+    <div className="flex flex-row w-full p-2 justify-between items-center">
         <Avatar className={`${isOpen ? "" : "hidden"}`}>
           <AvatarFallback
             className={`${
@@ -45,7 +45,7 @@ export const NavUser = ({ isOpen }) => {
                 {user?.user_name.split(" ", 1)}{" "}
                 {user?.user_lastname.split(" ", 1) || "Cargando.."}
               </span>
-              <p className="text-xs text-muted-foreground font-semibold">
+              <p className="text-xs text-muted-foreground font-normal">
                 {user?.user_email || "Cargando.."}
               </p>
             </div>
@@ -53,7 +53,7 @@ export const NavUser = ({ isOpen }) => {
         )}
       <DropdownMenu >
         <DropdownMenuTrigger asChild>
-          <button className="p-2 border-none rounded-md hover:bg-gray-200 dark:hover:bg-gray-600">
+          <button className={`${isOpen ? "border-none rounded-md p-2 hover:bg-gray-300 dark:hover:bg-gray-600" : "p-1"}`}>
             <ChevronsUpDown size={16}/>
           </button>
         </DropdownMenuTrigger>

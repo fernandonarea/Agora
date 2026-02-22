@@ -36,25 +36,19 @@ const loginUser = async (user_email, password) => {
     }
   };
 
-  const registerUser = async (
-    user_name,
-    user_lastname,
-    role,
-    user_email,
-    password
-  ) => {
+  const registerUser = async ( user_name, user_lastname, role, user_email, password, store_name, store_description, store_address, store_phone ) => {
     setLoading(true);
     try {
-      const data = await register(
-        user_name,
-        user_lastname,
-        role,
-        user_email,
-        password
-      );
+      const data = await register( user_name, user_lastname, role, user_email, password, store_name, store_description, store_address, store_phone );
+      
+      if (data && data.data && data.data.token) {
+        localStorage.setItem("token", data.data.token);
+      }
+
       setUser(data.data);
       setError(null)
       return data;
+      
     } catch (error) {
       setError(error);
     } finally {

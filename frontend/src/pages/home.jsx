@@ -1,30 +1,10 @@
-import { Activity, ArrowDown, ArrowUp, BanknoteArrowUpIcon, Icon, PackageMinus } from "lucide-react";
+import { Activity, BanknoteArrowUpIcon, PackageMinus } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSale } from "@/hooks/useSale";
 import { useEffect } from "react";
 import BestSellingProducts from "@/components/products/best-selling-products";
 import { Graphics } from "@/components/sales/graphics";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge"
-
-const getBadgeVariant = (change) => {
-  const numericChange = Number(change);
-  if (numericChange > 0) return "bg-green-600 dark:bg-green-700";
-  if (numericChange < 0) return "bg-red-700 dark:bg-red-800";
-  return "default";
-};
-
-const getBadgeIcon = (change) => {
-  const numericChange = Number(change);
-  if (numericChange > 0) return <ArrowUp size={16} strokeWidth="3px"/>;
-  if (numericChange < 0) return <ArrowDown size={16} strokeWidth="3px"/>;
-  return "default";
-};
+import { CardsMetrics } from "@/components/metrics/cardsMetrics";
 
 export const Home = () => {
   const { getMetrics, getStatics, statics, metrics, error, loading } = useSale();
@@ -44,74 +24,48 @@ export const Home = () => {
   }
 
   return (
-    <div className="overflow-auto flex flex-col gap-0 h-dvh">
+    <div className="overflow-auto flex flex-col h-dvh">
       <header className="flex p-5 border-b-1 ">
         <div className="text-2xl font-semibold">Home</div>
       </header>
       {/* METRIC CARDS */}
-      <div className="grid gap-2 grid-cols-1 wrap-break-word p-5 justify-between w-full sm:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardTitle>Earnings of the day</CardTitle>
-            <CardDescription className={"text-xl"}>
-              ${metrics.totalIncome}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="bg-violet-600 p-3 rounded-xl w-fit text-white">
-              <BanknoteArrowUpIcon />
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid gap-2 grid-cols-1 wrap-break-word p-4 justify-between w-full sm:grid-cols-3">
+        
+        <CardsMetrics
+          title={"Today's Earnings"}
+          value={`$${metrics.totalIncome}`}
+          icon={<BanknoteArrowUpIcon />}
+          iconBgColor={"bg-violet-600 dark:bg-violet-800"}
+          percentageChange={statics.cambioPorcentual}
+        />
+        
+        <CardsMetrics
+          title={"Today's Sales"}
+          value={`${metrics.todaySales}`}
+          icon={<Activity />}
+          iconBgColor={"bg-yellow-500 dark:bg-yellow-700"}
+        />
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Today Sales</CardTitle>
-            <CardDescription className={"flex flex-row justify-between items-center text-xl"}>
-              {metrics.todaySales}
-              <Badge className={getBadgeVariant(statics.cambioPorcentual)}>
-                {getBadgeIcon(statics.cambioPorcentual)}
-                {statics.cambioPorcentual}%
-              </Badge>
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="bg-amber-600 p-3 rounded-xl w-fit text-white justify-end-safe">
-              <Activity />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Low Stock Products</CardTitle>
-            <CardDescription className={"text-xl"}>
-              {metrics.lowStockProducts}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="bg-red-700 p-3 rounded-xl w-fit text-white">
-              <PackageMinus />
-            </div>
-          </CardContent>
-        </Card>
+        <CardsMetrics
+          title={"Low Stock Products"}
+          value={`${metrics.lowStockProducts}`}
+          icon={<PackageMinus />}
+          iconBgColor={"bg-red-500 dark:bg-red-800"}
+        />
+        
       </div>
 
       {/* Graficos */}
-      <div className="p-5">
+      <div className="grid gap-2 grid-cols-1 wrap-break-word p-4 justify-between w-full sm:grid-cols-2">
+        <Graphics token={token} />
         <Graphics token={token} />
       </div>
 
       {/* BEST SELLING PRODUCTS */}
       <div className="p-5 mb-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Best Selling Products</CardTitle>
-          </CardHeader>
-          <CardContent>
+        
+            <h3 className="text-md font-semibold mb-5">Best Selling Products</h3>
             <BestSellingProducts token={token} />
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

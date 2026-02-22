@@ -11,37 +11,53 @@ import {
 } from "../responses/responses.js";
 
 export const createUser = async (req, res) => {
+  const connection = await db_pool_connection.getConnection();
   try {
-    const { user_name, user_lastname, role, user_email, password } = req.body;
+    const { user_name, user_lastname, role, user_email, password, 
+      store_name, store_description, store_address, store_phone } = req.body;
+    
+    await connection.beginTransaction();
 
     const existingUser = await db_pool_connection.query("SELECT * FROM users WHERE user_email = ?", [user_email]);
 
     if(existingUser[0].length > 0) {
+      await connection.rollback();
+      connection.release();
       return res.status(400).json(response_bad_request("Email already in use"));
     }
     
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const [rows] = await db_pool_connection.query(
+    const [user] = await db_pool_connection.query(
       `INSERT INTO users (user_name, user_lastname, role, user_email, password) 
       VALUES (?, ?, ?, ?, ?)`,
       [user_name, user_lastname, role, user_email, hashedPassword]
     );
 
-    if (rows.affectedRows === 0) {
-      return res
-        .status(400)
-        .json(response_bad_request("Could not create the user"));
-    }
-    res.status(201).json(response_created(rows, "User created successfully"));
+    const newUser = user.insertId;
+
+    const [store] = await db_pool_connection.query('INSERT INTO stores (store_name, id_owner, store_description, store_address, store_phone) VALUES (?, ?, ?, ?, ?)',
+      [store_name, newUser, store_description, store_address, store_phone]
+    );
+
+    const newStore = store.insertId;
+
+    await connection.commit()
+
+    const token = jwt.sign(
+      { id_user: newUser, role: role, id_store: newStore },
+      process.env.SECRET_JWT_KEY,
+      { expiresIn: "1h" }
+    );
+
+    res.status(201).json(response_success({ token, role: role, id_store: newStore, id_user: newUser }, "User created successfully"));
+  
   } catch (error) {
+    await connection.rollback();
+    connection.release();
     console.error("Server error while creating user:", error);
-    return res
-      .status(500)
-      .json(
-        response_error(500, "Server error, please try again: " + error)
-      );
+    return res.status(500).json(response_error(500, "Server error, please try again: " + error));
   }
 };
 
@@ -221,7 +237,7 @@ export const login = async (req, res) => {
     res
       .status(200)
       .json(
-        response_success({ token, role: user.role }, "Login successful")
+        response_success({ token, role: user.role, id_store: user.id_store }, "Login successful")
       );
   } catch (error) {
     console.error("Server error during login:", error);

@@ -42,7 +42,8 @@ export const getProducts = async (req, res) => {
 
     //Se calcula el total de productos con stock mayor a 0
     const [total] = await db_pool_connection.query(
-      "SELECT COUNT(*) as total FROM products WHERE stock > 0"
+      "SELECT COUNT(*) as total FROM products WHERE stock > 0",
+      [req.query.id_store]
     );
 
     const [products] = await db_pool_connection.query(
@@ -54,11 +55,7 @@ export const getProducts = async (req, res) => {
     );
 
     if (products.length === 0 && page > 1) {
-      return res
-        .status(400)
-        .json(
-          response_bad_request("Error fetching products: no products found")
-        );
+      return res.status(400).json( response_bad_request("Error fetching products: no products found"));
     }
 
     const totalProducts = total[0].total;
@@ -154,9 +151,10 @@ export const getBestSellingProducts = async (req, res) => {
       FROM sales_detail sd
       INNER JOIN products p ON sd.id_product = p.id_product
       INNER JOIN sales s ON sd.id_sale = s.id_sales
+      
       GROUP BY p.id_product, p.product_name
       ORDER BY total_sold DESC
-      LIMIT 10`);
+      LIMIT 10`,[req.query.id_store]);
 
     if (bestSellingProducts.length === 0) {
       return res

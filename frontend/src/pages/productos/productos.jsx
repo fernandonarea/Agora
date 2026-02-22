@@ -21,13 +21,13 @@ export const Productos = () => {
       <header className="flex p-5 border-b-1 justify-between items-center ">
         <div className="text-2xl font-semibold">Products</div>
         <div className="flex flex-row justify-between gap-2">
-          <Button className="bg-[var(--secondary)] text-accent-foreground hover:bg-gray-300 dark:hover:bg-gray-900">
+          <Button className="bg-neutral-200 text-accent-foreground hover:bg-gray-300 dark:hover:bg-gray-700 dark:bg-neutral-800">
             <Share />
             <InventoryButton/>
           </Button>
           <Button
             onClick={setIsOpen}
-            className="bg-[var(--primary)] text-primary-foreground hover:bg-violet-800"
+            className="bg-[var(--primary)] text-primary-foreground hover:bg-violet-800 dark:bg-violet-800 dark:hover:bg-violet-600"
           >
             <Plus strokeWidth={3} />
             Add Product

@@ -2,6 +2,7 @@ import {
   createSupplier,
   deleteSupplier,
   getSuppliers,
+  updateSupplier
 } from "@/services/supplierService";
 import { useState } from "react";
 
@@ -41,6 +42,24 @@ const useSupplier = () => {
     }
   };
 
+  const UpdateSupplier = async (id_supplier, supplierData, token) => {
+    try {
+      setLoading(true);
+      const response = await updateSupplier(id_supplier, supplierData, token);
+      setSuppliers((prev) =>
+        prev.map((supplier) =>
+          supplier.id_supplier === id_supplier ? response.data : supplier
+        )
+      );
+      setLoading(false);
+      return response;
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const DeleteSupplier = async (id_supplier, token) => {
     try {
       setLoading(true);
@@ -62,6 +81,7 @@ const useSupplier = () => {
     Suppliers,
     CreateSupplier,
     DeleteSupplier,
+    UpdateSupplier,
     suppliers,
     loading,
     error,

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useProducts } from "@/hooks/useProducts";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import useSupplier from "@/hooks/useSupplier";
+import { Button } from "../ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,50 +14,48 @@ import {
 } from "@/components/ui/sheet";
 import { CheckCircle2 } from "lucide-react";
 
-export const UpdateProductForm = ({ token, product, isOpen, onClose, onUpdated }) => {
-  const { updateProducts, error, loading } = useProducts();
-  
+export const UpdateSupplierForm = ({ token, supplier, isOpen, onClose, onUpdated }) => {
+  const { UpdateSupplier, loading, error } = useSupplier();
+
   const [alert, setAlert] = useState(false);
-  const [productData, setProductData] = useState({
-    product_name: "",
-    product_description: "",
-    product_price: 0,
-    stock: 0,
+  const [supplierData, setSupplierData] = useState({
+    supplier_name: "",
+    supplier_phone: "",
+    supplier_email: "",
   });
 
   useEffect(() => {
-    if (product) {
-      setProductData({
-        product_name: product.product_name || "",
-        product_description: product.product_description || "",
-        product_price: product.product_price || 0,
-        stock: product.stock || 0,
+    if (supplier) {
+      setSupplierData({
+        supplier_name: supplier.supplier_name,
+        supplier_phone: supplier.supplier_phone,
+        supplier_email: supplier.supplier_email,
       });
     }
-  }, [product]);
+  }, [supplier]);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    
-    const response = await updateProducts(
-      product.id_product,
-      productData,
-      token
+
+    const response = await UpdateSupplier(
+      supplier.id_supplier,
+      supplierData,
+      token,
     );
     if (response) {
       setAlert(true);
-      onUpdated?.();
       setTimeout(() => {
         error;
         setAlert(false);
         onClose();
+        onUpdated?.();
       }, 1500);
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProductData((prev) => ({
+    setSupplierData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -67,54 +65,44 @@ export const UpdateProductForm = ({ token, product, isOpen, onClose, onUpdated }
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent side="left">
         <SheetHeader>
-          <SheetTitle>Update Product</SheetTitle>
+          <SheetTitle>Update Supplier</SheetTitle>
           <SheetDescription className={"mb-4"}>
-            Edit the information below to update the product.
+            Edit the information below to update the Supplier.
           </SheetDescription>
 
-          {product && (
+          {supplier && (
             <form onSubmit={handleUpdate} className="flex flex-col gap-4">
               <div className="grid gap-4">
                 <div className="grid gap-2">
                   <div className="grid gap-3">
-                    <Label>Product Name</Label>
+                    <Label>Supplier Name</Label>
                     <Input
-                      name="product_name"
+                      name="supplier_name"
                       type="text"
                       onChange={handleChange}
-                      value={productData.product_name}
+                      value={supplierData.supplier_name}
                       required
                     />
                   </div>
 
                   <div className="grid gap-3">
-                    <Label>Product Description</Label>
+                    <Label>Supplier Phone</Label>
                     <Textarea
-                      name="product_description"
+                      name="supplier_phone"
+                      type="phone"
                       onChange={handleChange}
-                      value={productData.product_description}
+                      value={supplierData.supplier_phone}
                       required
                     />
                   </div>
 
                   <div className="grid gap-3">
-                    <Label>Price</Label>
+                    <Label>Email</Label>
                     <Input
-                      name="product_price"
-                      type="number"
+                      name="supplier_email"
+                      type="email"
                       onChange={handleChange}
-                      value={productData.product_price}
-                      required
-                    />
-                  </div>
-
-                  <div className="grid gap-3">
-                    <Label>Available Stock</Label>
-                    <Input
-                      name="stock"
-                      type="number"
-                      onChange={handleChange}
-                      value={productData.stock}
+                      value={supplierData.supplier_email}
                       required
                     />
                   </div>
@@ -136,7 +124,7 @@ export const UpdateProductForm = ({ token, product, isOpen, onClose, onUpdated }
           {alert && (
             <Alert className="bg-green-50 border-green-600 text-green-700 mt-5 dark:bg-green-800 dark:border-green-400 dark:text-green-200">
               <CheckCircle2 className="h-4 w-4" />
-              <AlertTitle>Product updated successfully</AlertTitle>
+              <AlertTitle>Supplier updated successfully</AlertTitle>
             </Alert>
           )}
         </SheetHeader>

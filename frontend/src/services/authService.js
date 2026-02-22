@@ -15,27 +15,15 @@ export const login = async (user_email, password) => {
   }
 };
 
-export const register = async (
-  user_name,
-  user_lastname,
-  role,
-  user_email,
-  password
-) => {
+export const register = async (user_name, user_lastname, role, user_email, password, store_name, store_description, store_address, store_phone ) => {
   try {
     const response = await axios.post(
       "http://localhost:3200/api/users/register",
-      {
-        user_name,
-        user_lastname,
-        role,
-        user_email,
-        password,
-      }
+      { user_name, user_lastname, role, user_email, password, store_name, store_description, store_address, store_phone }
     );
     return response.data;
   } catch (error) {
     console.error(error);
-    throw error.response.data.message;
+    throw error.response?.data?.message || "Ocurrió un error en el servidor";
   }
 };

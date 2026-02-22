@@ -5,15 +5,19 @@ import { ChevronLeft, ChevronRight, Pencil } from "lucide-react";
 import { DeleteProduct } from "./crud/delete-product";
 import { UpdateProductForm } from "./crud/update-product";
 import { Input } from "../ui/input";
-import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 
 const ProductList = ({ token }) => {
   const { products, loading, fetchProducts, metadata} = useProducts();
-  const [currentPage, setCurrentPage] = useState(1);
+  
+  
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  
   const [deleteError, setDeleteError] = useState(null);
+  
   const [search, setSearch] = useState("");
+  
+  const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
 
   useEffect(() => {
@@ -26,8 +30,6 @@ const ProductList = ({ token }) => {
       return () => clearTimeout(timer);
     }
   }, [deleteError]);
-
-  // if (error) return <div>{error}</div>;
 
   const handlePrevPage = () =>
     metadata.hasPrevPage && setCurrentPage((p) => p - 1);
@@ -55,7 +57,8 @@ const ProductList = ({ token }) => {
       <Input
         value={search}
         onChange={handleSearch}
-        placeholder="Buscar producto por nombre"
+        placeholder="Search product by name"
+        className="w-1/3"
       />
       {loading ? (
         <div>Cargando productos...</div>
@@ -64,19 +67,22 @@ const ProductList = ({ token }) => {
           <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
             <thead className="bg-gray-50 dark:bg-neutral-700">
               <tr>
-                <th className="px-5 py-3 text-start text-xs font-medium">
+                <th className="px-5 py-3 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
+                  Id
+                </th>
+                <th className="px-5 py-3 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
                   Nombre
                 </th>
-                <th className="px-5 py-3 text-start text-xs font-medium">
+                <th className="px-5 py-3 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
                   Descripción
                 </th>
-                <th className="px-5 py-3 text-start text-xs font-medium">
+                <th className="px-5 py-3 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
                   Precio
                 </th>
-                <th className="px-5 py-3 text-start text-xs font-medium">
+                <th className="px-5 py-3 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
                   Stock
                 </th>
-                <th className="px-5 py-3 text-start text-xs font-medium">
+                <th className="px-5 py-3 text-start text-xs font-medium text-gray-500 dark:text-neutral-300">
                   Acciones
                 </th>
               </tr>
@@ -87,11 +93,12 @@ const ProductList = ({ token }) => {
                   key={p.id_product}
                   className="hover:bg-gray-100 dark:hover:bg-neutral-800"
                 >
-                  <td className="px-6 py-3">{p.product_name}</td>
-                  <td className="px-6 py-3">{p.product_description}</td>
-                  <td className="px-6 py-3">${p.product_price}</td>
-                  <td className="px-6 py-3">{p.stock} u</td>
-                  <td className="flex gap-3 px-6 py-3">
+                  <td className="text-sm px-6 py-3 font-medium">{p.id_product}</td>
+                  <td className="text-sm px-6 py-3 font-medium">{p.product_name}</td>
+                  <td className="text-sm px-6 py-3 font-normal">{p.product_description}</td>
+                  <td className="text-sm px-6 py-3 font-medium">${p.product_price}</td>
+                  <td className="text-sm px-6 py-3">{p.stock} u</td>
+                  <td className="flex gap-3 px-6 py-3 font-normal">
                     <Button
                       variant="outline"
                       className="hover:bg-violet-500 hover:text-white dark:hover:bg-violet-700"

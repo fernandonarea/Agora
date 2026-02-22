@@ -30,6 +30,21 @@ export const createSupplier = async (supplierData, token) => {
     }
 }
 
+export const updateSupplier = async (id_supplier, supplierData, token) => {
+    try {
+        const response = await axios.put(`http://localhost:3200/api/suppliers/${id_supplier}`, supplierData, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error updating supplier:", error);
+        throw error;
+    }
+}
+
 export const deleteSupplier = async (id_supplier, token) => {
     try{
         const response = await axios.delete(`http://localhost:3200/api/suppliers/${id_supplier}`, {

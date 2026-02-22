@@ -172,12 +172,12 @@ export const createSale = async (req, res) => {
 export const metrics = async (req, res) => {
   try {
     const [lowStockProducts] = await db_pool_connection.query(
-      "Select count(*) as lowStockProducts from products where stock <= 5;",
+      "SELECT count(*) AS lowStockProducts FROM products WHERE stock <= 5;",
       [req.id_store],
     );
 
     const [totalIncome] = await db_pool_connection.query(
-      "SELECT SUM(total) as total_sum FROM sales;",
+      "SELECT SUM(total) AS total_sum FROM sales WHERE DATE(sales_date) = CURDATE();",
       [req.id_store],
     );
     const [todaySales] = await db_pool_connection.query(
@@ -208,12 +208,11 @@ export const metrics = async (req, res) => {
 export const monthPerformance = async (req, res) => {
   try {
     const [data] = await db_pool_connection.query(
-      `SELECT DATE(sales_date) AS dia, COUNT(*) AS total 
+    `SELECT DATE(sales_date) AS dia, SUM(total) AS total_ventas
       FROM sales 
       WHERE sales_date >= CURDATE() - INTERVAL 30 DAY
       GROUP BY dia 
       ORDER BY dia`,
-      [req.id_store],
     );
 
     res
@@ -235,12 +234,10 @@ export const statics = async (req, res) => {
   try {
     const [todayResult] = await db_pool_connection.query(
       "SELECT SUM(total) AS total_ventas FROM sales WHERE DATE(sales_date) = CURRENT_DATE;",
-      [req.id_store],
     );
 
     const [yesterdayResult] = await db_pool_connection.query(
       "SELECT SUM(total) AS total_ventas FROM sales WHERE DATE(sales_date) = CURDATE() - INTERVAL 1 DAY;",
-      [req.id_store],
     );
 
     const todaySales = parseFloat(todayResult[0].total_ventas || 0);
@@ -250,7 +247,7 @@ export const statics = async (req, res) => {
 
     if (yesterdaySale > 0) {
       change = ((todaySales - yesterdaySale) / yesterdaySale) * 100;
-    } else if (todaySales > 0) {
+    } else {
       change = 100;
     }
 

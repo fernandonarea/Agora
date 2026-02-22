@@ -10,8 +10,8 @@ import {
 export const getAllSuppliers = async (req, res) => {
   try {
     const [rows] = await db_pool_connection.query(
-      "SELECT id_supplier, supplier_name, supplier_phone, supplier_email, date_added FROM suppliers WHERE id_store = ?",
-      [req.id_store]
+      "SELECT id_supplier, supplier_name, supplier_phone, supplier_email, date_added FROM suppliers",
+      
     );
 
     if (rows.length === 0)
@@ -50,6 +50,28 @@ export const createSupplier = async (req, res) => {
     return res.status(500).json(response_error("Error creating supplier"));
   }
 };
+
+export const updateSupplier = async (req, res) => {
+  const { id_supplier } = req.params;
+  const { supplier_name, supplier_phone, supplier_email } = req.body;
+  try{
+    const [rows] = await db_pool_connection.query(
+      "UPDATE suppliers SET supplier_name = ?, supplier_phone = ?, supplier_email = ? WHERE id_supplier = ?",
+      [supplier_name, supplier_phone, supplier_email, id_supplier]
+    );
+    if (rows.affectedRows === 0)
+      return res
+        .status(404)
+        .json(response_not_found("Supplier not found or ID incorrect"));
+
+    res
+      .status(200)
+      .json(response_success(rows, "Supplier updated successfully"));
+  } catch (error) {
+    console.error("Error updating supplier:", error);
+    return res.status(500).json(response_error("Error updating supplier"));
+  }
+}
 
 export const deleteSupplier = async (req, res) => {
   const { id_supplier } = req.params;
